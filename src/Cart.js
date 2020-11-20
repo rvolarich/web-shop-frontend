@@ -35,23 +35,7 @@ class Cart extends React.Component {
 render(){
 
     const { products, total} = this.state;
-    /*const columns = [
-        
-        {
-            Header: "No.",
-            accessor: "id"
-        },
-        {
-            Header: "Firstname",
-            accessor: "firstname"
-        },
-
-        {
-            Header: "Surname",
-            accessor: "surname"
-        }
-
-    ]*/
+     
   return (
       
     <div>

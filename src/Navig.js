@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Nav, Row, Col,
-        Navbar, Form, FormControl, Button } from 'react-bootstrap';
+import { Container, Nav, Row,
+        Navbar} from 'react-bootstrap';
 
 function Navig(){
 
