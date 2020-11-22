@@ -26,7 +26,7 @@ class ShopItem extends React.Component{
            </div>
            <br />
             <div >
-              <h6>In Stock: {product.product_quantity} pieces</h6>
+              <h6><span style={{color: 'green'}}>In Stock:</span> {product.product_quantity} pieces</h6>
             </div>
           </Col>
           <Col xs={3}>
@@ -35,7 +35,7 @@ class ShopItem extends React.Component{
             </div>
             <br />
             
-          <Button style={{marginLeft:'100px', marginTop:'60px'}}>Add to cart</Button>
+          <Button style={{marginLeft:'100px', marginTop:'90px'}}>Add to cart</Button>
           </Col>
         </Row>
         <hr />
