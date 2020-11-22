@@ -38,7 +38,7 @@ products.map((product) =>
     
     }
 
-<h2>dfd</h2>
+
    
 
 </div>
