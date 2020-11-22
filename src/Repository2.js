@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:8080'
 
-export function getCartItems(){
+export function getCartProducts(){
     return axios.get('http://localhost:8080/items').then(response => response.data);
 }
 
@@ -12,5 +12,16 @@ export function getProducts(){
 
 export function getPhoto(){
     return axios.get('http://localhost:8080/photo').then(response => response.data);
+}
+
+export function postCartProduct(product){
+    console.log("product: " + JSON.stringify(product));
+    return axios.post('http://localhost:8080/pcp', {productName:'mfkitu',
+    productDescription: 'descrip'}).then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 }
 

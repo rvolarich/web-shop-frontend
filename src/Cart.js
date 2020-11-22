@@ -6,7 +6,7 @@ import './Cart.css';
 import CartItem from './CartItem'
 
 
-import { getCartItems } from './Repository2';
+import { getCartProducts } from './Repository2';
 
 
 
@@ -21,7 +21,7 @@ class Cart extends React.Component {
     }
 
     componentDidMount(){
-       getCartItems().then((products) => {
+       getCartProducts().then((products) => {
            
            let total = 0;
            for(var i = 0; i < products.length; i++){
