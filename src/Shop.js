@@ -12,15 +12,15 @@ class Shop extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-        products: []
-        
+        products: [],
+        total: 0
     }
 }
 
 componentDidMount(){
    getProducts().then((products) => {
-       
-       this.setState({ products });
+       let total = 20;
+       this.setState({ products, total });
     
    });
 }
@@ -38,7 +38,7 @@ products.map((product) =>
     
     }
 
-
+<div><h2>{this.state.total}</h2></div>
    
 
 </div>

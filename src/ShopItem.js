@@ -1,28 +1,30 @@
 import React from 'react';
 import axios from 'axios';
 import { Container, Button, Row, Col } from 'react-bootstrap';
-import { postCartProduct } from './Repository2';
+import { getProductId } from './Repository2';
 
 class ShopItem extends React.Component{
     constructor(props){
         super(props);
-        /*this.state = {
-          productId: 0,
-          productName: '',
-          productDescription: '',
-          productQuantity: 0,
-          productPrice: 0.00
-        }*/
+        this.state = {
+          productIds: []
+        }
     }
 
     clickMe = () => {
       
-      //this.setState({num: this.props.product.product_name});
+      
       
       
      
       
-      //postCartProduct(this.props.product);
+      getProductId().then((productIds) => {
+
+
+
+      });
+
+
       axios.post('http://localhost:8080/pcp', this.props.product).then(function (response) {
         console.log(response);
       })
@@ -68,6 +70,7 @@ class ShopItem extends React.Component{
         
         
       </Container>
+      
         );
     }
 
