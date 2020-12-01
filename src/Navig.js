@@ -2,15 +2,25 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Nav, Row,
         Navbar} from 'react-bootstrap';
+import { render } from '@testing-library/react';
+import { connect } from 'react-redux';
+import { getCartQty } from './actions/postActions';
 
-function Navig(){
+class Navig extends React.Component{
 
+  componentDidMount(){
+  
+      //this.props.getCartQty();
+      console.log('been in navig');
+  }
+  
     
-    let one = 1;
-  const navStyle = {
+  one = 1;
+  navStyle = {
     color: 'white'
   };
-  
+  render(){
+    const { count } = this.props;
   return (
 <Container>
     <Row style={{minHeight:'100px', background:'grey', alignContent:'center'}}>
@@ -21,7 +31,7 @@ function Navig(){
      <Nav className="mr-auto">
       <Nav.Link href="/shop">Shop</Nav.Link>
       <Nav.Link href="/inv">Inventory</Nav.Link>
-      <Nav.Link href="/cart">Cart</Nav.Link>
+  <Nav.Link href="/cart">Cart {count}</Nav.Link>
       <Nav.Link href="/signup">SignUp</Nav.Link>
       <Nav.Link href="/photo">Login</Nav.Link>
     </Nav>
@@ -53,6 +63,10 @@ function Navig(){
     </ul>
   </nav>*/
   );
-  
+  }
 }
-export default Navig;
+const mapStateToProps = state => ({
+  count: state.posts.count
+});
+
+export default connect(mapStateToProps)(Navig);

@@ -31,7 +31,7 @@ class CartItem extends React.Component{
 
             <Container>
               
-                <Row>
+                <Row id={"cartChild"}>
                   <Col>
                   <img src={"data:image/jpg;base64," + product.productImage} style={{width:'9vw',
                              marginLeft: '50px', marginBottom: 'auto' }} alt=""></img>
@@ -44,8 +44,8 @@ class CartItem extends React.Component{
                   </Col>
                   <Col style={{marginTop: '50px'}}>
                   <form onSubmit={this.handleSubmit}>
-          <input 
-              type="text"
+          <input key="index"
+              type="number"
               value={this.state.number} 
               onChange={this.handleChange} />
           

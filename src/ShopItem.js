@@ -2,47 +2,83 @@ import React from 'react';
 import axios from 'axios';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import { getProductId } from './Repository2';
+import { connect } from 'react-redux';
+import Shop from './Shop';
+import count from './Shop'
+import AddToCartButton from './AddToCartButton';
+import Navig from './Navig';
+import { cartChildren } from './App'
+import { getCartQty } from './actions/postActions';
+import { GET_DATA, POST_DATA, GET_CART_QTY, INCREMENT  }  from './actions/types';
 
 class ShopItem extends React.Component{
+   
+  
+  
     constructor(props){
         super(props);
-        this.state = {
-          productIds: []
-        }
+        /*this.state = {
+          productIds: [],
+          count: 25
+        }*/
+
+        this.clickMe = this.clickMe.bind(this)
     }
 
-    clickMe = () => {
-      
-      
-      
-      
-     
-      
-      getProductId().then((productIds) => {
-
-
-
-      });
-
-
-      axios.post('http://localhost:8080/pcp', this.props.product).then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    /*incrementCart(){
+      this.cartQty += 1;
+    }*/
+    componentDidMount(){
+      //this.props.getCartQty();
     }
+
+   clickMe = () => {
+      
+      var enablePost = true;
+     /* getProductId().then((productIds) => {
+        cartChildren(productIds.length + 1);
+        for(var i = 0; i < productIds.length; i++){
+          if(productIds[i] == this.props.product.productId){
+            enablePost = false;
+            console.log(enablePost);
+            alert("The product is already in the cart");
+            console.log(enablePost);
+          }
+          
+          
+      }
+      
+          this.setState({productIds: productIds});
+          
+      });*/
+      
+         
+        this.props.dispatch({
+          type: INCREMENT
+        });
+        
+        console.log("Bio u click me: " + this.props.product);
+        axios.post('http://localhost:8080/pcp', this.props.product).then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
+      
     
-
+  
     render(){
         const {product} = this.props;
+        
         return(
 <Container>
-        <Row style={{minHeight:'200px', marginTop:'20px'}}>
-          <Col xs={4}>
+      
+        <Row key={product.productId} style={{minHeight:'200px', marginTop:'20px'}}>
+          <Col  xs={4}>
           <img src={"data:image/jpg;base64," + product.productImage} alt=""></img>
           </Col>
-          <Col xs={5} style={{marginTop:'80px'}}>
+          <Col  xs={5} style={{marginTop:'80px'}}>
             <div>
         <h3 >{product.productName}</h3>
            </div>
@@ -55,13 +91,13 @@ class ShopItem extends React.Component{
               <h6><span style={{color: 'green'}}>In Stock:</span> {product.productQuantity} pieces</h6>
             </div>
           </Col>
-          <Col xs={3}>
+          <Col  xs={3}>
             <div style={{marginTop:'30px', marginLeft: '60px'}}>
               <h5>Price: {product.productPrice}, EUR</h5>
             </div>
             <br />
-            
-          <Button onClick={this.clickMe} style={{marginLeft:'100px', marginTop:'90px'}}>Add to cart</Button>
+            <button onClick={this.clickMe}>Click me</button>
+          <AddToCartButton postToCart={this.clickMe}/>
           </Col>
           
         </Row>
@@ -76,4 +112,8 @@ class ShopItem extends React.Component{
 
 }
 
-export default ShopItem;
+const mapDispatchToProps = dispatch => ({
+  dispatch               
+});
+
+export default connect(null, mapDispatchToProps)(ShopItem);

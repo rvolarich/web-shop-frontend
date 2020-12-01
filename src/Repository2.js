@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:8080'
 
-export function getCartProducts(){
+/*export function getCartProducts(){
     return axios.get('http://localhost:8080/getcart').then(response => response.data);
-}
+}*/
 
 export function getProducts(){
     return axios.get('http://localhost:8080/products').then(response => response.data);
