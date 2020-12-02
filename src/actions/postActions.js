@@ -1,4 +1,5 @@
-import { GET_DATA, POST_DATA, GET_CART_QTY, GET_CART_PRODUCTS }  from './types';
+import { GET_DATA, POST_DATA, GET_CART_QTY, GET_CART_PRODUCTS, 
+    SET_CART_QTY, DELETE_CART }  from './types';
 import axios from 'axios';
 
 /*export const fetchPosts = () => dispatch => {
@@ -37,6 +38,26 @@ export const getCartProducts = () => dispatch => {
     .then(response => response.data)
     .then(cartProducts => dispatch({
         type: GET_CART_PRODUCTS,
+        payload: cartProducts
+    }));
+}
+
+export const getCartItemQty = () => dispatch => {
+    console.log('been in getCartItemQty');
+    axios.get('http://localhost:8080/getcartitemqtys')
+    .then(response => response.data)
+    .then(cartQtyState => dispatch({
+        type: SET_CART_QTY,
+        payload: cartQtyState
+    }));
+}
+
+export const deleteCart = () => dispatch => {
+    console.log('been in deleteCart');
+    axios.get('http://localhost:8080/deletecart')
+    .then(response => response.data)
+    .then(cartProducts => dispatch({
+        type: DELETE_CART,
         payload: cartProducts
     }));
 }

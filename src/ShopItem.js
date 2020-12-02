@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import { getProductId } from './Repository2';
@@ -6,6 +7,7 @@ import { connect } from 'react-redux';
 import Shop from './Shop';
 import count from './Shop'
 import AddToCartButton from './AddToCartButton';
+import ShopItemSelected from './ShopItemSelected';
 import Navig from './Navig';
 import { cartChildren } from './App'
 import { getCartQty } from './actions/postActions';
@@ -23,6 +25,7 @@ class ShopItem extends React.Component{
         }*/
 
         this.clickMe = this.clickMe.bind(this)
+        
     }
 
     /*incrementCart(){
@@ -65,6 +68,17 @@ class ShopItem extends React.Component{
           console.log(error);
         });
       }
+
+      /*buyNow = () => {
+        const element = (
+          <Container>
+            
+            
+            </Container>
+        )
+        ReactDOM.render(element, document.getElementById('root'));
+
+      }*/
       
     
   
@@ -96,7 +110,8 @@ class ShopItem extends React.Component{
               <h5>Price: {product.productPrice}, EUR</h5>
             </div>
             <br />
-            <button onClick={this.clickMe}>Click me</button>
+           
+            
           <AddToCartButton postToCart={this.clickMe}/>
           </Col>
           

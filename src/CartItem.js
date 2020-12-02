@@ -1,21 +1,42 @@
 import React from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
-
+import { connect } from 'react-redux';
+import { SET_CART_QTY, SET_CART_PRODUCT_QUANTITY } from './actions/types';
+import { getCartItemQty, getCartProducts } from './actions/postActions';
+var x;
 class CartItem extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = {quantity: 1, number: 1};
-
+        //this.state = {quantity: 0};
+        
         this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount(){
+      
+      getCartItemQty();
+      //this.setState({quantity: this.props.product.productQuantity})
+      
+      console.log("cartitem component did mount " + x);
+    }
 
-    handleChange(event) {
+
+    /*handleChange = (event) => dispatch => {
       const re = /^[0-9\b]+$/;
         if (event.target.value === '' || re.test(event.target.value)) {
            this.setState({number: event.target.value})
+        }
+    }*/
+
+    handleChange(event){
+      console.log("handleChange: " + event.target.value);
+      const re = /^[0-9\b]+$/;
+        if (event.target.value === '' || re.test(event.target.value)) {
+          //getCartProducts();
+           this.props.dispatch({type: SET_CART_PRODUCT_QUANTITY ,
+                    payload: event.target.value});
         }
     }
       
@@ -27,6 +48,7 @@ class CartItem extends React.Component{
     render(){
 
         const {product} = this.props;
+        //console.log("render " + this.state.quantity);
         return (
 
             <Container>
@@ -37,25 +59,26 @@ class CartItem extends React.Component{
                              marginLeft: '50px', marginBottom: 'auto' }} alt=""></img>
                   </Col>
                   <Col>
-                  <h6 style={{marginTop: '50px'}}>{product.productName}</h6>
-                  <h8>{product.productDescription}</h8>
+                  <p style={{marginTop: '50px'}}>{product.productName}</p>
+                  <p>{product.productDescription}</p>
                   <br />
-                  <h10><span style={{color: 'green'}}>In Stock:</span> {product.productQuantity} pieces</h10>
+                  <p><span style={{color: 'green'}}>In Stock:</span> {product.productQuantity} pieces</p>
                   </Col>
                   <Col style={{marginTop: '50px'}}>
                   <form onSubmit={this.handleSubmit}>
           <input key="index"
               type="number"
-              value={this.state.number} 
-              onChange={this.handleChange} />
+              defaultValue={product.productQuantity}
+              onChange={this.handleChange}
+              
+               />
           
         </form>
-        <h8 color="grey">Enter quantity</h8>
+        <h6 color="grey">Enter quantity</h6>
         
                   </Col>
                   <Col>
-                  <Button variant="outline-danger" onClick={this.clickMe} 
-                  style={{marginLeft:'100px', marginTop:'35px'}}>Remove</Button>
+                  
                   
               <h6 style={{marginTop:'50px', marginLeft: '100px', marginBottom: 'auto'}}>EUR {product.productPrice}</h6>
                 
@@ -91,4 +114,15 @@ class CartItem extends React.Component{
         )
     }
 }
-export default CartItem;
+
+const mapDispatchToProps = dispatch => ({
+  dispatch               
+});
+
+const mapStateToProps = state => ({
+  number: state.posts.cartQtyState,
+  
+  
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartItem);

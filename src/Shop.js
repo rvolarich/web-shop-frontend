@@ -43,8 +43,8 @@ componentDidMount(){
     <div>
        
        {
-products.map((product) =>
-    <ShopItem product={product} />
+products.map((product, index) =>
+    <ShopItem product={product} key={index} />
         
     )
     

@@ -6,7 +6,7 @@ import './Cart.css';
 import CartItem from './CartItem'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { getCartProducts, getCartQty } from './actions/postActions';
+import { getCartProducts, getCartQty, deleteCart } from './actions/postActions';
 //import { getCartProducts } from './Repository2';
 
 
@@ -19,6 +19,7 @@ class Cart extends React.Component {
             products: [],
             total: 0
         }*/
+        this.deleteCart = this.deleteCart.bind(this)
     }
 
     /*componentDidMount(){
@@ -44,24 +45,31 @@ class Cart extends React.Component {
         this.props.getCartQty();
     }
 
+    deleteCart = () => {
+        this.props.deleteCart();
+ }
     
 render(){
     
     
-    const { products, total} = this.props;
+    const { products, total, count} = this.props;
      
   return (
     <Container>
         
     <Row ><Button variant="outline-info" onClick={this.clickMe} 
-              style={{marginTop:'40px', marginBottom:'20px'}}>Update cart</Button></Row>
+              style={{marginTop:'40px', marginBottom:'20px'}}>Update cart</Button>
+              <Button variant="outline-info" onClick={this.deleteCart} 
+              style={{marginTop:'40px', marginBottom:'20px'}}>Clear cart</Button>
+              
+              </Row>
           <hr />      
       
     <div>
         
         {
-products.map((product) =>
-        <CartItem product={product} />
+products.map((product, index) =>
+        <CartItem product={product} key={index}/>
             
         )
         
@@ -71,7 +79,9 @@ products.map((product) =>
        
     
     </div>
-
+    <div>
+                  {count === null ? <h2>You have no items</h2> : null}
+              </div>
         
     </Container>
         
@@ -84,8 +94,9 @@ products.map((product) =>
 }
 
 const mapStateToProps = state => ({
-    products: state.posts.cartProducts
+    products: state.posts.cartProducts,
+    count: state.posts.count
     
   });
 
-export default connect (mapStateToProps, { getCartProducts, getCartQty })(Cart);
+export default connect (mapStateToProps, { getCartProducts, getCartQty, deleteCart })(Cart);
