@@ -1,5 +1,5 @@
 import { GET_DATA, POST_DATA, GET_CART_QTY, GET_CART_PRODUCTS, 
-    SET_CART_QTY, DELETE_CART }  from './types';
+    SET_CART_QTY, DELETE_CART, UPDATE_CART, UPDATE_COUNT, DELETE_CART_ITEM }  from './types';
 import axios from 'axios';
 
 /*export const fetchPosts = () => dispatch => {
@@ -62,6 +62,28 @@ export const deleteCart = () => dispatch => {
     }));
 }
 
+export const deleteCartItem = (productid) => dispatch => {
+    console.log('been in deleteCart: ');
+    axios.get('http://localhost:8080/deletecartbyid$/{productid}')
+    .then(response => response.data)
+    .then(cartProducts => dispatch({
+        type: DELETE_CART_ITEM,
+        payload: cartProducts
+    }));
+}
+
+export const postCart = (products) => dispatch => {
+    console.log("sent cart");
+    axios.post('http://localhost:8080/postcartall', products)
+    .then(response => response.data)
+    .then(countQty => dispatch({
+      type: UPDATE_CART,
+      payload: countQty
+    }))
+    .catch(function (error) {
+      console.log(error);
+    });
+}
 /*export const getCartQty = () => dispatch => {
     console.log('fetching');
     fetch('http://localhost:8080/getcartqty')

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { SET_CART_QTY, SET_CART_PRODUCT_QUANTITY } from './actions/types';
-import { getCartItemQty, getCartProducts } from './actions/postActions';
+import { SET_CART_QTY, SET_CART_PRODUCT_QUANTITY, DELETE_CART_ITEM } from './actions/types';
+import { getCartItemQty, getCartProducts, deleteCartItem } from './actions/postActions';
+import { bindActionCreators } from 'redux';
+import axios from 'axios';
 var x;
 class CartItem extends React.Component{
 
@@ -12,6 +14,7 @@ class CartItem extends React.Component{
         
         this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.deleteCartItemById = this.deleteCartItemById.bind(this)
     }
 
     componentDidMount(){
@@ -29,14 +32,23 @@ class CartItem extends React.Component{
            this.setState({number: event.target.value})
         }
     }*/
+    deleteCartItemById = () =>  {
+      
+      console.log("bio u delete: " + this.props.product.productName);
+      this.props.deleteCartItem(parseInt(this.props.product.productId));
+      }
 
     handleChange(event){
       console.log("handleChange: " + event.target.value);
       const re = /^[0-9\b]+$/;
-        if (event.target.value === '' || re.test(event.target.value)) {
-          //getCartProducts();
+      if (event.target.value === '' || re.test(event.target.value)) {
+          getCartProducts();
            this.props.dispatch({type: SET_CART_PRODUCT_QUANTITY ,
-                    payload: event.target.value});
+                    payload: {
+                    fieldValue: event.target.value,
+                    prodId: this.props.product.productId
+                    }
+                    });
         }
     }
       
@@ -44,6 +56,8 @@ class CartItem extends React.Component{
       console.log(this.state);
       event.preventDefault();
     }
+
+    
 
     render(){
 
@@ -81,7 +95,8 @@ class CartItem extends React.Component{
                   
                   
               <h6 style={{marginTop:'50px', marginLeft: '100px', marginBottom: 'auto'}}>EUR {product.productPrice}</h6>
-                
+              <Button variant="outline-danger" onClick={this.deleteCartItemById} 
+                   style={{marginLeft:'100px', marginTop:'35px'}}>Remove</Button>
                   </Col>
                 </Row>
                 <hr />
@@ -115,12 +130,19 @@ class CartItem extends React.Component{
     }
 }
 
-const mapDispatchToProps = dispatch => ({
+/*const mapDispatchToProps = dispatch => ({
   dispatch               
-});
+});*/
+
+function mapDispatchToProps(dispatch) {
+  return{
+    dispatch,
+     ...bindActionCreators({ getCartProducts, getCartItemQty, deleteCartItem }, dispatch)
+}
+}
 
 const mapStateToProps = state => ({
-  number: state.posts.cartQtyState,
+  number: state.posts.cartQtyState
   
   
 });
