@@ -1,53 +1,49 @@
 import React from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { SET_CART_QTY, SET_CART_PRODUCT_QUANTITY, DELETE_CART_ITEM } from './actions/types';
+import { SET_CART_QTY, SET_CART_PRODUCT_QUANTITY, GET_CART_QTY } from './actions/types';
 import { getCartItemQty, getCartProducts, deleteCartItem } from './actions/postActions';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
-var x;
+var allowCountUpdate = new Boolean();
 class CartItem extends React.Component{
 
     constructor(props){
         super(props);
-        //this.state = {quantity: 0};
-        
-        this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.deleteCartItemById = this.deleteCartItemById.bind(this)
+    /*this.deleteCartItemById = this.deleteCartItemById.bind(this)
+    this.updateCart = this.updateCart.bind(this)*/
     }
 
     componentDidMount(){
       
       getCartItemQty();
-      //this.setState({quantity: this.props.product.productQuantity})
-      
-      console.log("cartitem component did mount " + x);
+      console.log("cartitem component did mount ");
     }
 
-
-    /*handleChange = (event) => dispatch => {
-      const re = /^[0-9\b]+$/;
-        if (event.target.value === '' || re.test(event.target.value)) {
-           this.setState({number: event.target.value})
-        }
+    /*componentDidUpdate(){
+  
+      console.log("been in componentDidUpdate");
+      if(allowCountUpdate){
+      this.props.dispatch({
+        type: GET_CART_QTY,
+        payload: this.props.updateCart.totalCartQty
+     })
+    }
     }*/
-    deleteCartItemById = () =>  {
+
+    /*updateCart = () => {
+      this.props.postCart(this.props.products);
+      allowCountUpdate = true;
+     }*/
+
+    /*deleteCartItemById = () =>  {
       const prodObj = {
         productId: this.props.product.productId
       }
-      //let formData = new FormData();
-      //formData.append('productId:', this.props.product.productId);
-      
-      console.log("bio u delete: " + JSON.parse(JSON.stringify(this.props.product.productId)));
       this.props.deleteCartItem(JSON.parse(JSON.stringify(prodObj))); 
-      /*axios.get('http://localhost:8080/deletecartbyid', this.props.product.productId).then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });*/
-      }
+      }*/
 
     handleChange(event){
       console.log("handleChange: " + event.target.value);
@@ -106,7 +102,7 @@ class CartItem extends React.Component{
                   
                   
               <h6 style={{marginTop:'50px', marginLeft: '100px', marginBottom: 'auto'}}>EUR {product.productPrice}</h6>
-              <Button variant="outline-danger" onClick={this.deleteCartItemById} 
+              <Button variant="outline-danger" onClick={() => this.props.deleteCartProduct(this.props.product.productId)} 
                    style={{marginLeft:'100px', marginTop:'35px'}}>Remove</Button>
                   </Col>
                 </Row>
@@ -154,7 +150,7 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = state => ({
   number: state.posts.cartQtyState,
-  
+  updateCart: state.posts.updateCart
   
 });
 

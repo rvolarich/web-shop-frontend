@@ -42,7 +42,7 @@ export default function(state = initialState, action){
                     cartProducts: action.payload
                 }
         case SET_CART_QTY:
-                console.log('been in actions qty');
+                console.log('been in set cart qty');
                 return{
                     ...state,
                     cartQtyState: action.payload

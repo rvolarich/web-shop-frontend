@@ -63,25 +63,38 @@ class Cart extends React.Component {
  componentDidUpdate(){
   
   console.log("been in componentDidUpdate");
+  
+  
   if(allowCountUpdate){
+    console.log("dispatched total cart qty");
   this.props.dispatch({
     type: GET_CART_QTY,
     payload: this.props.updateCart.totalCartQty
  })
+ allowCountUpdate = false;
 }
+
 }
  updateCart = () => {
   this.props.postCart(this.props.products);
   allowCountUpdate = true;
-  /*this.props.dispatch({
-    type: GET_CART_QTY,
-    payload: this.props.updateCart.totalCartQty
-  })*/
  }
 
  updateCount = () => {
   
  }
+
+ deleteCartItemById(id) {
+  
+  const prodObj = {
+    productId: id
+  }
+  console.log("bio u delete cart iteeeeeeeeeeeeeeeem: " + JSON.stringify(prodObj));
+  this.props.deleteCartItem(prodObj); 
+  
+  allowCountUpdate = false;
+  window.location.reload();
+  }
  /*postCart = () => dispatch => {
     console.log("sent cart");
     axios.post('http://localhost:8080/postcartall', this.props.products)
@@ -133,7 +146,7 @@ class Cart extends React.Component {
         
         {
 products.map((product, index) =>
-        <CartItem product={product} key={index}/>
+        <CartItem product={product} key={index} deleteCartProduct={(num) => this.deleteCartItemById(num)} />
             
         )
         
