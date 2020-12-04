@@ -33,9 +33,20 @@ class CartItem extends React.Component{
         }
     }*/
     deleteCartItemById = () =>  {
+      const prodObj = {
+        productId: this.props.product.productId
+      }
+      //let formData = new FormData();
+      //formData.append('productId:', this.props.product.productId);
       
-      console.log("bio u delete: " + this.props.product.productName);
-      this.props.deleteCartItem(parseInt(this.props.product.productId));
+      console.log("bio u delete: " + JSON.parse(JSON.stringify(this.props.product.productId)));
+      this.props.deleteCartItem(JSON.parse(JSON.stringify(prodObj))); 
+      /*axios.get('http://localhost:8080/deletecartbyid', this.props.product.productId).then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });*/
       }
 
     handleChange(event){
@@ -142,7 +153,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  number: state.posts.cartQtyState
+  number: state.posts.cartQtyState,
   
   
 });

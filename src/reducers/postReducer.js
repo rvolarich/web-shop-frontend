@@ -55,7 +55,7 @@ export default function(state = initialState, action){
                     count: null
                 }
         case DELETE_CART_ITEM:
-                    console.log('been in actions qty');
+                    console.log('been in delete cart item: ' + action.payload);
                     return{
                         ...state,
                         cartProducts: action.payload,

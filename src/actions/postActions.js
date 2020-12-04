@@ -62,9 +62,9 @@ export const deleteCart = () => dispatch => {
     }));
 }
 
-export const deleteCartItem = (productid) => dispatch => {
-    console.log('been in deleteCart: ');
-    axios.get('http://localhost:8080/deletecartbyid$/{productid}')
+export const deleteCartItem = (product) => dispatch => {
+    console.log('been in deleteCart: ' + product);
+    axios.post('http://localhost:8080/deletecartbyid', product)
     .then(response => response.data)
     .then(cartProducts => dispatch({
         type: DELETE_CART_ITEM,
@@ -84,12 +84,12 @@ export const postCart = (products) => dispatch => {
       console.log(error);
     });
 }
-/*export const getCartQty = () => dispatch => {
+/*export const deleteCartItem = (product) => dispatch => {
     console.log('fetching');
-    fetch('http://localhost:8080/getcartqty')
+    fetch('http://localhost:8080/deletecartbyid', product)
     .then(res => res.json())
-    .then(cartQty => dispatch({
-        type: 'GET_CART_QTY',
-        payload: cartQty
+    .then(cartProducts => dispatch({
+        type: DELETE_CART_ITEM,
+        payload: cartProducts
     }));
 }*/
