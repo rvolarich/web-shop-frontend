@@ -87,7 +87,7 @@ render(){
 
       
         
-        <h2>Ovo je x: {x}</h2>
+       
       
     </div>
     </Router>

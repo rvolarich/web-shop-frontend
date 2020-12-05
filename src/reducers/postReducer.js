@@ -1,7 +1,8 @@
 import { GET_DATA, POST_DATA, INCREMENT, GET_CART_QTY, 
     GET_CART_PRODUCTS, SET_CART_QTY, 
     DELETE_CART, SET_CART_PRODUCT_QUANTITY, UPDATE_CART, UPDATE_COUNT,
-    DELETE_CART_ITEM }  from '../actions/types';
+    DELETE_CART_ITEM, 
+    UPDATE_CART_TOTAL}  from '../actions/types';
 import update from 'immutability-helper';
 import { actions } from 'react-table';
 
@@ -11,7 +12,11 @@ const initialState = {
     cartProducts: [],
     count: null,
     cartQtyState: [],
-    updateCart: {}
+    updateCart: {},
+    cTotal: 0,
+    shipping: 52.24,
+    
+    
 }
 
 export default function(state = initialState, action){
@@ -98,6 +103,17 @@ export default function(state = initialState, action){
                 ...state,
                 count: state.updateCart.totalCartQty
             }
+        case UPDATE_CART_TOTAL:
+            console.log('bio u update_cart_total');
+                return{
+                    ...state,
+                    cTotal: action.payload
+                }
+        
+        
+                    
+                    
+                 
                 
         
         case INCREMENT:

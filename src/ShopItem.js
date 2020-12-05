@@ -90,7 +90,8 @@ class ShopItem extends React.Component{
       
         <Row key={product.productId} style={{minHeight:'200px', marginTop:'20px'}}>
           <Col  xs={4}>
-          <img src={"data:image/jpg;base64," + product.productImage} alt=""></img>
+          <img className="rounded mb-0" alt="100x100" src="https://placehold.it/100x100" 
+          src={"data:image/jpg;base64," + product.productImage} alt=""></img>
           </Col>
           <Col  xs={5} style={{marginTop:'80px'}}>
             <div>
