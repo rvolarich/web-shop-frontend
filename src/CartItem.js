@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { SET_CART_QTY, SET_CART_PRODUCT_QUANTITY, GET_CART_QTY } from './actions/types';
 import { getCartItemQty, getCartProducts, deleteCartItem } from './actions/postActions';
 import { bindActionCreators } from 'redux';
+import { allowConfirmButton } from './components/CartCalculator';
+
 import axios from 'axios';
 var allowCountUpdate = new Boolean();
 class CartItem extends React.Component{
@@ -47,9 +49,19 @@ class CartItem extends React.Component{
 
     handleChange(event){
       console.log("handleChange: " + event.target.value);
+      
       const re = /^[0-9\b]+$/;
       if (event.target.value === '' || re.test(event.target.value)) {
           getCartProducts();
+          if(event.target.value <= 0){
+            allowConfirmButton(1);
+          }
+          else{
+            allowConfirmButton(5);
+          }
+          if(event.target.value > this.props.product.productStock){
+            event.target.value = this.props.product.productStock;
+          }
            this.props.dispatch({type: SET_CART_PRODUCT_QUANTITY ,
                     payload: {
                     fieldValue: event.target.value,
@@ -57,6 +69,7 @@ class CartItem extends React.Component{
                     }
                     });
         }
+
     }
       
     handleSubmit(event) {
@@ -77,25 +90,26 @@ class CartItem extends React.Component{
                 <Row id={"cartChild"}>
                   <Col>
                   <img src={"data:image/jpg;base64," + product.productImage} style={{width:'9vw',
-                             marginLeft: '50px', marginBottom: 'auto' }} alt=""></img>
+                              marginBottom: 'auto' }} alt=""></img>
                   </Col>
                   <Col>
                   <p style={{marginTop: '50px'}}>{product.productName}</p>
                   <p>{product.productDescription}</p>
                   <br />
-                  <p><span style={{color: 'green'}}>In Stock:</span> {product.productQuantity} pieces</p>
+                  {product.productStock <= 0 ? <p><span style={{color: 'red'}}>Out of stock</span></p> :
+               <p><span style={{color: 'green'}}>In Stock:</span> {product.productStock}</p>} 
                   </Col>
                   <Col style={{marginTop: '50px'}}>
-                  <form onSubmit={this.handleSubmit}>
-          <input key="index"
-              type="number"
-              defaultValue={product.productQuantity}
-              onChange={this.handleChange}
+                  
+                  <input key="index" type="text"  size="3" defaultValue={product.productQuantity}
+              onChange={this.handleChange} />
+              <Button variant="outline-info" onClick={() => {this.props.updateCartItems()}} size="sm"
+              style={{marginLeft:'65px', marginTop:'-58px'}}>Update</Button>
               
-               />
+               
           
-        </form>
-        <h6 color="grey">Enter quantity</h6>
+       
+        
         
                   </Col>
                   <Col>
@@ -103,7 +117,7 @@ class CartItem extends React.Component{
                   
               <h6 style={{marginTop:'50px', marginLeft: '100px', marginBottom: 'auto'}}>EUR {product.productPrice}</h6>
               <Button variant="outline-danger" onClick={() => this.props.deleteCartProduct(this.props.product.productId)} 
-                   style={{marginLeft:'100px', marginTop:'35px'}}>Remove</Button>
+                   style={{marginLeft:'80px', marginTop:'35px'}}>Remove</Button>
                   </Col>
                 </Row>
                 <hr />

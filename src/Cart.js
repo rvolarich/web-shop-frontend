@@ -5,17 +5,19 @@ import ReactTable from "react-table-6";
 import 'react-table-6/react-table.css'
 import './Cart.css';
 import CartItem from './CartItem'
+import CartCalculator from './components/CartCalculator'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getCartProducts, getCartQty, deleteCart, postCart,
-          deleteCartItem } from './actions/postActions';
+          deleteCartItem, fetchPosts } from './actions/postActions';
 import { GET_CART_QTY, UPDATE_CART_TOTAL} from './actions/types';
 import { bindActionCreators } from 'redux';
 //import { getCartProducts } from './Repository2';
 
 
 let total = 0;
-var allowCountUpdate = new Boolean();
+let allowCountUpdate = new Boolean();
+
 class Cart extends React.Component {
     constructor(props){
         super(props);
@@ -26,6 +28,8 @@ class Cart extends React.Component {
         this.deleteCart = this.deleteCart.bind(this)
         this.updateCart = this.updateCart.bind(this)
         this.updateCount = this.updateCount.bind(this)
+        this.addTotal = this.addTotal.bind(this)
+        this.confirmOrder = this.confirmOrder.bind(this)
     }
 
     /*componentDidMount(){
@@ -49,8 +53,10 @@ class Cart extends React.Component {
     componentDidMount(){
       console.log("been in Cart");
       allowCountUpdate = false;
+      
       this.props.getCartProducts();
       this.props.getCartQty();
+      this.props.fetchPosts();
     }
 
     deleteCart = () => {
@@ -62,13 +68,14 @@ class Cart extends React.Component {
 
  componentDidUpdate(){
   total = 0;
+  
   let totalRounded = 0;
   console.log("been in componentDidUpdate: ");
-  console.log("product length: " + this.props.products.length);
-  if(this.props.products != null){
-    for(let i = 0; i < this.props.products.length; i++){
-        total += this.props.products[i].productPrice * this.props.products[i].productQuantity;
-        console.log("product price: " + this.props.products[i].productQuantity);
+  console.log("product length: " + this.props.cartProducts.length);
+  if(this.props.cartProducts != null){
+    for(let i = 0; i < this.props.cartProducts.length; i++){
+        total += this.props.cartProducts[i].productPrice * this.props.cartProducts[i].productQuantity;
+        console.log("product price: " + this.props.cartProducts[i].productQuantity);
     
     
         
@@ -94,8 +101,10 @@ class Cart extends React.Component {
 
 }
  updateCart = () => {
-  this.props.postCart(this.props.products);
+  this.props.postCart(this.props.cartProducts);
   allowCountUpdate = true;
+  
+  window.location.reload();
  }
 
  updateCount = () => {
@@ -115,7 +124,18 @@ class Cart extends React.Component {
   }
 
   addTotal = (total, shipping) => {
+    console.log("been in add total");
     return (Math.round((Number(total) + Number(shipping)) * 100) / 100).toFixed(2);
+    }
+
+    confirmOrder = () => {
+      axios.post('http://localhost:8080/confirmorder', this.props.cartProducts)
+    .then(response => response.data)
+    .catch(function (error) {
+        console.log(error);
+      });
+      window.location.reload();
+      
     }
 
 
@@ -153,72 +173,44 @@ class Cart extends React.Component {
     render(){
     
     
-    const { products, total, count} = this.props;
+    const { cartProducts, total, count, cTotal, shipping} = this.props;
      
   return (
     <Container>
         
-    <Row ><Button variant="outline-info" onClick={this.updateCart} 
-              style={{marginTop:'40px', marginBottom:'20px'}}>Update cart</Button>
+    <Row >
               <Button variant="outline-info" onClick={this.deleteCart} 
               style={{marginTop:'40px', marginBottom:'20px'}}>Clear cart</Button>
-              
-              </Row>
-              <Row>
-               <Col>
+    </Row>
+    
+    <Row>
+        <Col>
           <hr />      
-      
-          {count !== null  ?  <div>
-        
+            {count !== null ?  <div>
         {
-products.map((product, index) =>
-        <CartItem product={product} key={index} deleteCartProduct={(num) => this.deleteCartItemById(num)} />
-            
-        )
-        
+          cartProducts.map((product, index) => 
+          <CartItem product={product} key={index} 
+          deleteCartProduct={(num) => this.deleteCartItemById(num)} updateCartItems={() => {this.updateCart()}}
+          />
+          )
+          
         }
-    
-     </div> : null}
-     </Col>
+                </div> : null}
+        </Col>
 
     
      
-     <Col xs={4} >
-     {count !== null ? <div className="block-example border border-light">
-     <Row>
-     <div>
-       <h4>Cart overview</h4>
-     </div>
-     </Row>
-     <Row>
-     <div>
-       <h5>Cart total: {this.props.cTotal}</h5>
-     </div>
-     </Row>
-     <Row>
-     <div>
-       <h5>Shipping: {this.props.shipping}</h5>
-     </div>
-     </Row>
-     <Row>
-     <div>
-       <h5>Total with shipping: {this.addTotal(this.props.cTotal, this.props.shipping)}</h5>
-     </div>
-     </Row>
-     <Row>
-     <div>
-     <Button variant="outline-secondary"  
-              style={{marginTop:'40px', marginBottom:'20px'}}>Continue shopping</Button>
-              <Button variant="outline-info" 
-              style={{marginTop:'40px', marginBottom:'20px'}}>Confirm order</Button>
-     </div>
-     
-     </Row>
+     <Col xs={3.5} >
+     {count !== null ? <div>
+        <CartCalculator cTotal={cTotal} shipping={shipping} prodStock={cartProducts.productStock} 
+        totalAmount={this.addTotal(cTotal, shipping)} confirmOrder={this.confirmOrder} />
      </div> : null}
+     
      </Col>
      
 
      </Row>
+    
     <div>
                   {count === null || count === 0 ? <h2>You have no items</h2> : null}
               </div>
@@ -244,12 +236,13 @@ function mapDispatchToProps(dispatch) {
   return{
     dispatch,
      ...bindActionCreators({ getCartProducts, getCartQty, deleteCart, postCart,
-    deleteCartItem }, dispatch)
+    deleteCartItem, fetchPosts }, dispatch)
 }
 }
 
 const mapStateToProps = state => ({
-    products: state.posts.cartProducts,
+    cartProducts: state.posts.cartProducts,
+    products: state.posts.products,
     count: state.posts.count,
     updateCart: state.posts.updateCart,
     cTotal: state.posts.cTotal,
@@ -258,3 +251,4 @@ const mapStateToProps = state => ({
   });
 
 export default connect (mapStateToProps, mapDispatchToProps)(Cart);
+

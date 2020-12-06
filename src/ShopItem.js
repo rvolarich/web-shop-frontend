@@ -103,7 +103,8 @@ class ShopItem extends React.Component{
            </div>
            <br />
             <div >
-              <h6><span style={{color: 'green'}}>In Stock:</span> {product.productQuantity} pieces</h6>
+              {product.productQuantity <= 0 ? <h6><span style={{color: 'red'}}>Out of stock</span></h6> :
+               <h6><span style={{color: 'green'}}>In Stock:</span> {product.productQuantity}</h6>} 
             </div>
           </Col>
           <Col  xs={3}>
@@ -113,7 +114,9 @@ class ShopItem extends React.Component{
             <br />
            
             
-          <AddToCartButton postToCart={this.clickMe}/>
+          {product.productQuantity <= 0 ? 
+          <p style={{marginTop: '115px', marginLeft: '40px'}}>Available in two weeks</p> : <AddToCartButton 
+          postToCart={this.clickMe}/>}
           </Col>
           
         </Row>

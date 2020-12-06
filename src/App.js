@@ -12,6 +12,7 @@ import { Button } from 'react-bootstrap';
 import store from './store';
 import Shop from './Shop';
 import ShopItemSelected from './ShopItemSelected';
+import Confirm from './components/Confirm';
 
 
 
@@ -81,6 +82,7 @@ render(){
       <Route path="/cart" component={Cart} />
       <Route path="/signup" component={SignUp} />
       <Route path="/photo" component={LogIn} />
+      <Route path="/confirm" component={Confirm} />
      
       
      

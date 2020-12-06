@@ -84,6 +84,15 @@ export const postCart = (products) => dispatch => {
       console.log(error);
     });
 }
+
+/*export const confirmOrder = (products) =>  {
+    console.log('been in confirmOrder: ' + products);
+    axios.post('http://localhost:8080/confirmorder', products)
+    .then(response => response.data)
+    .catch(function (error) {
+        console.log(error);
+      });
+}*/
 /*export const deleteCartItem = (product) => dispatch => {
     console.log('fetching');
     fetch('http://localhost:8080/deletecartbyid', product)
