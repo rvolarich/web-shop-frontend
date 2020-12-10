@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Navig from './Navig';
-import SignUp from './SignUp';
+import SignUp from './components/SignUp';
 import LogIn from './LogIn';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Inventory from './Inventory';
@@ -13,6 +13,7 @@ import store from './store';
 import Shop from './Shop';
 import ShopItemSelected from './ShopItemSelected';
 import Confirm from './components/Confirm';
+import axios from 'axios';
 
 
 
@@ -41,13 +42,14 @@ var x = 0;
 
 class App extends React.Component{
 
-/*constructor(props){
+constructor(props){
   super(props);
   this.state = {
-    count: 0
+    loggedInStatus: "NOT_LOGGED_IN"
   }
-  this.updateCount = this.updateCount.bind(this);
   
+  this.updateCount = this.updateCount.bind(this);
+  this.checkLoginStatus = this.checkLoginStatus.bind(this)
 }
 
  clickMe = () => {
@@ -60,10 +62,20 @@ updateCount(){
   
   this.setState({count: x});
   
-}*/
+}
+checkLoginStatus(){
+  axios.get("http://localhost:8080/logged_in", { withCredentials: true })
+  .then(response => {
+    console.log("header: " + JSON.stringify(response.data))
+  })
+  .catch(error => {
+    console.log("check login error", error);
+  });
+}
 
 componentDidMount(){
   console.log('been in app');
+  this.checkLoginStatus();
 }
   
 render(){
@@ -81,7 +93,7 @@ render(){
       <Route path="/inv" component={Inventory} />
       <Route path="/cart" component={Cart} />
       <Route path="/signup" component={SignUp} />
-      <Route path="/photo" component={LogIn} />
+      <Route path="/login" component={LogIn} />
       <Route path="/confirm" component={Confirm} />
      
       

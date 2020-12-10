@@ -20,7 +20,7 @@ class Navig extends React.Component{
     color: 'white'
   };
   render(){
-    const { count } = this.props;
+    const { count, isLogged } = this.props;
   return (
 <Container>
     <Row style={{minHeight:'100px', background:'grey', alignContent:'center'}}>
@@ -34,6 +34,7 @@ class Navig extends React.Component{
   <Nav.Link href="/cart">Cart <span style={{color: 'green'}}>{count}</span></Nav.Link>
       <Nav.Link href="/signup">SignUp</Nav.Link>
       <Nav.Link href="/photo">Login</Nav.Link>
+      {isLogged ? <Nav.Link href="/photo">My Profile</Nav.Link> : null}
     </Nav>
     </Navbar>
   
@@ -66,7 +67,8 @@ class Navig extends React.Component{
   }
 }
 const mapStateToProps = state => ({
-  count: state.posts.count
+  count: state.posts.count,
+  isLogged: state.posts.isLogged
 });
 
 export default connect(mapStateToProps)(Navig);

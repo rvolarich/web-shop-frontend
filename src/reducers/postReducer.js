@@ -2,7 +2,7 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_QTY,
     GET_CART_PRODUCTS, SET_CART_QTY, 
     DELETE_CART, SET_CART_PRODUCT_QUANTITY, UPDATE_CART, UPDATE_COUNT,
     DELETE_CART_ITEM, 
-    UPDATE_CART_TOTAL}  from '../actions/types';
+    UPDATE_CART_TOTAL, IS_LOGGED}  from '../actions/types';
 import update from 'immutability-helper';
 import { actions } from 'react-table';
 
@@ -15,7 +15,7 @@ const initialState = {
     updateCart: {},
     cTotal: 0,
     shipping: 52.24,
-    
+    isLogged: false
     
 }
 
@@ -110,7 +110,12 @@ export default function(state = initialState, action){
                     cTotal: action.payload
                 }
         
-        
+        case IS_LOGGED:
+            console.log('bio u IS_LOGGED');
+                        return{
+                            ...state,
+                            isLogged: action.payload
+                        }
                     
                     
                  
