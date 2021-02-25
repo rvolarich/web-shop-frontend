@@ -6,6 +6,8 @@ import { getProducts } from './Repository2';
 import { connect } from 'react-redux';
 import { fetchPosts, getCartQty } from './actions/postActions';
 import { GET_DATA, POST_DATA, INCREMENT  }  from './actions/types';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import Cookies from 'universal-cookie';
 
 
 class Shop extends React.Component {
@@ -30,6 +32,7 @@ componentDidMount(){
 
     this.props.fetchPosts();
     this.props.getCartQty();
+    
 
     console.log('been in shop mount');
 }
@@ -37,6 +40,10 @@ componentDidMount(){
    
   const { products } = this.props;
   const { count } = this.props;
+  //const cookies = new Cookies();
+ 
+//cookies.set('my', 'Pacman', { path: '/' });
+//console.log(cookies.get('my')); // Pacman
   return (
     
     

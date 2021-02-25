@@ -14,7 +14,7 @@ import axios from 'axios';
 
 export const fetchPosts = () => dispatch => {
     console.log('been in fetchPosts');
-    axios.get('http://localhost:8080/products')
+    axios.get('http://127.0.0.1:8080/products', {withCredentials:true})
     .then(response => response.data)
     .then(products => dispatch({
         type: GET_DATA,

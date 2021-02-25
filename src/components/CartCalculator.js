@@ -15,6 +15,7 @@ class CartCalculator extends React.Component{
 
     render(){
         const { cTotal, shipping, totalAmount, confirmOrder, prodStock } = this.props;
+        
         return(
    <div className="block-example border border-light">
      <Row>
@@ -54,7 +55,7 @@ class CartCalculator extends React.Component{
 export default CartCalculator;
 
 export function allowConfirmButton(toggle){
-  if(toggle == 1){
+  if(toggle === 1){
   allowConfirm = true;
 }else{
   allowConfirm = true;

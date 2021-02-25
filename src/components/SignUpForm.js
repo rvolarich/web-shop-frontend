@@ -6,7 +6,7 @@ import CountrySelect from 'react-bootstrap-country-select';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { IS_LOGGED } from '../actions/types';
-import Cookies from 'universal-cookie';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
 
@@ -25,9 +25,8 @@ class SignUpForm extends React.Component{
             username: '',
             password: '',
             
-        },
-        sessid: ''
-        //isLogged: false
+        }
+    
         };
         this.handleChangeUsername = this.handleChangeUsername.bind(this)
         this.handleChangePassword = this.handleChangePassword.bind(this)
@@ -43,8 +42,8 @@ class SignUpForm extends React.Component{
       }*/
 
       componentDidMount(){
-        //this.setState({ isLogged: isLog });
-        //console.log(this.state.sessid);
+        //this.setState({ sessid: Cookies.get('SessionId') });
+        //console.log('session cookie' + read_cookie('SESSION'));
         
       }
 
@@ -68,17 +67,43 @@ class SignUpForm extends React.Component{
     }
 
     postLogData = () => {
-        console.log("authData: " + JSON.stringify(this.state.authData));
-        axios.post('http://localhost:8080/login', 
-        this.state.authData).then(response => {
-            console.log(response);
-            //this.setState({isLogged: response.data});
-            this.props.dispatch({
-                type: IS_LOGGED,
-                payload: response.data
-            });
-            console.log("Is Logged: " + this.props.isLogged) ;
+
+        /*axios.post('http://127.0.0.1:8080/login',
+    this.state.authData).then(response => {
+        console.log(this.state.authData);
+        this.props.dispatch({
+            type: IS_LOGGED,
+            payload: response.data
         });
+       
+    });*/
+    
+    fetch('http://127.0.0.1:8080/login', {
+        credentials: 'include',
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(this.state.authData)
+        
+    }).then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+        /*.then(response => {//do work});/*.then(axios.get('http://127.0.0.1:8080/login',{ withCredentials: true},
+    this.props.isLogged
+      
+    ).then(function(response){
+      console.log(response);
+    }));*/
+
+       
+    
+        
+    
+        console.log("all ok");
+        
     }
     
     
@@ -101,25 +126,7 @@ class SignUpForm extends React.Component{
                 <Form.Group controlId="formBasicPassword" style={{marginTop: '20px'}}>
                 <Form.Control type="password" placeholder="Password" onChange={this.handleChangePassword}/>
                 </Form.Group>
-                <Form.Group controlId="formBasicPassword" style={{marginTop: '20px'}}>
-                <Form.Control type="password" placeholder="Retype password" />
-                </Form.Group>
-                <Form.Group controlId="formBasicEmail" style={{marginTop: '20px'}}>
-                    <Form.Control type="email" placeholder="Address line 1" />
-                </Form.Group>
-                <Form.Group controlId="formBasicEmail" style={{marginTop: '20px'}}>
-                    <Form.Control type="email" placeholder="Address line 2" />
-                </Form.Group>
-                <Form.Group controlId="formBasicEmail" style={{marginTop: '20px'}}>
-                    <Form.Control type="email" placeholder="City" />
-                </Form.Group>
-                <Form.Group controlId="formBasicEmail" style={{marginTop: '20px'}}>
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" />
-                    <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                    </Form.Text>
-                </Form.Group>
+               
                 
                 </Form>
                 <CountrySelect value={this.state.country}

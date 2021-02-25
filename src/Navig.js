@@ -32,9 +32,9 @@ class Navig extends React.Component{
       <Nav.Link href="/shop">Shop</Nav.Link>
       <Nav.Link href="/inv">Inventory</Nav.Link>
   <Nav.Link href="/cart">Cart <span style={{color: 'green'}}>{count}</span></Nav.Link>
-      <Nav.Link href="/signup">SignUp</Nav.Link>
-      <Nav.Link href="/photo">Login</Nav.Link>
-      {isLogged ? <Nav.Link href="/photo">My Profile</Nav.Link> : null}
+      
+      {isLogged ? <Nav.Link href="/login">Logout</Nav.Link> : <Nav.Link href="/login">Login</Nav.Link>}
+      {isLogged ? <Nav.Link href="/login">My Profile</Nav.Link> : null}
     </Nav>
     </Navbar>
   

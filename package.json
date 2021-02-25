@@ -10,7 +10,6 @@
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "immutability-helper": "^3.1.1",
-    "js-cookie": "^2.2.1",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-bootstrap-country-select": "^0.7.11",
@@ -21,6 +20,7 @@
     "react-table": "^7.6.1",
     "react-table-6": "^6.11.0",
     "redux": "^4.0.5",
+    "sfcookies": "^1.0.2",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^0.2.4"
   },
