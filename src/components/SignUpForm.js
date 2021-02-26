@@ -145,7 +145,7 @@ class SignUpForm extends React.Component{
             {isLogged ? <p>You are logged in!</p> : null }
             </div>
             <Button onClick={this.postAuthData} style={{marginLeft:'20px', marginTop:'100px'}}>Register</Button>
-            <Button onClick={this.postLogData} style={{marginLeft:'20px', marginTop:'100px'}}>Login</Button>
+            <Button href="/shop" onClick={this.postLogData} style={{marginLeft:'20px', marginTop:'100px'}}>Login</Button>
             </Col>
             
             </Container>

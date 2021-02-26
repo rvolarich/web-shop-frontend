@@ -30,7 +30,8 @@ class Logout extends React.Component{
             <div>
                 <Container>
                     <h2>Do you really want to logout?</h2>
-                    <Button onClick={this.handleClick}>Logout</Button>
+                    <Button href="/shop" onClick={this.handleClick}>Yes</Button>
+                    <Button href="/shop" >No</Button>
                 </Container>
             </div>
         )
