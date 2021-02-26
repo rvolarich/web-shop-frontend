@@ -66,10 +66,14 @@ class SignUpForm extends React.Component{
     });
     }
 
+    
+
     postLogData = () => {
 
-        /*axios.post('http://127.0.0.1:8080/login',
-    this.state.authData).then(response => {
+        /*axios.post('http://127.0.0.1:8080/login', { withCredentials},
+    this.state.authData, headers: 
+
+    }).then(response => {
         console.log(this.state.authData);
         this.props.dispatch({
             type: IS_LOGGED,
@@ -87,6 +91,10 @@ class SignUpForm extends React.Component{
     }).then(response => response.json())
     .then(data => {
       console.log('Success:', data);
+      this.props.dispatch({
+        type: IS_LOGGED,
+        payload: data
+    });
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -111,6 +119,8 @@ class SignUpForm extends React.Component{
     render(){
         
         const { isLogged } = this.props;
+
+        
         
         return(
             <Container>

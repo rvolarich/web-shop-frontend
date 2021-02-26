@@ -14,29 +14,13 @@ import Shop from './Shop';
 import ShopItemSelected from './ShopItemSelected';
 import Confirm from './components/Confirm';
 import axios from 'axios';
+import Logout from './components/Logout';
+import { IS_LOGGED } from './actions/types';
+import SetLoggedIn from './components/SetLoggedIn';
 
 
 
-/*const courses = [
-{
-  id: 1,
-  title: "Moj Webshop",
-  owner: "Me"
-},
-}
-{
-  id: 1,
-  title: "Avioprijevoz",
-  owner: "You"
-},
 
-{
-  id: 1,
-  title: "sladoled",
-  owner: "She"
-}
-
-];*/
 
 var x = 0;
 
@@ -52,12 +36,11 @@ constructor(props){
   
   this.updateCount = this.updateCount.bind(this);
   //this.handleCookie = this.handleCookie(this);
-  this.checkLoginStatus = this.checkLoginStatus.bind(this)
+  
 }
 
  clickMe = () => {
-  //this.setState({count:'1'});
-  //updateCount();
+  
 }
 
 updateCount(){
@@ -66,15 +49,19 @@ updateCount(){
   this.setState({count: x});
   
 }
-checkLoginStatus(){
-  axios.get("http://localhost:8080/logged_in", { withCredentials: true })
+/*checkLoginStatus(){
+  axios.get("http://127.0.0.1:8080/logged_in", { withCredentials: true })
   .then(response => {
-    console.log("header: " + JSON.stringify(response.data))
+    console.log("logged_in = " + response.data) 
+    this.props.dispatch({
+      type: IS_LOGGED,
+      payload: response.data
+  });
   })
   .catch(error => {
     console.log("check login error", error);
   });
-}
+}*/
 
 componentDidMount(){
   
@@ -84,6 +71,7 @@ componentDidMount(){
    }).then(function(response){
      console.log(response);
    })*/
+   
 }
 
 /*handleCookie = () => {
@@ -108,6 +96,7 @@ render(){
     <div>
      
     <Navig />
+    <SetLoggedIn />
     
     
       <Route path="/shop" component={Shop} />
@@ -116,6 +105,7 @@ render(){
       <Route path="/signup" component={SignUp} />
       <Route path="/login" component={LogIn} />
       <Route path="/confirm" component={Confirm} />
+      <Route path="/logout" component={Logout} />
      
     </div>
     
