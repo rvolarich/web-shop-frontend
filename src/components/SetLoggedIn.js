@@ -21,6 +21,13 @@ class SetLoggedIn extends React.Component{
         .catch(error => {
           console.log("check login error", error);
         });
+
+        axios.get("http://127.0.0.1:8080", {withCredentials: true})
+        .then(response => {
+
+        }).catch(error => {
+          console.log("check session error", error);
+        });
       }
 
     render(){
