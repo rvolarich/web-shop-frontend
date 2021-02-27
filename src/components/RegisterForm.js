@@ -77,7 +77,7 @@ class RegisterForm extends React.Component{
                 <Form>
                 
                 <Form.Group controlId="formBasicEmail" style={{marginTop: '20px'}}>
-                    <Form.Control type="email" placeholder="username" onChange={this.handleChangeUsername} />
+                    <Form.Control type="email" placeholder="e-mail" onChange={this.handleChangeUsername} />
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword" style={{marginTop: '20px'}}>
                 <Form.Control type="password" placeholder="password" onChange={this.handleChangePassword}/>

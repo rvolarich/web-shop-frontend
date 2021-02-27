@@ -128,6 +128,7 @@ class SignUpForm extends React.Component{
         
         const { isLogged } = this.props;
         const { allowCheckIsLogged } = this.state;
+        const { loginStatus } = this.props;
         
 
         
@@ -141,7 +142,7 @@ class SignUpForm extends React.Component{
                 <Form>
                 
                 <Form.Group controlId="formBasicEmail" style={{marginTop: '20px'}}>
-                    <Form.Control type="email" placeholder="username" onChange={this.handleChangeUsername} />
+                    <Form.Control type="email" placeholder="e-mail" onChange={this.handleChangeUsername} />
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword" style={{marginTop: '20px'}}>
                 <Form.Control type="password" placeholder="password" onChange={this.handleChangePassword}/>
@@ -161,7 +162,7 @@ class SignUpForm extends React.Component{
             </div>
             <div>
             {allowCheckIsLogged ? isLogged ? window.location.replace("http://127.0.0.1:3000/shop") : 
-            <div style={{color: 'red'}}>The username or password is incorrect!</div> : null}
+            <div style={{color: 'red'}}>{loginStatus}</div> : null}
             </div>
             </Col>
             
@@ -172,7 +173,8 @@ class SignUpForm extends React.Component{
 
 const mapStateToProps = state => ({
     isLogged: state.posts.isLogged,
-    username: state.posts.username
+    username: state.posts.username,
+    loginStatus: state.posts.loginStatus
     });
 
 export default connect(mapStateToProps)(SignUpForm);

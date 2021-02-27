@@ -16,7 +16,8 @@ const initialState = {
     cTotal: 0,
     shipping: 52.24,
     isLogged: false,
-    username: ''
+    username: '',
+    loginStatus: ''
     
 }
 
@@ -116,7 +117,8 @@ export default function(state = initialState, action){
                         return{
                             ...state,
                             isLogged: action.payload.logged,
-                            username: action.payload.username
+                            username: action.payload.username,
+                            loginStatus: action.payload.loginStatus
                         }
                     
                     
