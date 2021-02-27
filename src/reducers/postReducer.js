@@ -15,7 +15,8 @@ const initialState = {
     updateCart: {},
     cTotal: 0,
     shipping: 52.24,
-    isLogged: false
+    isLogged: false,
+    username: ''
     
 }
 
@@ -114,7 +115,8 @@ export default function(state = initialState, action){
             console.log('bio u IS_LOGGED');
                         return{
                             ...state,
-                            isLogged: action.payload
+                            isLogged: action.payload.logged,
+                            username: action.payload.username
                         }
                     
                     

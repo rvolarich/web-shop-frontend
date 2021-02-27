@@ -33,7 +33,8 @@ class SetLoggedIn extends React.Component{
 }
 
 const mapStateToProps = state => ({
-    isLogged: state.posts.isLogged
+    isLogged: state.posts.isLogged,
+    username: state.posts.username
     });
 
 export default connect(mapStateToProps)(SetLoggedIn);

@@ -29,8 +29,8 @@ class Logout extends React.Component{
 
             <div>
                 <Container>
-                    <h2>Do you really want to logout?</h2>
-                    <Button href="/shop" onClick={this.handleClick}>Yes</Button>
+                    <h3 style={{marginTop: '20px', marginBottom: '20px'}}>Do you really want to logout?</h3>
+                    <Button href="/loggedout" style={{marginRight: '15px'}} onClick={this.handleClick}>Yes</Button>
                     <Button href="/shop" >No</Button>
                 </Container>
             </div>

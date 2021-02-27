@@ -56,8 +56,6 @@ products.map((product, index) =>
     )
     
     }
-
-<button onClick={() => this.props.dispatch({type: INCREMENT, payload: 0})} style={{marginLeft:'100px', marginTop:'90px'}}>Increment</button>
    
 
 </div>

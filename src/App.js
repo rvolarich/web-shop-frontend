@@ -17,6 +17,8 @@ import axios from 'axios';
 import Logout from './components/Logout';
 import { IS_LOGGED } from './actions/types';
 import SetLoggedIn from './components/SetLoggedIn';
+import Register from './components/Register';
+import LoggedOut from './components/LoggedOut';
 
 
 
@@ -106,6 +108,9 @@ render(){
       <Route path="/login" component={LogIn} />
       <Route path="/confirm" component={Confirm} />
       <Route path="/logout" component={Logout} />
+      <Route path="/register" component={Register} />
+      <Route path="/loggedout" component={LoggedOut} />
+      
      
     </div>
     

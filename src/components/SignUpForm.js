@@ -23,13 +23,15 @@ class SignUpForm extends React.Component{
             region: '' ,
             authData : {
             username: '',
-            password: '',
+            password: ''
             
-        }
+        },
+        allowCheckIsLogged: false
     
         };
         this.handleChangeUsername = this.handleChangeUsername.bind(this)
         this.handleChangePassword = this.handleChangePassword.bind(this)
+        this.handleClick = this.handleClick.bind(this)
         
       }
     
@@ -41,11 +43,11 @@ class SignUpForm extends React.Component{
         this.setState({ region: val });
       }*/
 
-      componentDidMount(){
-        //this.setState({ sessid: Cookies.get('SessionId') });
-        //console.log('session cookie' + read_cookie('SESSION'));
+      /*componentDidMount(){
+        this.setState({ sessid: Cookies.get('SessionId') });
+        console.log('session cookie' + read_cookie('SESSION'));
         
-      }
+      }*/
 
       handleChangeUsername(event){
         this.setState({ authData: {...this.state.authData , username : event.target.value }});
@@ -62,8 +64,13 @@ class SignUpForm extends React.Component{
         console.log(response.headers);
         
         
-        //this.setState({isLogged: response});
-    });
+        
+    }.bind(this));
+    }
+
+    handleClick = () => {
+      this.setState({registerForm: true});
+      console.log('Been in register:', this.state.registerForm);
     }
 
     
@@ -95,6 +102,7 @@ class SignUpForm extends React.Component{
         type: IS_LOGGED,
         payload: data
     });
+    this.setState({allowCheckIsLogged: true});
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -119,33 +127,42 @@ class SignUpForm extends React.Component{
     render(){
         
         const { isLogged } = this.props;
+        const { allowCheckIsLogged } = this.state;
+        
 
         
         
         return(
             <Container>
                 
-                <Col xs={6} >
+                <Col xs={4} >
             <div style={{marginTop: '50px', }}>
                 
                 <Form>
                 
                 <Form.Group controlId="formBasicEmail" style={{marginTop: '20px'}}>
-                    <Form.Control type="email" placeholder="User name" onChange={this.handleChangeUsername} />
+                    <Form.Control type="email" placeholder="username" onChange={this.handleChangeUsername} />
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword" style={{marginTop: '20px'}}>
-                <Form.Control type="password" placeholder="Password" onChange={this.handleChangePassword}/>
+                <Form.Control type="password" placeholder="password" onChange={this.handleChangePassword}/>
                 </Form.Group>
                
                 
                 </Form>
-                <CountrySelect value={this.state.country}
-          onChange={(val) => this.selectCountry(val)} style={{marginTop: '20px'}} />
+                
 
-            {isLogged ? <p>You are logged in!</p> : null }
+           
             </div>
-            <Button onClick={this.postAuthData} style={{marginLeft:'20px', marginTop:'100px'}}>Register</Button>
-            <Button href="/shop" onClick={this.postLogData} style={{marginLeft:'20px', marginTop:'100px'}}>Login</Button>
+            
+            <Button onClick={this.postLogData} 
+            style={{marginTop:'10px', marginBottom:'10px'}}>Login</Button>
+            <div>
+              Don't have an account? <a href="/register" onClick={this.handleClick}>Sign up!</a>
+            </div>
+            <div>
+            {allowCheckIsLogged ? isLogged ? window.location.replace("http://127.0.0.1:3000/shop") : 
+            <div style={{color: 'red'}}>The username or password is incorrect!</div> : null}
+            </div>
             </Col>
             
             </Container>
@@ -154,7 +171,8 @@ class SignUpForm extends React.Component{
 }
 
 const mapStateToProps = state => ({
-    isLogged: state.posts.isLogged
+    isLogged: state.posts.isLogged,
+    username: state.posts.username
     });
 
 export default connect(mapStateToProps)(SignUpForm);
