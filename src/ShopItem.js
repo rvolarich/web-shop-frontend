@@ -11,7 +11,10 @@ import ShopItemSelected from './ShopItemSelected';
 import Navig from './Navig';
 import { cartChildren } from './App'
 import { getCartQty } from './actions/postActions';
-import { GET_DATA, POST_DATA, GET_CART_QTY, INCREMENT, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE  }  from './actions/types';
+import { GET_DATA, POST_DATA, GET_CART_QTY, INCREMENT, 
+  SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE, GET_CART_PRODUCTS  }  from './actions/types';
+import { loadLocalStorage } from './Cart';
+import { bindActionCreators } from 'redux';
 
 let compare = 0;
 let keySequence = [];
@@ -41,102 +44,73 @@ class ShopItem extends React.Component{
       this.cartQty += 1;
     }*/
     componentDidMount(){
-      //this.props.getCartQty();
+     /* this.props.dispatch({
+        type: GET_CART_PRODUCTS,
+        payload: loadLocalStorage()
+      });*/
     }
 
    clickMe = () => {
-      
-      var enablePost = true;
-     /* getProductId().then((productIds) => {
-        cartChildren(productIds.length + 1);
-        for(var i = 0; i < productIds.length; i++){
-          if(productIds[i] == this.props.product.productId){
-            enablePost = false;
-            console.log(enablePost);
-            alert("The product is already in the cart");
-            console.log(enablePost);
-          }
-          
-          
+   /* this.props.dispatch({
+      type: GET_CART_PRODUCTS,
+      payload: loadLocalStorage()
+    });*/
+    
+    let productQuantityLocal = 0;
+    let updateCartQuantityArray = [];
+    let cartProductQuantity = [];
+    cartProductQuantity = this.props.cartProducts;
+    console.log("cartProducts " + JSON.stringify(cartProductQuantity.length));
+    console.log("cartProductsProductId " + JSON.stringify(this.props.product.productId));
+    for(let i = 0; i < cartProductQuantity.length; i++){
+      if(cartProductQuantity[i].productId === this.props.product.productId){
+        
+        productQuantityLocal = cartProductQuantity[i].productQuantity;
+        console.log("productQuantityLocal " + productQuantityLocal);
       }
-      
-          this.setState({productIds: productIds});
-          
-      });*/
-      
-         
-        this.props.dispatch({
+    }
+   /* updateCartQuantityArray = [...this.state.cartData]
+    updateCartQuantityArray= {...updateCartQuantityArray, productQuantity: productQuantityLocal}
+    this.setState({cartData: updateCartQuantityArray})
+    this.setCartQtyState();
+     this.props.dispatch({
           type: INCREMENT
-        });
-        /*let q = this.props.product.productId;
-        let countQuantity;
-        
-        let setCompae = true;
-        if(this.props.product.productId !== compare){
-          compare = this.props.product.productId;
-          countQuantity = 0;
-        }
-        else{
-          countQuantity++;
-        }*/
-        /*let keys = Object.keys(localStorage);
-        for(let i = 0; i < keys.length; i++){
-          if(keys[i] === 'keySequence'){
-            keySequence = localStorage.getItem('keySequence'); 
-          }else{
-            localStorage.setItem('keySequence', null);
-          }
-        }*/
+        });*/
         
         
-        keySequence.push(this.props.product.productId);
+       /* keySequence.push(this.props.product.productId);
+        localStorage.setItem(Date.now(), keySequence);
+        this.props.dispatch({
+          type: KEY_SEQUENCE,
+          payload: keySequence
+        });*/
+        
+        
+        //console.log("keysequenceFiltered " + keySequenceLocal[1]);
+       
+
+       
+        
+        
+        //const newData = this.state.cartData.slice() //copy the array
+        //newData[1] = 55 //execute the manipulations
+
+        setTimeout(() => {
+          keySequence.push(this.props.product.productId);
         localStorage.setItem(Date.now(), keySequence);
         this.props.dispatch({
           type: KEY_SEQUENCE,
           payload: keySequence
         });
-        /*let allowSequence = true;
-        let keySequenceLocal = [];
-        let keySequenceLocalFiltered = [];
-        console.log("keysequenceBeforGet " + keySequence.length);
-        keySequenceLocal = localStorage.getItem('keySequence');
-        console.log("keysequenceLocal " + keySequenceLocal);
-        
-        let index = 0;
-        for(let i = 0; i < keySequenceLocal.length; i++){
-          if(keySequenceLocal[i] !== ','){
-              keySequenceLocalFiltered[index] = keySequenceLocal[i];
-              console.log("keysequenceFilteredIndex " + keySequenceLocalFiltered[index]);
-              index++;
-          }
-          }
-        
-
-        for(let i = 0; i < keySequenceLocalFiltered.length; i++){
-          for(let k = 0; k < keySequenceLocal.length; i++){
-              if( keySequenceLocalFiltered[i] === keySequenceLocal[k]){
-              console.log("allowSequence = false");
-              allowSequence = false;
-          }
-        }
-      }*/
-        
-        //console.log("keysequenceFiltered " + keySequenceLocal[1]);
-       
-
-       /* if(allowSequence){
-          localStorage.setItem('keySequence', keySequenceLocalFiltered);
-          console.log("keysequence " + keySequence);
-        }*/
-        
-        
-        //const newData = this.state.cartData.slice() //copy the array
-        //newData[1] = 55 //execute the manipulations
-        let newArray = {...this.state.cartData};
-        console.log("This state prodqty: " + this.state.cartData.productQuantity);
-        newArray= {...newArray, productQuantity: this.state.cartData.productQuantity + 1}
+          let newArray = {...this.state.cartData};
+        console.log("This state prodqty: " + this.props.cartProducts.productQuantity);
+        newArray= {...newArray, productQuantity: productQuantityLocal + 1}
         this.setState({cartData: newArray})
         this.setCartQtyState();
+      
+      
+      }, 100);
+        
         
         
 
@@ -163,6 +137,10 @@ class ShopItem extends React.Component{
         let id = this.props.product.productId;
         setTimeout(function() { //Start the timer
           localStorage.setItem(id, JSON.stringify(this.state.cartData));
+          this.props.dispatch({
+            type: GET_CART_PRODUCTS,
+            payload: loadLocalStorage()
+          });
           //console.log("state cart data " + JSON.stringify (this.state.cartData))
       }.bind(this), 50)
     }
@@ -230,8 +208,16 @@ class ShopItem extends React.Component{
 
 }
 
-const mapDispatchToProps = dispatch => ({
-  dispatch               
+function mapDispatchToProps(dispatch) {
+  return{
+    dispatch,
+     ...bindActionCreators({ getCartQty}, dispatch)
+}
+}
+
+const mapStateToProps = state => ({
+  cartProducts: state.posts.cartProducts
+  
 });
 
-export default connect(null, mapDispatchToProps)(ShopItem);
+export default connect(mapStateToProps,mapDispatchToProps)(ShopItem);

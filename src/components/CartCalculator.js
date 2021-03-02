@@ -58,6 +58,6 @@ export function allowConfirmButton(toggle){
   if(toggle === 1){
   allowConfirm = true;
 }else{
-  allowConfirm = true;
+  allowConfirm = false;
 }
 }

@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { allowConfirmButton } from './components/CartCalculator';
 
 import axios from 'axios';
+import { allowUpdateCart } from './Cart';
 //var allowCountUpdate = new Boolean();
 let allowUpdate = true;
 class CartItem extends React.Component{
@@ -77,7 +78,7 @@ class CartItem extends React.Component{
                     }
                     });
 
-                    this.props.allowCartUpdate(1);
+                    allowUpdateCart(1);
         }
 
     }

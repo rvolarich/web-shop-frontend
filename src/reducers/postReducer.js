@@ -119,7 +119,8 @@ export default function(state = initialState, action){
             console.log('bio u countu');
             return{
                 ...state,
-                count: state.updateCart.totalCartQty
+               // count: state.updateCart.totalCartQty
+               count: action.payload
             }
         case UPDATE_CART_TOTAL:
             console.log('bio u update_cart_total');

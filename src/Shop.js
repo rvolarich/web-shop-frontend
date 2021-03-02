@@ -9,6 +9,7 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_PRODUCTS  }  from './actions/t
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'universal-cookie';
 import { bindActionCreators } from 'redux';
+import { loadLocalStorage } from './Cart';
 
 
 class Shop extends React.Component {
@@ -30,6 +31,10 @@ componentDidMount(){
        //let total = 20;
        //this.setState({ products });
     // });
+    this.props.dispatch({
+      type: GET_CART_PRODUCTS,
+      payload: loadLocalStorage()
+    });
 
     this.props.fetchPosts();
     this.props.getCartQty();

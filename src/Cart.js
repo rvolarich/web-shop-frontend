@@ -10,14 +10,14 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getCartProducts, getCartQty, deleteCart, postCart,
           deleteCartItem, fetchPosts } from './actions/postActions';
-import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY} from './actions/types';
+import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY, UPDATE_COUNT} from './actions/types';
 import { bindActionCreators } from 'redux';
 import { allowConfirmButton } from './components/CartCalculator';
 //import { getCartProducts } from './Repository2';
 
 
 let total = 0;
-let allowUpdateCartLocal = true;
+let allowUpdateCartLocal = false;
 let allowCountUpdate = true;
 /*const TodoItems = ({ entries }) => (
   <ul>
@@ -37,7 +37,7 @@ class Cart extends React.Component {
         //this.updateCount = this.updateCount.bind(this)
         this.addTotal = this.addTotal.bind(this)
         this.confirmOrder = this.confirmOrder.bind(this)
-        this.loadLocalStorage = this.loadLocalStorage.bind(this)
+       // this.loadLocalStorage = this.loadLocalStorage.bind(this)
         this.addTodo = this.addTodo.bind(this)
        
     }
@@ -65,37 +65,68 @@ class Cart extends React.Component {
      
      this.props.dispatch({
       type: GET_CART_PRODUCTS,
-      payload: this.loadLocalStorage()
+      payload: loadLocalStorage()
     });
-        
-      
-      //console.log("localStorage length " + keys[1]);
-      allowCountUpdate = false;
-      console.log("local storage cart: " + JSON.parse(localStorage.getItem('4')));
-      //this.props.getCartProducts();
-      
-      
-      
+        allowCountUpdate = false;
       this.props.fetchPosts();
+      total = 0;
+      let totalCount = 0;
+  
+      let totalRounded = 0;
+      /*console.log("been in componentDidUpdate: ");
+      console.log("product length: " + this.props.cartProducts.length);*/
+      setTimeout(() => { 
+        
+        if(this.props.cartProducts != null){
+        
+        for(let i = 0; i < this.props.cartProducts.length; i++){
+            total += this.props.cartProducts[i].productPrice * this.props.cartProducts[i].productQuantity;
+           /* console.log("product price: " + this.props.cartProducts[i].productPrice);
+            console.log("product qty: " + this.props.cartProducts[i].productQuantity);
+            console.log("bio u total zerooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo ");
+            console.log("product length: " + this.props.cartProducts.length);*/
+            
+       }
+      }
+       else{
+        total = 0;
+        
+       }    
+       totalRounded = (Math.round(total * 100) / 100).toFixed(2);
+       this.props.dispatch({ 
+        type: UPDATE_CART_TOTAL,
+        payload: Number(totalRounded)
+      });
+     // if(allowCountUpdate){
+        //console.log("dispatched total cart qty");
+      this.props.dispatch({
+        type: GET_CART_QTY,
+        payload: this.props.updateCart.totalCartQty
+     })
+
+     for(let i = 0; i < this.props.cartProducts.length; i++){
+        totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+     }
+
+     console.log("totalCount " + totalCount);
+      
+     this.props.dispatch({
+      type: UPDATE_COUNT,
+      payload: totalCount
+   })
+     allowCountUpdate = false;
+  //  }
+      
+      }, 100); 
+       
+      console.log("totalRounded " + totalRounded);
+      
+      
     }
 
-    loadLocalStorage=()=>{
+   /*loadLocalStorage = () => {
     let localStorageCart = [];
-    /*let keySequenceLocal = [];
-    let keySequenceLocalFiltered = [];*/
-    let sortedLocalStorageKeys = [];
-    /*keySequenceLocal = localStorage.getItem('keySequence');
-    let index = 0;
-        for(let i = 0; i < keySequenceLocal.length; i++){
-          if(keySequenceLocal[i] !== ','){
-              keySequenceLocalFiltered[index] = keySequenceLocal[i];
-              console.log("keysequenceFilteredIndex " + keySequenceLocalFiltered[index]);
-              index++;
-          }
-          }
-    sortedLocalStorageKeys = [...new Set(keySequenceLocalFiltered)];
-    console.log("sortedkeys : " + sortedLocalStorageKeys);*/
-     //let keys = Object.keys(localStorage);
+    
           let lskFiltered = [];
           let storageKeysInteger = [];
           let allValues = [];
@@ -128,112 +159,42 @@ class Cart extends React.Component {
               index++;
           }
           }
-          
-
-              for(let k = 0; k < temp.length; k++){
-              //console.log("temp " + temp[k]);
-              }
-              
-            }
+        }
             
-
             uniqueValues = [...new Set(allValues)];
-            console.log("uniqueValues " + uniqueValues);
-            console.log("lskFilteredLength " + lskFiltered.length);
-            console.log("lskFiltered " + lskFiltered);
 
-          /*for(let i = 0; i < Object.keys(localStorage).length; i++){
-            if(keys[i] > 100000){
-                keySequenceLocalFiltered[index] = keySequenceLocal[i];
-                console.log("keysequenceFilteredIndex " + keySequenceLocalFiltered[index]);
-                index++;
-            }
-            }*/
-
-     for(let i = 0; i < sortedLocalStorageKeys.length; i++){
-        localStorageCart[i] = JSON.parse(localStorage.getItem(sortedLocalStorageKeys[i]));
-        //decrease--;
-        console.log("keys : " );
+     for(let i = 0; i < uniqueValues.length; i++){
+        localStorageCart[i] = JSON.parse(localStorage.getItem(uniqueValues[i]));
      }
      return localStorageCart;
-    }
+    }*/
 
-    /*allStorage() {
-
-      var values = [],
-          keys = Object.keys(localStorage),
-          i = keys.length;
-  
-      while ( i-- ) {
-          values.push( localStorage.getItem(keys[i]) );
-      }
-  
-      return values;
-  }*/
 
     deleteCart = () => {
         this.props.deleteCart();
         allowCountUpdate = false;
  }
-
  
 
- componentDidUpdate(){
-  total = 0;
-  
-  let totalRounded = 0;
-  console.log("been in componentDidUpdate: ");
-  console.log("product length: " + this.props.cartProducts.length);
-  if(this.props.cartProducts != null){
-    for(let i = 0; i < this.props.cartProducts.length; i++){
-        total += this.props.cartProducts[i].productPrice * this.props.cartProducts[i].productQuantity;
-        console.log("product price: " + this.props.cartProducts[i].productQuantity);
-    
-    
-        
-   }
-  }
-   else{
-    total = 0;
-   }  
-   totalRounded = (Math.round(total * 100) / 100).toFixed(2);
-   this.props.dispatch({ 
-    type: UPDATE_CART_TOTAL,
-    payload: Number(totalRounded)
-  });
-  
-  if(allowCountUpdate){
-    console.log("dispatched total cart qty");
-  this.props.dispatch({
-    type: GET_CART_QTY,
-    payload: this.props.updateCart.totalCartQty
- })
- allowCountUpdate = false;
-}
-
-}
  updateCart = () => {
   
+  
   if(allowUpdateCartLocal){
-  console.log("allowUpdate: " + this.allowUpdate(0));
-  localStorage.clear();
+  
   for(let i = 0; i < this.props.cartProducts.length; i++){
     localStorage.setItem(this.props.cartProducts[i].productId, JSON.stringify(this.props.cartProducts[i]));
-    console.log("cartproductsId: " + this.props.cartProducts[i].productId);
+    
   }
-  this.allowUpdate(0);
-}
- /* localStorageCart.map(item => {
-    if(item.productId === 2){
-      console.log("I catched the item 1")
-    }
-  });*/
   
- // when logged in --- production
-  /*this.props.postCart(this.props.cartProducts);
+// when logged in --- production
+  /*this.props.postCart(this.props.cartProducts);*/
   allowCountUpdate = true;
   
-  window.location.reload();*/
+  
+  allowUpdateCart(0);
+  window.location.reload();
+  
+}
  }
 
  addTodo = (heading) => {
@@ -247,33 +208,26 @@ class Cart extends React.Component {
 
  }
 
- allowUpdate(num){
-   if(num === 1){
-     allowUpdateCartLocal = true;
-   }else{
-    allowUpdateCartLocal = false;
-   }
- }
-
-
- deleteCartItemById(id) {
+deleteCartItemById(id) {
   
   const prodObj = {
     productId: id
   }
-  console.log("bio u delete cart iteeeeeeeeeeeeeeeem: " + JSON.stringify(prodObj));
+  //console.log("bio u delete cart iteeeeeeeeeeeeeeeem: " + JSON.stringify(prodObj));
   this.props.deleteCartItem(prodObj); 
   
   allowCountUpdate = false;
   window.location.reload();
   }
 
-  addTotal = (total, shipping) => {
+  
+addTotal = (total, shipping) => {
     console.log("been in add total");
     return (Math.round((Number(total) + Number(shipping)) * 100) / 100).toFixed(2);
     }
 
-    confirmOrder = () => {
+
+confirmOrder = () => {
       axios.post('http://localhost:8080/confirmorder', this.props.cartProducts)
     .then(response => response.data)
     .catch(function (error) {
@@ -337,7 +291,7 @@ class Cart extends React.Component {
           cartProducts.map((product, index) => 
           <CartItem product={product} key={index} 
           deleteCartProduct={(num) => this.deleteCartItemById(num)}  updateCartItems={() => this.updateCart()} 
-          onSubmit={this.addTodo} allowUpdateCart={(num) => this.allowUpdate(num)}/>
+          onSubmit={this.addTodo} />
           
           )
           
@@ -400,3 +354,54 @@ const mapStateToProps = state => ({
 
 export default connect (mapStateToProps, mapDispatchToProps)(Cart);
 
+export function allowUpdateCart(num){
+  if(num === 1){
+    allowUpdateCartLocal = true;
+  }
+  else allowUpdateCartLocal = false;
+}
+
+export function loadLocalStorage(){
+  let localStorageCart = [];
+  
+        let lskFiltered = [];
+        let storageKeysInteger = [];
+        let allValues = [];
+        let uniqueValues = [];
+        
+        let index = 0;
+        for(let i = 0; i < Object.keys(localStorage).length; i++){
+            storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
+          }
+        for(let i = 0; i < storageKeysInteger.length; i++){
+            if(storageKeysInteger[i] > 100000){
+              lskFiltered[index] = storageKeysInteger[i];
+              index++;
+            }
+            }
+
+            lskFiltered.sort((a, b) => a-b);
+          
+
+        for(let i = 0; i < lskFiltered.length; i++){
+            let temp = [];
+            temp = localStorage.getItem(lskFiltered[i]);
+            let tempFiltered = [];
+            let index = 0;
+          for(let i = 0; i < temp.length; i++){
+            if(temp[i] !== ','){
+            tempFiltered[index] = temp[i];
+            allValues.push(tempFiltered[index]);
+            
+            index++;
+        }
+        }
+      }
+          
+          uniqueValues = [...new Set(allValues)];
+
+   for(let i = 0; i < uniqueValues.length; i++){
+      localStorageCart[i] = JSON.parse(localStorage.getItem(uniqueValues[i]));
+   }
+   return localStorageCart;
+  }
