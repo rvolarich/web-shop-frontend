@@ -11,18 +11,27 @@ import ShopItemSelected from './ShopItemSelected';
 import Navig from './Navig';
 import { cartChildren } from './App'
 import { getCartQty } from './actions/postActions';
-import { GET_DATA, POST_DATA, GET_CART_QTY, INCREMENT  }  from './actions/types';
+import { GET_DATA, POST_DATA, GET_CART_QTY, INCREMENT, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE  }  from './actions/types';
 
+let compare = 0;
+let keySequence = [];
 class ShopItem extends React.Component{
    
   
   
     constructor(props){
         super(props);
-        /*this.state = {
-          productIds: [],
-          count: 25
-        }*/
+        this.state = {
+          cartData: {
+            productId: this.props.product.productId,
+            productName: this.props.product.productName,
+            productQuantity: 0,
+            productStock: this.props.product.productQuantity,
+            productPrice: this.props.product.productPrice,
+            productImage: this.props.product.productImage
+          }
+          
+        }
 
         this.clickMe = this.clickMe.bind(this)
         
@@ -59,10 +68,89 @@ class ShopItem extends React.Component{
         this.props.dispatch({
           type: INCREMENT
         });
+        /*let q = this.props.product.productId;
+        let countQuantity;
         
-        console.log("Bio u click me: " + this.props.product);
-        axios.post('http://localhost:8080/pcp', this.props.product).then(function (response) {
+        let setCompae = true;
+        if(this.props.product.productId !== compare){
+          compare = this.props.product.productId;
+          countQuantity = 0;
+        }
+        else{
+          countQuantity++;
+        }*/
+        /*let keys = Object.keys(localStorage);
+        for(let i = 0; i < keys.length; i++){
+          if(keys[i] === 'keySequence'){
+            keySequence = localStorage.getItem('keySequence'); 
+          }else{
+            localStorage.setItem('keySequence', null);
+          }
+        }*/
+        
+        
+        keySequence.push(this.props.product.productId);
+        localStorage.setItem(Date.now(), keySequence);
+        this.props.dispatch({
+          type: KEY_SEQUENCE,
+          payload: keySequence
+        });
+        /*let allowSequence = true;
+        let keySequenceLocal = [];
+        let keySequenceLocalFiltered = [];
+        console.log("keysequenceBeforGet " + keySequence.length);
+        keySequenceLocal = localStorage.getItem('keySequence');
+        console.log("keysequenceLocal " + keySequenceLocal);
+        
+        let index = 0;
+        for(let i = 0; i < keySequenceLocal.length; i++){
+          if(keySequenceLocal[i] !== ','){
+              keySequenceLocalFiltered[index] = keySequenceLocal[i];
+              console.log("keysequenceFilteredIndex " + keySequenceLocalFiltered[index]);
+              index++;
+          }
+          }
+        
+
+        for(let i = 0; i < keySequenceLocalFiltered.length; i++){
+          for(let k = 0; k < keySequenceLocal.length; i++){
+              if( keySequenceLocalFiltered[i] === keySequenceLocal[k]){
+              console.log("allowSequence = false");
+              allowSequence = false;
+          }
+        }
+      }*/
+        
+        //console.log("keysequenceFiltered " + keySequenceLocal[1]);
+       
+
+       /* if(allowSequence){
+          localStorage.setItem('keySequence', keySequenceLocalFiltered);
+          console.log("keysequence " + keySequence);
+        }*/
+        
+        
+        //const newData = this.state.cartData.slice() //copy the array
+        //newData[1] = 55 //execute the manipulations
+        let newArray = {...this.state.cartData};
+        console.log("This state prodqty: " + this.state.cartData.productQuantity);
+        newArray= {...newArray, productQuantity: this.state.cartData.productQuantity + 1}
+        this.setState({cartData: newArray})
+        this.setCartQtyState();
+        
+        
+
+        /*this.props.dispatch({
+            type: SET_CART_PRODUCT_QUANTITY_LOCAL,
+            payload: this.props.product
+        });*/
+        //localStorage.setItem(id, JSON.stringify(item));
+        
+        
+        axios.post('http://127.0.0.1:8080/pcp', this.props.product).then(function (response) {
           console.log(response);
+          //console.log("item: " + JSON.stringify(this.state.cartData));
+          
         })
         .catch(function (error) {
           console.log(error);
@@ -70,6 +158,15 @@ class ShopItem extends React.Component{
 
         
       }
+
+      setCartQtyState = () => {
+        let id = this.props.product.productId;
+        setTimeout(function() { //Start the timer
+          localStorage.setItem(id, JSON.stringify(this.state.cartData));
+          //console.log("state cart data " + JSON.stringify (this.state.cartData))
+      }.bind(this), 50)
+    }
+      
 
       /*buyNow = () => {
         const element = (

@@ -59,7 +59,7 @@ class SignUpForm extends React.Component{
 
     postAuthData = () => {
         console.log("authData: " + JSON.stringify(this.state.authData));
-        axios.post('http://localhost:8080/reg', 
+        axios.post('http://127.0.0.1:8080/reg', 
         this.state.authData).then(function (response){
         console.log(response.headers);
         
@@ -88,6 +88,11 @@ class SignUpForm extends React.Component{
         });
        
     });*/
+    let items = {
+      "product": "boat", "price" :"125"
+    }
+    localStorage.setItem('product', JSON.stringify(items));
+    console.log("localStorage: " + JSON.stringify(localStorage.getItem('product')));
     
     fetch('http://127.0.0.1:8080/login', {
         credentials: 'include',
@@ -174,7 +179,8 @@ class SignUpForm extends React.Component{
 const mapStateToProps = state => ({
     isLogged: state.posts.isLogged,
     username: state.posts.username,
-    loginStatus: state.posts.loginStatus
+    loginStatus: state.posts.loginStatus,
+    keySequence: state.posts.loginStatus
     });
 
 export default connect(mapStateToProps)(SignUpForm);

@@ -24,7 +24,7 @@ export const fetchPosts = () => dispatch => {
 
 export const getCartQty = () => dispatch => {
     console.log('been in getCartQty');
-    axios.get('http://localhost:8080/getcartqty')
+    axios.get('http://127.0.0.1:8080/getcartqty')
     .then(response => response.data)
     .then(cartQty => dispatch({
         type: GET_CART_QTY,
@@ -34,7 +34,7 @@ export const getCartQty = () => dispatch => {
 
 export const getCartProducts = () => dispatch => {
     console.log('been in getCartProducts');
-    axios.get('http://localhost:8080/getcart')
+    axios.get('http://127.0.0.1:8080/getcart')
     .then(response => response.data)
     .then(cartProducts => dispatch({
         type: GET_CART_PRODUCTS,
@@ -44,7 +44,7 @@ export const getCartProducts = () => dispatch => {
 
 export const getCartItemQty = () => dispatch => {
     console.log('been in getCartItemQty');
-    axios.get('http://localhost:8080/getcartitemqtys')
+    axios.get('http://127.0.0.1:8080/getcartitemqtys')
     .then(response => response.data)
     .then(cartQtyState => dispatch({
         type: SET_CART_QTY,
@@ -54,7 +54,7 @@ export const getCartItemQty = () => dispatch => {
 
 export const deleteCart = () => dispatch => {
     console.log('been in deleteCart');
-    axios.get('http://localhost:8080/deletecart')
+    axios.get('http://127.0.0.1:8080/deletecart')
     .then(response => response.data)
     .then(cartProducts => dispatch({
         type: DELETE_CART,
@@ -64,7 +64,7 @@ export const deleteCart = () => dispatch => {
 
 export const deleteCartItem = (product) => dispatch => {
     console.log('been in deleteCart: ' + product);
-    axios.post('http://localhost:8080/deletecartbyid', product)
+    axios.post('http://127.0.0.1:8080/deletecartbyid', product)
     .then(response => response.data)
     .then(cartProducts => dispatch({
         type: DELETE_CART_ITEM,
@@ -74,7 +74,7 @@ export const deleteCartItem = (product) => dispatch => {
 
 export const postCart = (products) => dispatch => {
     console.log("sent cart");
-    axios.post('http://localhost:8080/postcartall', products)
+    axios.post('http://127.0.0.1:8080/postcartall', products)
     .then(response => response.data)
     .then(countQty => dispatch({
       type: UPDATE_CART,

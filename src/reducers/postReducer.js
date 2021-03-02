@@ -2,7 +2,7 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_QTY,
     GET_CART_PRODUCTS, SET_CART_QTY, 
     DELETE_CART, SET_CART_PRODUCT_QUANTITY, UPDATE_CART, UPDATE_COUNT,
     DELETE_CART_ITEM, 
-    UPDATE_CART_TOTAL, IS_LOGGED}  from '../actions/types';
+    UPDATE_CART_TOTAL, IS_LOGGED, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE}  from '../actions/types';
 import update from 'immutability-helper';
 import { actions } from 'react-table';
 
@@ -17,7 +17,12 @@ const initialState = {
     shipping: 52.24,
     isLogged: false,
     username: '',
-    loginStatus: ''
+    loginStatus: '',
+    cartProductQuantity: {
+        prodId: 1,
+        cartProductQuantityNumber: 5
+    },
+    keySequence: []
     
 }
 
@@ -86,12 +91,23 @@ export default function(state = initialState, action){
                 return item;
                 
              })
-             /*count: state.cartProducts.map((item) => {
-                  x += item.productQuantity
-                
-             })*/
              
             }
+
+            case SET_CART_PRODUCT_QUANTITY_LOCAL:
+            var x = 0;
+             console.log('been in set product quantity local: ' + action.payload);
+               
+             return {
+             ...state,
+             cartProductQuantity: action.payload
+
+            }
+            
+                
+                
+             
+            
         case UPDATE_CART:
             return{
                 ...state,
@@ -120,7 +136,16 @@ export default function(state = initialState, action){
                             username: action.payload.username,
                             loginStatus: action.payload.loginStatus
                         }
-                    
+                        
+                        
+         case KEY_SEQUENCE:
+            
+                 return {
+                ...state,
+                keySequence: action.payload
+                }
+            
+                
                     
                  
                 

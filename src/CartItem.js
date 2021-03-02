@@ -7,15 +7,22 @@ import { bindActionCreators } from 'redux';
 import { allowConfirmButton } from './components/CartCalculator';
 
 import axios from 'axios';
-var allowCountUpdate = new Boolean();
+//var allowCountUpdate = new Boolean();
+let allowUpdate = true;
 class CartItem extends React.Component{
 
     constructor(props){
         super(props);
+        this.state = {
+          fieldData: {
+            input: '',
+           prodId: null}
+        }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    /*this.deleteCartItemById = this.deleteCartItemById.bind(this)
-    this.updateCart = this.updateCart.bind(this)*/
+    this.deleteCartItemById = this.deleteCartItemById.bind(this)
+    this.updateCartItemById = this.updateCartItemById.bind(this)
+    /*this.updateCart = this.updateCart.bind(this)*/
     }
 
     componentDidMount(){
@@ -35,23 +42,23 @@ class CartItem extends React.Component{
     }
     }*/
 
-    /*updateCart = () => {
-      this.props.postCart(this.props.products);
-      allowCountUpdate = true;
-     }*/
+    updateCartItemById = () => {
+     /* this.props.postCart(this.props.products);
+      allowCountUpdate = true;*/
+     }
 
-    /*deleteCartItemById = () =>  {
-      const prodObj = {
-        productId: this.props.product.productId
+    deleteCartItemById = () =>  {
+      //this.props.deleteCartProduct(this.props.product.productId);
+      localStorage.removeItem(this.props.product.productId);
+      window.location.reload();
       }
-      this.props.deleteCartItem(JSON.parse(JSON.stringify(prodObj))); 
-      }*/
 
     handleChange(event){
-      console.log("handleChange: " + event.target.value);
+      
       
       const re = /^[0-9\b]+$/;
       if (event.target.value === '' || re.test(event.target.value)) {
+        console.log("handleChange: " + event.target.value);
           getCartProducts();
           if(event.target.value <= 0){
             allowConfirmButton(1);
@@ -62,12 +69,15 @@ class CartItem extends React.Component{
           if(event.target.value > this.props.product.productStock){
             event.target.value = this.props.product.productStock;
           }
+          //this.setState({fieldData: {input: event.target.value, prodId: this.props.product.productId}});
            this.props.dispatch({type: SET_CART_PRODUCT_QUANTITY ,
                     payload: {
                     fieldValue: event.target.value,
                     prodId: this.props.product.productId
                     }
                     });
+
+                    this.props.allowCartUpdate(1);
         }
 
     }
@@ -75,13 +85,17 @@ class CartItem extends React.Component{
     handleSubmit(event) {
       console.log(this.state);
       event.preventDefault();
+      this.setState({fieldData: {input: event.target.value, prodId: this.props.product.productId}});
+      this.props.onSubmit(this.state.fieldData);
     }
+
+    
 
     
 
     render(){
 
-        const {product} = this.props;
+        const {product, isLogged, cartProductQuantity} = this.props;
         //console.log("render " + this.state.quantity);
         return (
 
@@ -100,12 +114,14 @@ class CartItem extends React.Component{
                <p><span style={{color: 'green'}}>In Stock:</span> {product.productStock}</p>} 
                   </Col>
                   <Col style={{marginTop: '50px'}}>
-                  
-                  <input key="index" type="text"  size="3" defaultValue={product.productQuantity}
+                  <form onSubmit={this.handleSubmit}>
+                  <input key="index" type="text"  size="3" 
+                  defaultValue={product.productQuantity}
               onChange={this.handleChange} />
-              <Button variant="outline-info" onClick={() => {this.props.updateCartItems()}} size="sm"
-              style={{marginLeft:'65px', marginTop:'-58px'}}>Update</Button>
               
+              <Button type="submit" variant="outline-info" onClick={() => {this.props.updateCartItems()}} size="sm"
+              style={{marginLeft:'65px', marginTop:'-58px'}}>Update</Button>
+              </form>
                
           
        
@@ -116,7 +132,7 @@ class CartItem extends React.Component{
                   
                   
               <h6 style={{marginTop:'50px', marginLeft: '100px', marginBottom: 'auto'}}>EUR {product.productPrice}</h6>
-              <Button variant="outline-danger" onClick={() => this.props.deleteCartProduct(this.props.product.productId)} 
+              <Button variant="outline-danger" onClick={this.deleteCartItemById/*() => this.props.deleteCartProduct(this.props.product.productId)*/} 
                    style={{marginLeft:'80px', marginTop:'35px'}}>Remove</Button>
                   </Col>
                 </Row>
@@ -164,8 +180,9 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = state => ({
   number: state.posts.cartQtyState,
-  updateCart: state.posts.updateCart
-  
+  updateCart: state.posts.updateCart,
+  isLogged: state.posts.isLogged,
+  cartProductQuantity: state.posts.cartProductQuantity
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartItem);
