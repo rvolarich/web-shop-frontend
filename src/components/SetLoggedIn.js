@@ -28,6 +28,7 @@ class SetLoggedIn extends React.Component{
         }).catch(error => {
           console.log("check session error", error);
         });
+        
       }
 
     render(){

@@ -13,6 +13,7 @@ import { getCartProducts, getCartQty, deleteCart, postCart,
 import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY, UPDATE_COUNT} from './actions/types';
 import { bindActionCreators } from 'redux';
 import { allowConfirmButton } from './components/CartCalculator';
+import SavedCartItem from './SavedCartItem';
 //import { getCartProducts } from './Repository2';
 
 
@@ -120,7 +121,8 @@ class Cart extends React.Component {
       
       }, 100); 
     } },30);
-      
+
+    localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/cart');
   }
 
    
@@ -134,24 +136,22 @@ class Cart extends React.Component {
 
  updateCart = () => {
   
+  if(this.props.isLogged){
+  this.props.postCart(this.props.cartProducts);
   
-  //if(allowUpdateCartLocal){
-  
+}else{
   for(let i = 0; i < this.props.cartProducts.length; i++){
     localStorage.setItem(this.props.cartProducts[i].productId, JSON.stringify(this.props.cartProducts[i]));
-    
-  }
-  
-// when logged in --- production
-  /*this.props.postCart(this.props.cartProducts);*/
-  allowCountUpdate = true;
+    }
   
   
-  allowUpdateCart(0);
-  window.location.reload();
+  //allowCountUpdate = true;
   
-//}
+  //allowUpdateCart(0);
+}
+window.location.reload();
  }
+
 
  addTodo = (heading) => {
    console.log("Heading: " + JSON.stringify(heading));
@@ -204,17 +204,9 @@ deleteCartItemById(id) {
 
             console.log("keys to erase " + keysToErase);
 
-            setTimeout(() => {
-              for(let i = 0; i < this.props.cartProducts.length; i++){
-                totalCount = totalCount + this.props.cartProducts[i].productQuantity;
-             }
-             this.props.dispatch({
-              type: UPDATE_COUNT,
-              payload: totalCount
-            });
-             }, 20);
-      
            
+      
+           updateCount();
             
            
          
@@ -289,7 +281,7 @@ confirmOrder = () => {
     render(){
     
       
-    const { cartProducts, total, count, cTotal, shipping} = this.props;
+    const { cartProducts, total, count, cTotal, shipping, isLogged} = this.props;
      
   return (
     <Container>
@@ -314,6 +306,24 @@ confirmOrder = () => {
         }
         
                 </div> : null}
+
+            {isLogged ? <div>   
+      <div>Your saved items</div>
+                {count !== null ?  <div>
+        {
+          cartProducts.map((product, index) => 
+          <SavedCartItem product={product} key={index} 
+          deleteCartProduct={(num) => this.deleteCartItemById(num)}  updateCartItems={() => this.updateCart()} 
+          onSubmit={this.addTodo} />
+          
+          )
+          
+        }
+        
+                </div> : null} 
+
+                </div> : null}
+                
         </Col>
 
     
@@ -421,4 +431,17 @@ export function loadLocalStorage(){
       localStorageCart[i] = JSON.parse(localStorage.getItem(uniqueValues[i]));
    }
    return localStorageCart;
+  }
+
+  export function updateCount(){
+    let totalCount = 0;
+    setTimeout(() => {
+      for(let i = 0; i < this.props.cartProducts.length; i++){
+        totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+     }
+     this.props.dispatch({
+      type: UPDATE_COUNT,
+      payload: totalCount
+    });
+     }, 20);
   }

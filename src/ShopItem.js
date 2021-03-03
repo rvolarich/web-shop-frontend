@@ -53,13 +53,37 @@ class ShopItem extends React.Component{
    clickMe = () => {
 
     if(this.props.isLogged){
-      axios.post('http://127.0.0.1:8080/pcp', this.props.product).then(function (response) {
+
+     /* fetch('http://127.0.0.1:8080/pcp', {
+        credentials: 'include',
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(this.props.product)
+        
+    }).then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });*/
+     axios.post('http://127.0.0.1:8080/pcp', 
+      this.props.product, { withCredentials: true }).then(function (response) {
         console.log(response);
         
         })
       .catch(function (error) {
         console.log(error);
       });
+      /*axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8080/pcp',
+        data: this.props.product,
+        withCredentials: 'true',
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      });*/
     }else{
     
     let productQuantityLocal = 0;
@@ -178,8 +202,8 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = state => ({
   cartProducts: state.posts.cartProducts,
-  isLogged: state.posts.isLogged
-  
+  isLogged: state.posts.isLogged,
+  username: state.posts.username
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(ShopItem);

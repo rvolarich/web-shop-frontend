@@ -9,7 +9,7 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_PRODUCTS, UPDATE_COUNT  }  fro
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'universal-cookie';
 import { bindActionCreators } from 'redux';
-import { loadLocalStorage } from './Cart';
+import { loadLocalStorage, updateCount } from './Cart';
 
 
 class Shop extends React.Component {
@@ -25,44 +25,34 @@ class Shop extends React.Component {
 
 componentDidMount(){
    
-  let totalCount = 0;
   
-  //getProducts().then((products) => {
-       //let total = 20;
-       //this.setState({ products });
-    // });
-    this.props.dispatch({
-      type: GET_CART_PRODUCTS,
-      payload: loadLocalStorage()
-    });
-
-    this.props.fetchPosts();
-    //this.props.getCartQty();
-    /*let localStorageCart = [];
-     let decrease = localStorage.length - 1;
-     let keys = Object.keys(localStorage);
-     for(let i = 0; i < localStorage.length; i++){
-        localStorageCart[i] = JSON.parse(localStorage.getItem(keys[decrease]));
-        decrease--;
-     }
-     this.props.dispatch({
-      type: GET_CART_PRODUCTS,
-      payload: localStorageCart
-    });*/
-
+  this.props.fetchPosts();
+  
+  localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/shop');
+    console.log("isLogged u Shop " + this.props.isLogged )
+setTimeout(() => {
+  
+  if(this.props.isLogged){
     
-
-   setTimeout(() => {
-    for(let i = 0; i < this.props.cartProducts.length; i++){
-      totalCount = totalCount + this.props.cartProducts[i].productQuantity;
-   }
-   this.props.dispatch({
-    type: UPDATE_COUNT,
-    payload: totalCount
- })
-   }, 100);
-   console.log("totalCount " + totalCount);
-   console.log("cartProducts " + JSON.stringify(this.props.cartProducts));
+  this.props.getCartQty();
+}else{
+  this.props.dispatch({
+    type: GET_CART_PRODUCTS,
+    payload: loadLocalStorage()
+  });
+  
+  let totalCount = 0;
+  setTimeout(() => {
+  for(let i = 0; i < this.props.cartProducts.length; i++){
+    totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+ }
+ this.props.dispatch({
+  type: UPDATE_COUNT,
+  payload: totalCount
+})
+ }, 20);
+}}, 50); 
+   
     
    
     
@@ -106,7 +96,8 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = state => ({
   products: state.posts.products,
-  cartProducts: state.posts.cartProducts
+  cartProducts: state.posts.cartProducts,
+  isLogged: state.posts.isLogged
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Shop);

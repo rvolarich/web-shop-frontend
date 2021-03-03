@@ -77,24 +77,20 @@ class SignUpForm extends React.Component{
 
     postLogData = () => {
 
-        /*axios.post('http://127.0.0.1:8080/login', { withCredentials},
-    this.state.authData, headers: 
+        axios.post('http://127.0.0.1:8080/login', 
+    this.state.authData, { withCredentials: true }
 
-    }).then(response => {
+    ).then(response => {
         console.log(this.state.authData);
         this.props.dispatch({
             type: IS_LOGGED,
             payload: response.data
         });
        
-    });*/
-    let items = {
-      "product": "boat", "price" :"125"
-    }
-    localStorage.setItem('product', JSON.stringify(items));
-    console.log("localStorage: " + JSON.stringify(localStorage.getItem('product')));
+    });
     
-    fetch('http://127.0.0.1:8080/login', {
+    
+    /*fetch('http://127.0.0.1:8080/login', {
         credentials: 'include',
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -111,7 +107,7 @@ class SignUpForm extends React.Component{
     })
     .catch((error) => {
       console.error('Error:', error);
-    });
+    });*/
         /*.then(response => {//do work});/*.then(axios.get('http://127.0.0.1:8080/login',{ withCredentials: true},
     this.props.isLogged
       
@@ -166,7 +162,7 @@ class SignUpForm extends React.Component{
               Don't have an account? <a href="/register" onClick={this.handleClick}>Sign up!</a>
             </div>
             <div>
-            {allowCheckIsLogged ? isLogged ? window.location.replace("http://127.0.0.1:3000/shop") : 
+            {allowCheckIsLogged ? isLogged ? window.location.replace(localStorage.getItem('lastUrl')) : 
             <div style={{color: 'red'}}>{loginStatus}</div> : null}
             </div>
             </Col>
@@ -175,6 +171,7 @@ class SignUpForm extends React.Component{
         )
     }
 }
+
 
 const mapStateToProps = state => ({
     isLogged: state.posts.isLogged,
