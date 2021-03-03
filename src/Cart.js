@@ -65,32 +65,30 @@ class Cart extends React.Component {
     }
 
     componentDidMount(){
+      setTimeout(() => {if(this.props.isLogged){
+        console.log("bio u getcart");
+    this.props.getCartProducts();
      this.props.getCartQty();
-     
+     this.props.fetchPosts();
+    }else{
      this.props.dispatch({
       type: GET_CART_PRODUCTS,
       payload: loadLocalStorage()
     });
         allowCountUpdate = false;
-      this.props.fetchPosts();
+      
       total = 0;
       let totalCount = 0;
   
       let totalRounded = 0;
-      /*console.log("been in componentDidUpdate: ");
-      console.log("product length: " + this.props.cartProducts.length);*/
+      
       setTimeout(() => { 
         
         if(this.props.cartProducts != null){
         
         for(let i = 0; i < this.props.cartProducts.length; i++){
             total += this.props.cartProducts[i].productPrice * this.props.cartProducts[i].productQuantity;
-           /* console.log("product price: " + this.props.cartProducts[i].productPrice);
-            console.log("product qty: " + this.props.cartProducts[i].productQuantity);
-            console.log("bio u total zerooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo ");
-            console.log("product length: " + this.props.cartProducts.length);*/
-            
-       }
+          }
       }
        else{
         total = 0;
@@ -101,8 +99,7 @@ class Cart extends React.Component {
         type: UPDATE_CART_TOTAL,
         payload: Number(totalRounded)
       });
-     // if(allowCountUpdate){
-        //console.log("dispatched total cart qty");
+     
       this.props.dispatch({
         type: GET_CART_QTY,
         payload: this.props.updateCart.totalCartQty
@@ -112,66 +109,21 @@ class Cart extends React.Component {
         totalCount = totalCount + this.props.cartProducts[i].productQuantity;
      }
 
-     console.log("totalCount " + totalCount);
+     
       
      this.props.dispatch({
       type: UPDATE_COUNT,
       payload: totalCount
    })
      allowCountUpdate = false;
-  //  }
+  
       
       }, 100); 
-       
-      console.log("totalRounded " + totalRounded);
+    } },30);
       
-      
-    }
+  }
 
-   /*loadLocalStorage = () => {
-    let localStorageCart = [];
-    
-          let lskFiltered = [];
-          let storageKeysInteger = [];
-          let allValues = [];
-          let uniqueValues = [];
-          
-          let index = 0;
-          for(let i = 0; i < Object.keys(localStorage).length; i++){
-              storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
-            }
-          for(let i = 0; i < storageKeysInteger.length; i++){
-              if(storageKeysInteger[i] > 100000){
-                lskFiltered[index] = storageKeysInteger[i];
-                index++;
-              }
-              }
-
-              lskFiltered.sort((a, b) => a-b);
-            
-
-          for(let i = 0; i < lskFiltered.length; i++){
-              let temp = [];
-              temp = localStorage.getItem(lskFiltered[i]);
-              let tempFiltered = [];
-              let index = 0;
-            for(let i = 0; i < temp.length; i++){
-              if(temp[i] !== ','){
-              tempFiltered[index] = temp[i];
-              allValues.push(tempFiltered[index]);
-              
-              index++;
-          }
-          }
-        }
-            
-            uniqueValues = [...new Set(allValues)];
-
-     for(let i = 0; i < uniqueValues.length; i++){
-        localStorageCart[i] = JSON.parse(localStorage.getItem(uniqueValues[i]));
-     }
-     return localStorageCart;
-    }*/
+   
 
 
     deleteCart = () => {
@@ -183,7 +135,7 @@ class Cart extends React.Component {
  updateCart = () => {
   
   
-  if(allowUpdateCartLocal){
+  //if(allowUpdateCartLocal){
   
   for(let i = 0; i < this.props.cartProducts.length; i++){
     localStorage.setItem(this.props.cartProducts[i].productId, JSON.stringify(this.props.cartProducts[i]));
@@ -198,14 +150,14 @@ class Cart extends React.Component {
   allowUpdateCart(0);
   window.location.reload();
   
-}
+//}
  }
 
  addTodo = (heading) => {
    console.log("Heading: " + JSON.stringify(heading));
    this.props.dispatch({type: SET_CART_PRODUCT_QUANTITY ,
     payload: {
-    fieldValue: heading.fieldValue,
+    fieldValue: heading.input,
     prodId: heading.prodId
     }
     });
@@ -413,6 +365,7 @@ const mapStateToProps = state => ({
     updateCart: state.posts.updateCart,
     cTotal: state.posts.cTotal,
     shipping: state.posts.shipping,
+    isLogged: state.posts.isLogged
     
   });
 

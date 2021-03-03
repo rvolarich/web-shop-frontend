@@ -51,10 +51,16 @@ class ShopItem extends React.Component{
     }
 
    clickMe = () => {
-   /* this.props.dispatch({
-      type: GET_CART_PRODUCTS,
-      payload: loadLocalStorage()
-    });*/
+
+    if(this.props.isLogged){
+      axios.post('http://127.0.0.1:8080/pcp', this.props.product).then(function (response) {
+        console.log(response);
+        
+        })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }else{
     
     let productQuantityLocal = 0;
     let updateCartQuantityArray = [];
@@ -69,11 +75,8 @@ class ShopItem extends React.Component{
         console.log("productQuantityLocal " + productQuantityLocal);
       }
     }
-   /* updateCartQuantityArray = [...this.state.cartData]
-    updateCartQuantityArray= {...updateCartQuantityArray, productQuantity: productQuantityLocal}
-    this.setState({cartData: updateCartQuantityArray})
-    this.setCartQtyState();
-    */ this.props.dispatch({
+   
+    this.props.dispatch({
           type: INCREMENT
         });
         
@@ -85,15 +88,6 @@ class ShopItem extends React.Component{
           payload: keySequence
         });*/
         
-        
-        //console.log("keysequenceFiltered " + keySequenceLocal[1]);
-       
-
-       
-        
-        
-        //const newData = this.state.cartData.slice() //copy the array
-        //newData[1] = 55 //execute the manipulations
 
         setTimeout(() => {
           keySequence.push(this.props.product.productId);
@@ -110,27 +104,7 @@ class ShopItem extends React.Component{
       
       
       }, 20);
-        
-        
-        
-
-        /*this.props.dispatch({
-            type: SET_CART_PRODUCT_QUANTITY_LOCAL,
-            payload: this.props.product
-        });*/
-        //localStorage.setItem(id, JSON.stringify(item));
-        
-        
-        axios.post('http://127.0.0.1:8080/pcp', this.props.product).then(function (response) {
-          console.log(response);
-          //console.log("item: " + JSON.stringify(this.state.cartData));
-          
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-
-        
+    }
       }
 
       setCartQtyState = () => {
@@ -141,24 +115,11 @@ class ShopItem extends React.Component{
             type: GET_CART_PRODUCTS,
             payload: loadLocalStorage()
           });
-          //console.log("state cart data " + JSON.stringify (this.state.cartData))
+          
       }.bind(this), 20)
     }
-      
-
-      /*buyNow = () => {
-        const element = (
-          <Container>
-            
-            
-            </Container>
-        )
-        ReactDOM.render(element, document.getElementById('root'));
-
-      }*/
-      
     
-  
+    
     render(){
         const {product} = this.props;
         
@@ -216,7 +177,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  cartProducts: state.posts.cartProducts
+  cartProducts: state.posts.cartProducts,
+  isLogged: state.posts.isLogged
   
 });
 

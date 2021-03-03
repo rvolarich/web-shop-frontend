@@ -84,10 +84,20 @@ class CartItem extends React.Component{
     }
       
     handleSubmit(event) {
-      console.log(this.state);
       event.preventDefault();
+      
+      
       this.setState({fieldData: {input: event.target.value, prodId: this.props.product.productId}});
-      this.props.onSubmit(this.state.fieldData);
+      
+      if(this.state.fieldData.input == ''){
+        this.setState({fieldData: {input: this.props.product.productQuantity}});
+        console.log("bio u handleSubmit");
+        console.log("input " + this.state.fieldData.input);
+        console.log("bio u prodId " + this.state.fieldData.prodId);
+      }
+      setTimeout(() => {this.props.onSubmit(this.state.fieldData);
+        console.log(this.state);}, 50);
+      
     }
 
     
