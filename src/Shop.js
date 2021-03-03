@@ -5,7 +5,7 @@ import { Container, Button, Row, Col } from 'react-bootstrap';
 import { getProducts } from './Repository2';
 import { connect } from 'react-redux';
 import { fetchPosts, getCartQty } from './actions/postActions';
-import { GET_DATA, POST_DATA, INCREMENT, GET_CART_PRODUCTS  }  from './actions/types';
+import { GET_DATA, POST_DATA, INCREMENT, GET_CART_PRODUCTS, UPDATE_COUNT  }  from './actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'universal-cookie';
 import { bindActionCreators } from 'redux';
@@ -25,7 +25,7 @@ class Shop extends React.Component {
 
 componentDidMount(){
    
-  
+  let totalCount = 0;
   
   //getProducts().then((products) => {
        //let total = 20;
@@ -37,7 +37,7 @@ componentDidMount(){
     });
 
     this.props.fetchPosts();
-    this.props.getCartQty();
+    //this.props.getCartQty();
     /*let localStorageCart = [];
      let decrease = localStorage.length - 1;
      let keys = Object.keys(localStorage);
@@ -49,6 +49,22 @@ componentDidMount(){
       type: GET_CART_PRODUCTS,
       payload: localStorageCart
     });*/
+
+    
+
+   setTimeout(() => {
+    for(let i = 0; i < this.props.cartProducts.length; i++){
+      totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+   }
+   this.props.dispatch({
+    type: UPDATE_COUNT,
+    payload: totalCount
+ })
+   }, 100);
+   console.log("totalCount " + totalCount);
+   console.log("cartProducts " + JSON.stringify(this.props.cartProducts));
+    
+   
     
 
     console.log('been in shop mount');
@@ -89,8 +105,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 const mapStateToProps = state => ({
-  products: state.posts.products
-  
+  products: state.posts.products,
+  cartProducts: state.posts.cartProducts
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Shop);

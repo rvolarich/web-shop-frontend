@@ -31,7 +31,7 @@ class Navig extends React.Component{
      <Nav className="mr-auto">
       <Nav.Link href="/shop">Shop</Nav.Link>
       <Nav.Link href="/inv">Inventory</Nav.Link>
-  <Nav.Link href="/cart">Cart <span style={{color: 'green'}}>{count}</span></Nav.Link>
+  <Nav.Link href="/cart">Cart <span style={{color: 'green'}}>{count === 0 ? null : count}</span></Nav.Link>
       
       {isLogged ? <Nav.Link href="/logout">Logout</Nav.Link> : <Nav.Link href="/login">Login</Nav.Link>}
       {isLogged ? <Nav.Link href="/login">My Profile</Nav.Link> : null}

@@ -73,9 +73,9 @@ class ShopItem extends React.Component{
     updateCartQuantityArray= {...updateCartQuantityArray, productQuantity: productQuantityLocal}
     this.setState({cartData: updateCartQuantityArray})
     this.setCartQtyState();
-     this.props.dispatch({
+    */ this.props.dispatch({
           type: INCREMENT
-        });*/
+        });
         
         
        /* keySequence.push(this.props.product.productId);
@@ -97,7 +97,7 @@ class ShopItem extends React.Component{
 
         setTimeout(() => {
           keySequence.push(this.props.product.productId);
-        localStorage.setItem(Date.now(), keySequence);
+        localStorage.setItem(Date.now(), this.props.product.productId);
         this.props.dispatch({
           type: KEY_SEQUENCE,
           payload: keySequence
@@ -109,7 +109,7 @@ class ShopItem extends React.Component{
         this.setCartQtyState();
       
       
-      }, 100);
+      }, 20);
         
         
         
@@ -142,7 +142,7 @@ class ShopItem extends React.Component{
             payload: loadLocalStorage()
           });
           //console.log("state cart data " + JSON.stringify (this.state.cartData))
-      }.bind(this), 50)
+      }.bind(this), 20)
     }
       
 

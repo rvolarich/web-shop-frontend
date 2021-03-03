@@ -133,7 +133,7 @@ class CartItem extends React.Component{
                   
                   
               <h6 style={{marginTop:'50px', marginLeft: '100px', marginBottom: 'auto'}}>EUR {product.productPrice}</h6>
-              <Button variant="outline-danger" onClick={this.deleteCartItemById/*() => this.props.deleteCartProduct(this.props.product.productId)*/} 
+              <Button variant="outline-danger" onClick={/*this.deleteCartItemById*/() => this.props.deleteCartProduct(this.props.product.productId)} 
                    style={{marginLeft:'80px', marginTop:'35px'}}>Remove</Button>
                   </Col>
                 </Row>

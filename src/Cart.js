@@ -60,6 +60,10 @@ class Cart extends React.Component {
        });
     }*/
 
+    componentDidUpdate(){
+     // loadLocalStorage();
+    }
+
     componentDidMount(){
      this.props.getCartQty();
      
@@ -210,14 +214,74 @@ class Cart extends React.Component {
 
 deleteCartItemById(id) {
   
-  const prodObj = {
+  let prodObj = {
     productId: id
   }
-  //console.log("bio u delete cart iteeeeeeeeeeeeeeeem: " + JSON.stringify(prodObj));
+
+  console.log("ddddddddddddddddddddddddddddddddddddddddddddddddddd " + id)
+
+        let lskFiltered = [];
+        let storageKeysInteger = [];
+        let temp = [];
+        let keysToErase = [];
+        let totalCount = 0;
+        let index = 0;
+        for(let i = 0; i < Object.keys(localStorage).length; i++){
+            storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
+          }
+        for(let i = 0; i < storageKeysInteger.length; i++){
+            if(storageKeysInteger[i] > 100000){
+              lskFiltered[index] = storageKeysInteger[i];
+              index++;
+            }
+            }
+
+            console.log("storageKeysInteger " + lskFiltered);
+            
+            for(let i = 0; i < lskFiltered.length; i++){
+              if(localStorage.getItem(lskFiltered[i]) === id.toString()){
+                temp[index] = lskFiltered[i];
+                localStorage.removeItem(temp[index]);
+                index++;
+              }
+            }
+
+            //console.log("temp " + temp[1]);
+
+            
+
+            console.log("keys to erase " + keysToErase);
+
+            setTimeout(() => {
+              for(let i = 0; i < this.props.cartProducts.length; i++){
+                totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+             }
+             this.props.dispatch({
+              type: UPDATE_COUNT,
+              payload: totalCount
+            });
+             }, 20);
+      
+           
+            
+           
+         
+
+         console.log("totalCount " + totalCount);
+
+        setTimeout(() => {if(totalCount == 0){
+          console.log("bio u total countttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+          localStorage.clear();
+          
+          //window.location.reload();
+       }}, 25); 
+         
+            
+  
   this.props.deleteCartItem(prodObj); 
   
   allowCountUpdate = false;
-  window.location.reload();
+  
   }
 
   
