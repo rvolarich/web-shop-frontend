@@ -5,9 +5,10 @@ import 'react-bootstrap-country-select/dist/react-bootstrap-country-select.css';
 import CountrySelect from 'react-bootstrap-country-select';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { IS_LOGGED, GET_CART_PRODUCTS, UPDATE_COUNT } from '../actions/types';
+import { IS_LOGGED, GET_CART_PRODUCTS, UPDATE_COUNT, GET_LOCAL_CART_PRODUCTS } from '../actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { loadLocalStorage, updateCount } from '../Cart';
+import CartPopUp from './CartPopUp';
 
 
 
@@ -98,6 +99,21 @@ class SignUpForm extends React.Component{
             type: IS_LOGGED,
             payload: response.data
         });
+
+        if(this.props.isLogged){
+          console.log("bio u get local cart prods");
+          this.props.dispatch({
+            type: GET_LOCAL_CART_PRODUCTS,
+            payload: loadLocalStorage()
+          });
+
+          axios.post('http://127.0.0.1:8080/post/cart/local', this.props.localCartProducts, {withCredentials:true})
+    .then(response => response.data)
+    .then()
+    .catch(function (error) {
+      console.log(error);
+    });
+        }
         this.setState({allowCheckIsLogged: true});
     });
     
@@ -139,15 +155,17 @@ class SignUpForm extends React.Component{
 
     render(){
         
-        const { isLogged } = this.props;
+        const { isLogged, showModal, loginStatus } = this.props;
         const { allowCheckIsLogged } = this.state;
-        const { loginStatus } = this.props;
+        
         
 
         
         
         return(
             <Container>
+
+              {showModal ? <CartPopUp /> : null}
                 
                 <Col xs={4} >
             <div style={{marginTop: '50px', }}>
@@ -191,7 +209,10 @@ const mapStateToProps = state => ({
     loginStatus: state.posts.loginStatus,
     keySequence: state.posts.loginStatus,
     count: state.posts.count,
-    cartProducts: state.posts.cartProducts
+    cartProducts: state.posts.cartProducts,
+    localCartProducts: state.posts.localCartProducts,
+    showModal: state.posts.showModal
+
     });
 
 export default connect(mapStateToProps)(SignUpForm);

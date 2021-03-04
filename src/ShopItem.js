@@ -205,7 +205,7 @@ class ShopItem extends React.Component{
 function mapDispatchToProps(dispatch) {
   return{
     dispatch,
-     ...bindActionCreators({ getCartQty}, dispatch)
+     ...bindActionCreators({ getCartQty }, dispatch)
 }
 }
 

@@ -2,7 +2,8 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_QTY,
     GET_CART_PRODUCTS, SET_CART_QTY, 
     DELETE_CART, SET_CART_PRODUCT_QUANTITY, UPDATE_CART, UPDATE_COUNT,
     DELETE_CART_ITEM, 
-    UPDATE_CART_TOTAL, IS_LOGGED, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE}  from '../actions/types';
+    UPDATE_CART_TOTAL, IS_LOGGED, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE, 
+    GET_LOCAL_CART_PRODUCTS, SHOW_MODAL}  from '../actions/types';
 import update from 'immutability-helper';
 import { actions } from 'react-table';
 
@@ -10,12 +11,14 @@ const initialState = {
     products: [],
     product: {},
     cartProducts: [],
+    localCartProducts: [],
     count: null,
     cartQtyState: [],
     updateCart: {},
     cTotal: 0,
     shipping: 52.24,
     isLogged: false,
+    showModal: false,
     username: '',
     loginStatus: '',
     cartProductQuantity: {
@@ -53,6 +56,14 @@ export default function(state = initialState, action){
                     ...state,
                     cartProducts: action.payload
                 }
+
+        case GET_LOCAL_CART_PRODUCTS:
+                    console.log('been in localCartProducts');
+                    return{
+                        ...state,
+                        localCartProducts: action.payload
+                    }        
+
         case SET_CART_QTY:
                 console.log('been in set cart qty');
                 return{
@@ -146,7 +157,12 @@ export default function(state = initialState, action){
                 keySequence: action.payload
                 }
             
-                
+        case SHOW_MODAL:
+            
+                    return {
+                   ...state,
+                   showModal: action.payload
+                   } 
                     
                  
                 
