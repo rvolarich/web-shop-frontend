@@ -11,14 +11,15 @@ class AddToCartButton extends React.Component{
             <div>
                 <Button onClick={postToCart} style={{marginLeft:'20px', marginTop:'100px'}}>Add to cart</Button>
                 <Button href="/cart" variant="outline-info" 
-                style={{marginLeft:'140px', marginTop:'-65px'}}>To cart <span style={{color: 'black'}}>{count}</span></Button>
+                style={{marginLeft:'140px', marginTop:'-65px'}}>To cart</Button>
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    count: state.posts.count
+    count: state.posts.count,
+    cartProducts: state.posts.cartProducts
   });
 
 export default connect(mapStateToProps)(AddToCartButton);

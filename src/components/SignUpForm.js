@@ -5,8 +5,9 @@ import 'react-bootstrap-country-select/dist/react-bootstrap-country-select.css';
 import CountrySelect from 'react-bootstrap-country-select';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { IS_LOGGED } from '../actions/types';
+import { IS_LOGGED, GET_CART_PRODUCTS, UPDATE_COUNT } from '../actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { loadLocalStorage, updateCount } from '../Cart';
 
 
 
@@ -43,11 +44,22 @@ class SignUpForm extends React.Component{
         this.setState({ region: val });
       }*/
 
-      /*componentDidMount(){
-        this.setState({ sessid: Cookies.get('SessionId') });
-        console.log('session cookie' + read_cookie('SESSION'));
-        
-      }*/
+      componentDidMount(){
+        this.props.dispatch({
+          type: GET_CART_PRODUCTS,
+          payload: loadLocalStorage()
+        });
+        let totalCount = 0;
+    setTimeout(() => {
+      for(let i = 0; i < this.props.cartProducts.length; i++){
+        totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+     }
+     this.props.dispatch({
+      type: UPDATE_COUNT,
+      payload: totalCount
+    });
+     }, 100);
+      }
 
       handleChangeUsername(event){
         this.setState({ authData: {...this.state.authData , username : event.target.value }});
@@ -86,7 +98,7 @@ class SignUpForm extends React.Component{
             type: IS_LOGGED,
             payload: response.data
         });
-       
+        this.setState({allowCheckIsLogged: true});
     });
     
     
@@ -177,7 +189,9 @@ const mapStateToProps = state => ({
     isLogged: state.posts.isLogged,
     username: state.posts.username,
     loginStatus: state.posts.loginStatus,
-    keySequence: state.posts.loginStatus
+    keySequence: state.posts.loginStatus,
+    count: state.posts.count,
+    cartProducts: state.posts.cartProducts
     });
 
 export default connect(mapStateToProps)(SignUpForm);

@@ -75,6 +75,10 @@ class ShopItem extends React.Component{
       .catch(function (error) {
         console.log(error);
       });
+
+      this.props.dispatch({
+        type: INCREMENT
+      });
       /*axios({
         method: 'post',
         url: 'http://127.0.0.1:8080/pcp',
@@ -99,10 +103,15 @@ class ShopItem extends React.Component{
         console.log("productQuantityLocal " + productQuantityLocal);
       }
     }
+
+    //let increment = localStorage.setItem('count', parseInt(localStorage.getItem('count'))+1);
+
    
     this.props.dispatch({
           type: INCREMENT
         });
+
+
         
         
        /* keySequence.push(this.props.product.productId);

@@ -60,10 +60,11 @@ class CartItem extends React.Component{
       const re = /^[0-9\b]+$/;
       if (event.target.value === '' || re.test(event.target.value)) {
         console.log("handleChange: " + event.target.value);
+        
           getCartProducts();
           if(event.target.value <= 0){
             allowConfirmButton(1);
-          }
+            }
           else{
             allowConfirmButton(5);
           }

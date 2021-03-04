@@ -40,6 +40,7 @@ class Cart extends React.Component {
         this.confirmOrder = this.confirmOrder.bind(this)
        // this.loadLocalStorage = this.loadLocalStorage.bind(this)
         this.addTodo = this.addTodo.bind(this)
+        this.priceTotal = this.priceTotal.bind(this)
        
     }
 
@@ -71,12 +72,73 @@ class Cart extends React.Component {
     this.props.getCartProducts();
      this.props.getCartQty();
      this.props.fetchPosts();
+     this.priceTotal();
     }else{
      this.props.dispatch({
       type: GET_CART_PRODUCTS,
       payload: loadLocalStorage()
     });
+
+    this.priceTotal();
+       /* allowCountUpdate = false;
+      
+      total = 0;
+      let totalCount = 0;
+  
+      let totalRounded = 0;
+      
+      setTimeout(() => { 
+        
+        if(this.props.cartProducts != null){
+        
+        for(let i = 0; i < this.props.cartProducts.length; i++){
+            total += this.props.cartProducts[i].productPrice * this.props.cartProducts[i].productQuantity;
+          }
+      }
+       else{
+        total = 0;
+        
+       }    
+       totalRounded = (Math.round(total * 100) / 100).toFixed(2);
+       this.props.dispatch({ 
+        type: UPDATE_CART_TOTAL,
+        payload: Number(totalRounded)
+      });
+     
+      this.props.dispatch({
+        type: GET_CART_QTY,
+        payload: this.props.updateCart.totalCartQty
+     })
+
+     for(let i = 0; i < this.props.cartProducts.length; i++){
+        totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+     }
+
+     
+      
+     this.props.dispatch({
+      type: UPDATE_COUNT,
+      payload: totalCount
+   })
+     allowCountUpdate = false;
+  
+      
+      }, 100); */
+    } },30);
+
+    localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/cart');
+  }
+
+   
+
+
+    deleteCart = () => {
+        this.props.deleteCart();
         allowCountUpdate = false;
+ }
+
+ priceTotal = () => {
+  allowCountUpdate = false;
       
       total = 0;
       let totalCount = 0;
@@ -120,17 +182,6 @@ class Cart extends React.Component {
   
       
       }, 100); 
-    } },30);
-
-    localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/cart');
-  }
-
-   
-
-
-    deleteCart = () => {
-        this.props.deleteCart();
-        allowCountUpdate = false;
  }
  
 
@@ -166,65 +217,71 @@ window.location.reload();
 
 deleteCartItemById(id) {
   
-  let prodObj = {
-    productId: id
-  }
+  if(this.props.isLogged){
+    let prodObj = {
+      productId: id
+      }
+    this.props.deleteCartItem(prodObj); 
+  }else{
+    console.log("ddddddddddddddddddddddddddddddddddddddddddddddddddd " + id)
 
-  console.log("ddddddddddddddddddddddddddddddddddddddddddddddddddd " + id)
+    let lskFiltered = [];
+    let storageKeysInteger = [];
+    let temp = [];
+    let keysToErase = [];
+    let totalCount = 0;
+    let index = 0;
+    for(let i = 0; i < Object.keys(localStorage).length; i++){
+        storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
+      }
+    for(let i = 0; i < storageKeysInteger.length; i++){
+        if(storageKeysInteger[i] > 100000){
+          lskFiltered[index] = storageKeysInteger[i];
+          index++;
+        }
+        }
 
-        let lskFiltered = [];
-        let storageKeysInteger = [];
-        let temp = [];
-        let keysToErase = [];
-        let totalCount = 0;
-        let index = 0;
-        for(let i = 0; i < Object.keys(localStorage).length; i++){
-            storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
+        console.log("storageKeysInteger " + lskFiltered);
+        
+        for(let i = 0; i < lskFiltered.length; i++){
+          if(localStorage.getItem(lskFiltered[i]) === id.toString()){
+            temp[index] = lskFiltered[i];
+            localStorage.removeItem(temp[index]);
+            index++;
           }
-        for(let i = 0; i < storageKeysInteger.length; i++){
-            if(storageKeysInteger[i] > 100000){
-              lskFiltered[index] = storageKeysInteger[i];
-              index++;
-            }
-            }
+        }
 
-            console.log("storageKeysInteger " + lskFiltered);
-            
-            for(let i = 0; i < lskFiltered.length; i++){
-              if(localStorage.getItem(lskFiltered[i]) === id.toString()){
-                temp[index] = lskFiltered[i];
-                localStorage.removeItem(temp[index]);
-                index++;
-              }
-            }
+        //console.log("temp " + temp[1]);
 
-            //console.log("temp " + temp[1]);
+        
 
-            
+        console.log("keys to erase " + keysToErase);
 
-            console.log("keys to erase " + keysToErase);
+       
+  
+       updateCount();
+        
+       
+     
 
-           
+     console.log("totalCount " + totalCount);
+
+    setTimeout(() => {if(totalCount == 0){
+      console.log("bio u total countttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+      localStorage.clear();
       
-           updateCount();
-            
-           
-         
-
-         console.log("totalCount " + totalCount);
-
-        setTimeout(() => {if(totalCount == 0){
-          console.log("bio u total countttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
-          localStorage.clear();
-          
-          //window.location.reload();
-       }}, 25); 
-         
+      
+   }}, 25); 
+  }
+  
+  
+  window.location.reload();
+  
             
   
-  this.props.deleteCartItem(prodObj); 
   
-  allowCountUpdate = false;
+  
+  //allowCountUpdate = false;
   
   }
 
@@ -305,24 +362,11 @@ confirmOrder = () => {
           
         }
         
-                </div> : null}
-
-            {isLogged ? <div>   
-      <div>Your saved items</div>
-                {count !== null ?  <div>
-        {
-          cartProducts.map((product, index) => 
-          <SavedCartItem product={product} key={index} 
-          deleteCartProduct={(num) => this.deleteCartItemById(num)}  updateCartItems={() => this.updateCart()} 
-          onSubmit={this.addTodo} />
-          
-          )
-          
-        }
+                
         
                 </div> : null} 
 
-                </div> : null}
+                
                 
         </Col>
 
