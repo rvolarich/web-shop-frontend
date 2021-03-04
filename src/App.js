@@ -67,7 +67,7 @@ updateCount(){
 
 componentDidMount(){
   
-  localStorage.setItem("count", 0);
+  //localStorage.setItem("count", 0);
   /*axios.post('http://127.0.0.1:8080/login', { withCredentials: true},
    {
      username: 'mila'

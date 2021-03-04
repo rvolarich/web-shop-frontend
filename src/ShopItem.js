@@ -31,6 +31,7 @@ class ShopItem extends React.Component{
             productQuantity: 0,
             productStock: this.props.product.productQuantity,
             productPrice: this.props.product.productPrice,
+            productDescription: this.props.product.productDescription,
             productImage: this.props.product.productImage
           }
           

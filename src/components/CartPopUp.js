@@ -2,15 +2,26 @@ import React from 'react';
 import { Button, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { SHOW_MODAL } from '../actions/types';
 
 class CartPopUp extends React.Component{
 
     constructor(props){
         super(props);
+        this.closeModal = this.closeModal.bind(this)
     }
+
+    closeModal = () => {
+        this.props.dispatch({
+          type: SHOW_MODAL,
+          payload: false
+        });
+        window.location.replace(localStorage.getItem('lastUrl'));
+      }
     render(){
         return(
             <Modal
+     
       show={this.props.showModal}
     size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -18,19 +29,21 @@ class CartPopUp extends React.Component{
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+        Cart
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Centered Modal</h4>
+        
         <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
+          There are items in the guest cart.
+        </p>
+        <p>
+          Would you like to merge them with your saved items?
         </p>
       </Modal.Body>
       <Modal.Footer>
-        <Button >Close</Button>
+        <Button onClick={this.closeModal}>Do not merge</Button>
+        <Button onClick={() => this.props.mergeCart()}>Merge</Button>
       </Modal.Footer>
     </Modal>
         )

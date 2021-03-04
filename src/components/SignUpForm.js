@@ -5,7 +5,7 @@ import 'react-bootstrap-country-select/dist/react-bootstrap-country-select.css';
 import CountrySelect from 'react-bootstrap-country-select';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { IS_LOGGED, GET_CART_PRODUCTS, UPDATE_COUNT, GET_LOCAL_CART_PRODUCTS } from '../actions/types';
+import { IS_LOGGED, GET_CART_PRODUCTS, UPDATE_COUNT, GET_LOCAL_CART_PRODUCTS, SHOW_MODAL } from '../actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { loadLocalStorage, updateCount } from '../Cart';
 import CartPopUp from './CartPopUp';
@@ -34,6 +34,8 @@ class SignUpForm extends React.Component{
         this.handleChangeUsername = this.handleChangeUsername.bind(this)
         this.handleChangePassword = this.handleChangePassword.bind(this)
         this.handleClick = this.handleClick.bind(this)
+        this.closeModal = this.closeModal.bind(this)
+        this.mergeCart = this.mergeCart.bind(this)
         
       }
     
@@ -59,6 +61,8 @@ class SignUpForm extends React.Component{
       type: UPDATE_COUNT,
       payload: totalCount
     });
+
+    localStorage.setItem('count', this.props.count);
      }, 100);
       }
 
@@ -86,6 +90,27 @@ class SignUpForm extends React.Component{
       console.log('Been in register:', this.state.registerForm);
     }
 
+    closeModal = () => {
+      this.props.dispatch({
+        type: SHOW_MODAL,
+        payload: false
+      });
+    }
+
+    mergeCart = () => {
+
+      axios.post('http://127.0.0.1:8080/post/cart/local', 
+      this.props.localCartProducts, {withCredentials:true})
+    .then(response => response.data)
+    .catch(function (error) {
+      console.log(error);
+    });
+        
+        this.setState({allowCheckIsLogged: true});
+        this.closeModal();
+      }
+    
+
     
 
     postLogData = () => {
@@ -106,15 +131,23 @@ class SignUpForm extends React.Component{
             type: GET_LOCAL_CART_PRODUCTS,
             payload: loadLocalStorage()
           });
-
-          axios.post('http://127.0.0.1:8080/post/cart/local', this.props.localCartProducts, {withCredentials:true})
+          if(parseInt(localStorage.getItem('count')) > 0){
+          this.props.dispatch({
+            type: SHOW_MODAL,
+            payload: true
+          });
+          this.setState({allowCheckIsLogged: false});
+        }else{
+          this.setState({allowCheckIsLogged: true});
+        }
+         /* axios.post('http://127.0.0.1:8080/post/cart/local', this.props.localCartProducts, {withCredentials:true})
     .then(response => response.data)
     .then()
     .catch(function (error) {
       console.log(error);
-    });
+    });*/
         }
-        this.setState({allowCheckIsLogged: true});
+        
     });
     
     
@@ -165,7 +198,7 @@ class SignUpForm extends React.Component{
         return(
             <Container>
 
-              {showModal ? <CartPopUp /> : null}
+              {showModal ? <CartPopUp mergeCart={() => this.mergeCart()}/> : null}
                 
                 <Col xs={4} >
             <div style={{marginTop: '50px', }}>
