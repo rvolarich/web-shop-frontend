@@ -34,7 +34,7 @@ class Navig extends React.Component{
   <Nav.Link href="/cart">Cart <span style={{color: 'green'}}>{count === 0 ? null : count}</span></Nav.Link>
       
       {isLogged ? <Nav.Link href="/logout">Logout</Nav.Link> : <Nav.Link href="/login">Login</Nav.Link>}
-      {isLogged ? <Nav.Link href="/login">My Profile</Nav.Link> : null}
+      {isLogged ? <Nav.Link href="/profile">My Profile</Nav.Link> : null}
       {isLogged ? <div style={{marginLeft: '11px', marginTop: '8px', color: 'gray'}}>Welcome, {username}</div> : null}
     </Nav>
     </Navbar>

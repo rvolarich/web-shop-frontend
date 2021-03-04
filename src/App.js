@@ -19,6 +19,7 @@ import { IS_LOGGED } from './actions/types';
 import SetLoggedIn from './components/SetLoggedIn';
 import Register from './components/Register';
 import LoggedOut from './components/LoggedOut';
+import MyProfile from './components/MyProfile';
 
 
 
@@ -111,6 +112,7 @@ render(){
       <Route path="/logout" component={Logout} />
       <Route path="/register" component={Register} />
       <Route path="/loggedout" component={LoggedOut} />
+      <Route path="/profile" component={MyProfile} />
       
      
     </div>
