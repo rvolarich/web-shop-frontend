@@ -18,7 +18,7 @@ class MyProfile extends React.Component{
                 nameName:'',
                 surname:'',
                 email:'',
-                password:'',
+                password: localStorage.getItem('x_py35'),
                 address:'',
                 zip:'',
                 city:'',
@@ -26,6 +26,10 @@ class MyProfile extends React.Component{
                 }
         }
         this.closeModal = this.closeModal.bind(this)
+    }
+
+    componentDidMount(){
+      console.log("password: " + this.state.userData.password);
     }
 
     closeModal = () => {
@@ -88,26 +92,26 @@ class MyProfile extends React.Component{
     <Form.Group as={Col} controlId="formGridName">
       <Form.Label>Name</Form.Label>
       <Form.Control type="text" placeholder="" 
-      onChange={this.handleChangeName.bind(this)} value={this.state.nameName} />
+      onChange={this.handleChangeName.bind(this)} value={this.state.userData.nameName} />
     </Form.Group>
 
     <Form.Group as={Col} controlId="formGridSurname">
       <Form.Label>Surname</Form.Label>
       <Form.Control type="text" placeholder=""
-      onChange={this.handleChangeSurname.bind(this)} value={this.state.surname} />
+      onChange={this.handleChangeSurname.bind(this)} value={this.state.userData.surname} />
     </Form.Group>
   </Form.Row>
   <Form.Row>
     <Form.Group as={Col} controlId="formGridEmail">
       <Form.Label>Email</Form.Label>
       <Form.Control type="email" placeholder="Enter email" 
-      onChange={this.handleChangeEmail.bind(this)} value={this.state.email}/>
+      onChange={this.handleChangeEmail.bind(this)} value={this.state.userData.email}/>
     </Form.Group>
 
     <Form.Group as={Col} controlId="formGridPassword">
       <Form.Label>Password</Form.Label>
       <Form.Control type="password" placeholder="Password" 
-      onChange={this.handleChangePassword.bind(this)} value={this.state.password}/>
+      onChange={this.handleChangePassword.bind(this)} value={this.state.userData.password}/>
     </Form.Group>
   </Form.Row>
 
@@ -115,23 +119,23 @@ class MyProfile extends React.Component{
   <Form.Group as={Col} xs={8} controlId="formGridAddress1">
     <Form.Label>Address</Form.Label>
     <Form.Control placeholder="" 
-    onChange={this.handleChangeAddress.bind(this)} value={this.state.address}/>
+    onChange={this.handleChangeAddress.bind(this)} value={this.state.userData.address}/>
   </Form.Group>
   <Form.Group as={Col} controlId="formGridZip">
       <Form.Label>Zip</Form.Label>
-      <Form.Control onChange={this.handleChangeZip.bind(this)} value={this.state.zip}/>
+      <Form.Control onChange={this.handleChangeZip.bind(this)} value={this.state.userData.zip}/>
     </Form.Group>
     </Form.Row>
   <Form.Row>
     <Form.Group as={Col} controlId="formGridCity">
       <Form.Label>City</Form.Label>
-      <Form.Control onChange={this.handleChangeCity.bind(this)} value={this.state.city}/>
+      <Form.Control onChange={this.handleChangeCity.bind(this)} value={this.state.userData.city}/>
     </Form.Group>
 
     <Form.Group as={Col} controlId="formGridState">
       <Form.Label>State</Form.Label>
       
-      <Form.Control value={this.state.country} onChange={this.handleChangeCountry.bind(this)}/>
+      <Form.Control value={this.state.userData.country} onChange={this.handleChangeCountry.bind(this)}/>
         
         
       

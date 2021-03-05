@@ -4,11 +4,11 @@ import Navig from './Navig';
 import SignUp from './components/SignUp';
 import LogIn from './LogIn';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import Inventory from './Inventory';
+import Inventory from './components/Inventory';
 import { Provider } from 'react-redux';
 import Cookies from 'universal-cookie';
 import Cart from './Cart';
-import { Button } from 'react-bootstrap';
+import { Button, Container, Row } from 'react-bootstrap';
 import store from './store';
 import Shop from './Shop';
 import ShopItemSelected from './ShopItemSelected';
@@ -97,7 +97,10 @@ render(){
    <Provider store={store}>
     <Router>
        
-    <div>
+    <Container>
+    <Row style={{minHeight:'100px', background:'grey', alignContent:'center'}}>
+    <h1 style={{color:'white', marginLeft:'30px'}}>Webshop</h1>
+    </Row>
      
     <Navig />
     <SetLoggedIn />
@@ -115,7 +118,7 @@ render(){
       <Route path="/profile" component={MyProfile} />
       
      
-    </div>
+    </Container>
     
     </Router>
     </Provider>

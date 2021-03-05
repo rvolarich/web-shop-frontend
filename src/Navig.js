@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import bootstrap from 'bootstrap';
 import { Container, Nav, Row,
         Navbar} from 'react-bootstrap';
 import { render } from '@testing-library/react';
@@ -22,13 +23,12 @@ class Navig extends React.Component{
   render(){
     const { count, isLogged, username } = this.props;
   return (
-<Container>
-    <Row style={{minHeight:'100px', background:'grey', alignContent:'center'}}>
-    <h1 style={{color:'white', marginLeft:'30px'}}>Webshop</h1>
-    </Row>
+    
+<Container fluid>
+    
     
     <Navbar bg="light" variant="light">
-     <Nav className="mr-auto">
+     <Nav className="mr-auto" >
       <Nav.Link href="/shop">Shop</Nav.Link>
       <Nav.Link href="/inv">Inventory</Nav.Link>
   <Nav.Link href="/cart">Cart <span style={{color: 'green'}}>{count === 0 ? null : count}</span></Nav.Link>
@@ -38,7 +38,7 @@ class Navig extends React.Component{
       {isLogged ? <div style={{marginLeft: '11px', marginTop: '8px', color: 'gray'}}>Welcome, {username}</div> : null}
     </Nav>
     </Navbar>
-  
+    
     
     
 

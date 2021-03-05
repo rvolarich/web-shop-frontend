@@ -114,7 +114,8 @@ class SignUpForm extends React.Component{
     
 
     postLogData = () => {
-
+      console.log("authData " + JSON.stringify(this.state.authData));
+      this.setState({allowCheckIsLogged: false});
         axios.post('http://127.0.0.1:8080/login', 
     this.state.authData, { withCredentials: true }
 
@@ -126,19 +127,19 @@ class SignUpForm extends React.Component{
         });
 
         if(this.props.isLogged){
-          console.log("bio u get local cart prods");
+          
           this.props.dispatch({
             type: GET_LOCAL_CART_PRODUCTS,
             payload: loadLocalStorage()
           });
+
+          localStorage.setItem('x_py35', this.state.authData.password);
           if(parseInt(localStorage.getItem('count')) > 0){
           this.props.dispatch({
             type: SHOW_MODAL,
             payload: true
           });
-          this.setState({allowCheckIsLogged: false});
-        }else{
-          this.setState({allowCheckIsLogged: true});
+          
         }
          /* axios.post('http://127.0.0.1:8080/post/cart/local', this.props.localCartProducts, {withCredentials:true})
     .then(response => response.data)
@@ -146,6 +147,9 @@ class SignUpForm extends React.Component{
     .catch(function (error) {
       console.log(error);
     });*/
+        }
+        else{
+          this.setState({allowCheckIsLogged: true});
         }
         
     });

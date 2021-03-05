@@ -11,6 +11,7 @@ class Logout extends React.Component{
     }
 
     handleClick = () => {
+        localStorage.removeItem('x_py35');
         fetch('http://127.0.0.1:8080/logout', {
             credentials: 'include',
             method: 'GET'
