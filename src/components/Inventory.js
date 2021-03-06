@@ -5,13 +5,29 @@ import { bindActionCreators } from 'redux';
 import { SHOW_MODAL } from '../actions/types';
 import { fetchPosts } from '../actions/postActions';
 import InventoryItem from './InvertoryItem';
+import DragAndDrop from './DragAndDrop';
+import FileList from './FileList';
 
 class Inventory extends React.Component{
 
     constructor(props){
         super(props);
+        this.state = {
+            file:[]
+        }
         this.closeModal = this.closeModal.bind(this)
+        this.handleDrop = this.handleDrop.bind(this)
     }
+
+    handleDrop = (files) => {
+        
+        /*for (var i = 0; i < files.length; i++) {
+         // if (!files[i].name) return
+          fileList.push(files[i].name)
+        }*/
+        
+        this.setState({file: files})
+      }
 
     componentDidMount(){
         this.props.fetchPosts();
@@ -70,7 +86,11 @@ class Inventory extends React.Component{
     </Form.Group>
     </Form.Row>
 </Form>
+<FileList />
+
+<Button>Add product</Button>
 </Col>
+
             </Container>
         )
     }

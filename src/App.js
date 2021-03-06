@@ -20,6 +20,7 @@ import SetLoggedIn from './components/SetLoggedIn';
 import Register from './components/Register';
 import LoggedOut from './components/LoggedOut';
 import MyProfile from './components/MyProfile';
+import CheckCenter from './components/CheckCenter';
 
 
 
@@ -97,7 +98,7 @@ render(){
    <Provider store={store}>
     <Router>
        
-    <Container>
+    <Container >
     <Row style={{minHeight:'100px', background:'grey', alignContent:'center'}}>
     <h1 style={{color:'white', marginLeft:'30px'}}>Webshop</h1>
     </Row>

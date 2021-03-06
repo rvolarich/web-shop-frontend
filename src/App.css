@@ -1,31 +1,36 @@
-.addToCart {
 
-margin-left: 20px;
-padding: 10px;
-}
-
-h1 {
-
+.dropHere{
+  
+  width: 48%;
+  min-height: 200px;
+  margin: 0 auto;
   text-align: center;
+  border: 1px solid;
+  float: right;
+  border-radius: 5px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-color: rgb(184, 182, 182);
 }
 
-img {
-
-margin: 20px;
+.dropHereDashed{
+  height: 200px;
+  width: 48%;
+  background-color: whitesmoke;
+  margin: 0 auto;
+  text-align: center;
+  border: 4px dashed;
+  float: right;
+  border-radius: 5px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  opacity: .8;
+  border-color: grey;
 }
 
-
-
-.navLinks {
-  width: 50%;
-  display: flex;
-  justify-content: left;
-  
-  list-style: none;
-  
-
-}
-
-.boot{
-  background: blue;
+.imgUpload {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
 }

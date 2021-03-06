@@ -24,7 +24,7 @@ class Navig extends React.Component{
     const { count, isLogged, username } = this.props;
   return (
     
-<Container fluid>
+
     
     
     <Navbar bg="light" variant="light">
@@ -42,7 +42,7 @@ class Navig extends React.Component{
     
     
 
-  </Container>
+  
 
     /*<nav>
     <h1 className="nav">Webshop</h1>
