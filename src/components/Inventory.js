@@ -14,20 +14,15 @@ class Inventory extends React.Component{
         super(props);
         this.state = {
             file:[]
+            
         }
         this.closeModal = this.closeModal.bind(this)
-        this.handleDrop = this.handleDrop.bind(this)
+        //this.handleDrop = this.handleDrop.bind(this)
     }
 
-    handleDrop = (files) => {
-        
-        /*for (var i = 0; i < files.length; i++) {
-         // if (!files[i].name) return
-          fileList.push(files[i].name)
-        }*/
-        
+   /* handleDrop = (files) => {
         this.setState({file: files})
-      }
+      }*/
 
     componentDidMount(){
         this.props.fetchPosts();
