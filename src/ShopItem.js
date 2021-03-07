@@ -143,8 +143,10 @@ class ShopItem extends React.Component{
 
       setCartQtyState = () => {
         let id = this.props.product.productId;
+        localStorage.setItem(id, JSON.stringify(this.state.cartData));
+        console.log("idddddddddddddddddddddddddddddddddddddddd " + id)
         setTimeout(function() { //Start the timer
-          localStorage.setItem(id, JSON.stringify(this.state.cartData));
+          
           this.props.dispatch({
             type: GET_CART_PRODUCTS,
             payload: loadLocalStorage()
@@ -162,8 +164,8 @@ class ShopItem extends React.Component{
       
         <Row key={product.productId} style={{minHeight:'200px', marginTop:'20px'}}>
           <Col  xs={4}>
-          <img className="rounded mb-0" alt="100x100" src="https://placehold.it/100x100" 
-          src={"data:image/jpg;base64," + product.productImage} alt=""></img>
+          <img className="rounded mb-0" alt="100x100" 
+          src={product.productImage} alt=""></img>
           </Col>
           <Col  xs={5} style={{marginTop:'80px'}}>
             <div>
@@ -181,7 +183,7 @@ class ShopItem extends React.Component{
           </Col>
           <Col  xs={3}>
             <div style={{marginTop:'30px', marginLeft: '60px'}}>
-              <h5>Price: {product.productPrice}, EUR</h5>
+              <h5>Price: {parseFloat(product.productPrice).toFixed(2)}, EUR</h5>
             </div>
             <br />
            

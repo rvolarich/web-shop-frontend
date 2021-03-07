@@ -7,13 +7,21 @@ import { fetchPosts } from '../actions/postActions';
 import InventoryItem from './InvertoryItem';
 import DragAndDrop from './DragAndDrop';
 import FileList from './FileList';
+import axios from 'axios';
 
 class Inventory extends React.Component{
 
     constructor(props){
         super(props);
         this.state = {
-            file:[]
+            file:[],
+            productData:{
+                productName:'',
+                productDescription:'',
+                productPriceString:'',
+                productQuantity:'',
+                productImage:''
+              }
             
         }
         this.closeModal = this.closeModal.bind(this)
@@ -34,6 +42,40 @@ class Inventory extends React.Component{
           payload: false
         });
         window.location.replace(localStorage.getItem('lastUrl'));
+      }
+
+      handleName(event){
+        this.setState({productData:{...this.state.productData, productName: event.target.value}});
+      }
+    
+      handleDesc(event){
+        this.setState({productData:{...this.state.productData, productDescription: event.target.value}});
+      }
+    
+      handlePrice(event){
+        this.setState({productData:{...this.state.productData, productPrice: event.target.value}});
+      }
+    
+      handleQty(event){
+        this.setState({productData:{...this.state.productData, productQuantity: event.target.value}});
+      }
+    
+      handleInsert(){
+        /*this.props.dispatch({
+          type: PRODUCT_DATA,
+          payload: this.state.productData
+        })*/
+    
+        this.setState({productData:{...this.state.productData, productImage: localStorage.getItem('image')}})
+    
+        setTimeout(() => {axios.post('http://127.0.0.1:8080/products/insert', this.state.productData,
+        {withCredentials:true})
+        .then(function(response){
+          console.log(response);
+        })
+        .catch(function(err){
+          console.log(err);
+        })}, 30);
       }
     render(){
 
@@ -60,30 +102,30 @@ class Inventory extends React.Component{
 
 <Form.Group  controlId="productName">
       <Form.Label>Product Name</Form.Label>
-      <Form.Control type="text" placeholder="" 
+      <Form.Control type="text" placeholder="" onChange={this.handleName.bind(this)}
         />
     </Form.Group>
 <Form.Group  controlId="productDescription">
       <Form.Label>Product description</Form.Label>
-      <Form.Control type="text" placeholder="" 
+      <Form.Control type="text" placeholder="" onChange={this.handleDesc.bind(this)}
         />
     </Form.Group>
     <Form.Row>
     <Form.Group  as={Col} controlId="productPrice">
       <Form.Label>Price</Form.Label>
-      <Form.Control type="text" placeholder="" 
+      <Form.Control type="text" placeholder="" onChange={this.handlePrice.bind(this)}
         />
     </Form.Group>
     <Form.Group  as={Col} controlId="productStock">
       <Form.Label>Quantity</Form.Label>
-      <Form.Control type="text" placeholder="" 
+      <Form.Control type="text" placeholder="" onChange={this.handleQty.bind(this)}
         />
     </Form.Group>
     </Form.Row>
 </Form>
 <FileList />
 
-<Button>Add product</Button>
+<Button onClick={this.handleInsert.bind(this)}>Add product</Button>
 </Col>
 
             </Container>

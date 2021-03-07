@@ -3,7 +3,7 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_QTY,
     DELETE_CART, SET_CART_PRODUCT_QUANTITY, UPDATE_CART, UPDATE_COUNT,
     DELETE_CART_ITEM, 
     UPDATE_CART_TOTAL, IS_LOGGED, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE, 
-    GET_LOCAL_CART_PRODUCTS, SHOW_MODAL}  from '../actions/types';
+    GET_LOCAL_CART_PRODUCTS, SHOW_MODAL, PRODUCT_DATA}  from '../actions/types';
 import update from 'immutability-helper';
 import { actions } from 'react-table';
 
@@ -12,6 +12,7 @@ const initialState = {
     product: {},
     cartProducts: [],
     localCartProducts: [],
+    productData: {},
     count: null,
     cartQtyState: [],
     updateCart: {},
@@ -164,7 +165,12 @@ export default function(state = initialState, action){
                    showModal: action.payload
                    } 
                     
-                 
+        case PRODUCT_DATA:
+            
+        return{
+            ...state,
+            productData: action.payload
+        }
                 
         
         case INCREMENT:

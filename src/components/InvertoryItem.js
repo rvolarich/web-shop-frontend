@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Container, Form, Col, Table} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SHOW_MODAL } from '../actions/types';
+import { PRODUCT_DATA, SHOW_MODAL } from '../actions/types';
 import { fetchPosts } from '../actions/postActions';
 import axios from 'axios';
 
@@ -16,6 +16,8 @@ class InventoryItem extends React.Component{
             productPriceString: '',
             productQuantity: ''
         }
+
+        
         }
         this.closeModal = this.closeModal.bind(this)
     }
@@ -51,6 +53,8 @@ validateStock(s) {
         this.setState({productPriceQty:{...this.state.productPriceQty, productQuantity: event.target.value}});
       }
   }
+
+  
 
     handleUpdate(){
 
@@ -101,7 +105,7 @@ validateStock(s) {
         <Button style={{marginLeft: '20px', marginRight: '20px'}} 
                 onClick={this.handleUpdate.bind(this)}>Update</Button>
         
-        <Button variant="outline-danger">Delete</Button>
+        <Button variant="outline-danger" onClick={this.handleDelete.bind(this)}>Delete</Button>
       
       </td>
     </tr>

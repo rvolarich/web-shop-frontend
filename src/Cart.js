@@ -74,7 +74,7 @@ class Cart extends React.Component {
      this.props.fetchPosts();
      this.priceTotal();
     }else{
-     this.props.dispatch({
+    this.props.dispatch({
       type: GET_CART_PRODUCTS,
       payload: loadLocalStorage()
     });
@@ -437,10 +437,10 @@ export function loadLocalStorage(){
   
         let lskFiltered = [];
         let storageKeysInteger = [];
-        let allValues = [];
         let uniqueValues = [];
-        
         let index = 0;
+        let temp = [];
+
         for(let i = 0; i < Object.keys(localStorage).length; i++){
             storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
           }
@@ -455,21 +455,12 @@ export function loadLocalStorage(){
           
 
         for(let i = 0; i < lskFiltered.length; i++){
-            let temp = [];
-            temp = localStorage.getItem(lskFiltered[i]);
-            let tempFiltered = [];
-            let index = 0;
-          for(let i = 0; i < temp.length; i++){
-            if(temp[i] !== ','){
-            tempFiltered[index] = temp[i];
-            allValues.push(tempFiltered[index]);
             
-            index++;
+            temp[i] = localStorage.getItem(lskFiltered[i]);
         }
-        }
-      }
           
-          uniqueValues = [...new Set(allValues)];
+          uniqueValues = [...new Set(temp)];
+          
 
    for(let i = 0; i < uniqueValues.length; i++){
       localStorageCart[i] = JSON.parse(localStorage.getItem(uniqueValues[i]));
