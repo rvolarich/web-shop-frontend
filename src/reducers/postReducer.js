@@ -3,7 +3,8 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_QTY,
     DELETE_CART, SET_CART_PRODUCT_QUANTITY, UPDATE_CART, UPDATE_COUNT,
     DELETE_CART_ITEM, 
     UPDATE_CART_TOTAL, IS_LOGGED, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE, 
-    GET_LOCAL_CART_PRODUCTS, SHOW_MODAL, PRODUCT_DATA, ALLOW_ADD_PRODUCT}  from '../actions/types';
+    GET_LOCAL_CART_PRODUCTS, SHOW_MODAL, PRODUCT_DATA, ALLOW_ADD_PRODUCT,
+    INVENTORY_STATUS}  from '../actions/types';
 import update from 'immutability-helper';
 import { actions } from 'react-table';
 
@@ -20,6 +21,7 @@ const initialState = {
     shipping: 52.24,
     isLogged: false,
     showModal: false,
+    inventoryStatus:'',
     allowAddProduct:false,
     username: '',
     loginStatus: '',
@@ -164,6 +166,13 @@ export default function(state = initialState, action){
                  return {
                 ...state,
                 keySequence: action.payload
+                }
+
+        case INVENTORY_STATUS:
+            
+                 return {
+                ...state,
+                inventoryStatus: action.payload
                 }
             
         case SHOW_MODAL:

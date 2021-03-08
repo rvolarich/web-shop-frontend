@@ -84,6 +84,8 @@ constructor(props){
         type: ALLOW_ADD_PRODUCT,
         payload: true
       })
+
+      this.props.allowButtAdd();
     }
      
     this.setState({files: imgFile})

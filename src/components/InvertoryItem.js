@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Container, Form, Col, Table} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { PRODUCT_DATA, SHOW_MODAL } from '../actions/types';
+import { INVENTORY_STATUS, PRODUCT_DATA, SHOW_MODAL } from '../actions/types';
 import { fetchPosts } from '../actions/postActions';
 import axios from 'axios';
 
@@ -49,6 +49,7 @@ validateStock(s) {
 }
 
     handlePrice(event){
+      console.log(this.validatePrice(event.target.value))
         if(this.validatePrice(event.target.value)){
           //let priceRounded = (Math.round(parseInt(event.target.value)).toFixed(2));
           this.setState({productPriceQty:{...this.state.productPriceQty, productPriceString: event.target.value}});
@@ -65,13 +66,17 @@ validateStock(s) {
   
 
     handleUpdate(){
-
+      
       this.setState({productPriceQty:{...this.state.productPriceQty, 
                      productId: this.props.product.productId}});
         setTimeout(() => {axios.post('http://127.0.0.1:8080/products/update', this.state.productPriceQty,
         {withCredentials:true})
-        .then(function(response){
-          console.log(response);
+        .then(response => {
+          console.log('update response' + JSON.stringify(response.data));
+          this.props.dispatch({
+            type: INVENTORY_STATUS,
+            payload: response.data
+          })
         })
         .catch(function(err){
           console.log(err);

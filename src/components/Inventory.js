@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Container, Modal, Table, Form, Col} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SHOW_MODAL } from '../actions/types';
+import { SHOW_MODAL, INVENTORY_STATUS } from '../actions/types';
 import { fetchPosts } from '../actions/postActions';
 import InventoryItem from './InvertoryItem';
 import DragAndDrop from './DragAndDrop';
@@ -10,6 +10,7 @@ import FileList from './FileList';
 import axios from 'axios';
 import ModalElement from './ModalElement';
 import { data } from 'jquery';
+
 
 class Inventory extends React.Component{
 
@@ -37,6 +38,7 @@ class Inventory extends React.Component{
         }
         this.closeModal = this.closeModal.bind(this)
         this.showModal = this.showModal.bind(this)
+        this.validatePriceIn = this.validatePriceIn.bind(this)
         //this.allowAddButtonKey = this.allowAddButtonKey.bind(this)
         //this.handleDrop = this.handleDrop.bind(this)
     }
@@ -104,8 +106,24 @@ class Inventory extends React.Component{
           headers:{
             withCredentials:true
           }
+        }).then(response => {
+          this.props.dispatch({
+            type: INVENTORY_STATUS,
+            payload: response.data
+          })
         });
       }
+
+      validatePriceIn(s) {
+        console.log('been in validate price')
+        let rgx = /^[0-9]*\.?[0-9]*$/; // allows numbers and one dot
+        return s.match(rgx);
+    }
+    
+    validateStockIn(s) {
+      let rgx = /^[0-9]*$/; // allows numbers only
+      return s.match(rgx);
+    }
 
       handleName(event){
         this.setState({productData:{...this.state.productData, productName: event.target.value}});
@@ -118,14 +136,18 @@ class Inventory extends React.Component{
       }
     
       handlePrice(event){
+        console.log(JSON.stringify(this.validatePriceIn(event.target.value)))
+        if(this.validatePriceIn(event.target.value)){
         this.setState({productData:{...this.state.productData, productPriceString: event.target.value}});
         this.allowAddButtonKey();
-        
+      }
       }
     
       handleQty(event){
+        if(this.validateStockIn(event.target.value)){
         this.setState({productData:{...this.state.productData, productQuantity: event.target.value}});
         this.allowAddButtonKey();
+      }
       }
     
       handleInsert(){
@@ -138,8 +160,12 @@ class Inventory extends React.Component{
     
         setTimeout(() => {axios.post('http://127.0.0.1:8080/products/insert', this.state.productData,
         {withCredentials:true})
-        .then(function(response){
+        .then(response => {
           console.log(response);
+          this.props.dispatch({
+            type: INVENTORY_STATUS,
+            payload: response.data
+          })
         })
         .catch(function(err){
           console.log(err);
@@ -164,8 +190,12 @@ class Inventory extends React.Component{
                     )
                 }
               
-<Col style={{marginTop: '40px'}} xs={6}>
-    <div style={{marginBottom: '20px'}}>
+<Col style={{marginTop: '10px'}} xs={6}>
+  <div style={{width:'80%', height:'30px', color:'green'}}> 
+          {this.props.inventoryStatus.charAt(0) === 'E' ? <p><span style={{color:'red'}}>{this.props.inventoryStatus}</span></p>
+          : <p><span style={{color:'green'}}>{this.props.inventoryStatus}</span></p>}
+   </div>
+    <div style={{marginBottom: '20px', marginTop: '10px'}}>
         <h6>
             Add new product:
         </h6>
@@ -195,7 +225,7 @@ class Inventory extends React.Component{
     </Form.Group>
     </Form.Row>
 </Form>
-<FileList />
+<FileList allowButtAdd={() => this.allowAddButtonKey()}/>
 
 {this.state.allowAddButton ? <Button onClick={this.handleInsert.bind(this)} >Add product</Button> :
 <Button onClick={this.handleInsert.bind(this)} disabled >Add product</Button>}
@@ -218,7 +248,8 @@ function mapDispatchToProps(dispatch) {
       showModal: state.posts.showModal,
       products: state.posts.products,
       showModal: state.posts.showModal,
-      allowAddProduct: state.posts.allowAddProduct
+      allowAddProduct: state.posts.allowAddProduct,
+      inventoryStatus: state.posts.inventoryStatus
       });
   
   export default connect (mapStateToProps, mapDispatchToProps)(Inventory);
