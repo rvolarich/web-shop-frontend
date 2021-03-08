@@ -31,11 +31,13 @@ class Inventory extends React.Component{
               },
 
               input:'inventory',
-              productId: 10
+              productId: 0,
+              allowAddButton:false
             
         }
         this.closeModal = this.closeModal.bind(this)
         this.showModal = this.showModal.bind(this)
+        //this.allowAddButtonKey = this.allowAddButtonKey.bind(this)
         //this.handleDrop = this.handleDrop.bind(this)
     }
 
@@ -66,6 +68,25 @@ class Inventory extends React.Component{
         
       }
 
+      allowAddButtonKey = () => {
+       setTimeout(() => {
+         console.log('state: ' + JSON.stringify(this.state.productData))
+        if(this.state.productData.productName !== '' && 
+       this.state.productData.productDescription !== '' && this.state.productData.productPriceString !== '' && 
+       this.state.productData.productQuantity !== '' && this.props.allowAddProduct === true){
+        
+        this.setState({allowAddButton:true})
+      }
+        else{
+          this.setState({allowAddButton:false})
+        }}, 20) 
+      
+      }
+
+      componentDidUpdate(){
+        //this.allowAddButtonKey();
+      }
+
       handleDelete = () => {
         console.log('bio u handleDelete:' + this.state.productId)
         /*axios.delete('http://127.0.0.1:8080/products/del',
@@ -88,18 +109,23 @@ class Inventory extends React.Component{
 
       handleName(event){
         this.setState({productData:{...this.state.productData, productName: event.target.value}});
+        this.allowAddButtonKey();
       }
     
       handleDesc(event){
         this.setState({productData:{...this.state.productData, productDescription: event.target.value}});
+        this.allowAddButtonKey();
       }
     
       handlePrice(event){
-        this.setState({productData:{...this.state.productData, productPrice: event.target.value}});
+        this.setState({productData:{...this.state.productData, productPriceString: event.target.value}});
+        this.allowAddButtonKey();
+        
       }
     
       handleQty(event){
         this.setState({productData:{...this.state.productData, productQuantity: event.target.value}});
+        this.allowAddButtonKey();
       }
     
       handleInsert(){
@@ -171,7 +197,9 @@ class Inventory extends React.Component{
 </Form>
 <FileList />
 
-<Button onClick={this.handleInsert.bind(this)}>Add product</Button>
+{this.state.allowAddButton ? <Button onClick={this.handleInsert.bind(this)} >Add product</Button> :
+<Button onClick={this.handleInsert.bind(this)} disabled >Add product</Button>}
+
 </Col>
 
             </Container>
@@ -189,7 +217,10 @@ function mapDispatchToProps(dispatch) {
   const mapStateToProps = state => ({
       showModal: state.posts.showModal,
       products: state.posts.products,
-      showModal: state.posts.showModal
+      showModal: state.posts.showModal,
+      allowAddProduct: state.posts.allowAddProduct
       });
   
   export default connect (mapStateToProps, mapDispatchToProps)(Inventory);
+
+  

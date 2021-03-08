@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import DragAndDrop from './DragAndDrop';
 import Resizer from 'react-image-file-resizer';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { ALLOW_ADD_PRODUCT } from '../actions/types';
 class FileList extends Component {
 
 constructor(props){
@@ -77,6 +80,10 @@ constructor(props){
     if(valSize && valExt){
       this.convertImg(files[0]);
       this.setState({ imageName: files[0].name })
+      this.props.dispatch({
+        type: ALLOW_ADD_PRODUCT,
+        payload: true
+      })
     }
      
     this.setState({files: imgFile})
@@ -92,4 +99,18 @@ render() {
     )
   }
 }
-export default FileList
+
+function mapDispatchToProps(dispatch) {
+  return{
+    dispatch,
+     ...bindActionCreators({ }, dispatch)
+}
+}
+
+const mapStateToProps = state => ({
+  allowAddProduct: state.posts.allowAddProduct,
+  isLogged: state.posts.isLogged,
+  username: state.posts.username
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(FileList);
