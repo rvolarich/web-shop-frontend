@@ -8,6 +8,8 @@ import InventoryItem from './InvertoryItem';
 import DragAndDrop from './DragAndDrop';
 import FileList from './FileList';
 import axios from 'axios';
+import ModalElement from './ModalElement';
+import { data } from 'jquery';
 
 class Inventory extends React.Component{
 
@@ -21,10 +23,19 @@ class Inventory extends React.Component{
                 productPriceString:'',
                 productQuantity:'',
                 productImage:''
-              }
+              },
+
+              modalData:{
+                modalTitle:'Inventory',
+                modalLine1:'Delete the item?'
+              },
+
+              input:'inventory',
+              productId: 10
             
         }
         this.closeModal = this.closeModal.bind(this)
+        this.showModal = this.showModal.bind(this)
         //this.handleDrop = this.handleDrop.bind(this)
     }
 
@@ -42,6 +53,37 @@ class Inventory extends React.Component{
           payload: false
         });
         window.location.replace(localStorage.getItem('lastUrl'));
+      }
+
+      showModal = (id) => {
+        this.setState({...this.state, productId: id})
+        setTimeout(() => {console.log("iddddddddddd in inventoryyyyyy " + this.state.productId);}, 20)
+        
+        this.props.dispatch({
+          type: SHOW_MODAL,
+          payload: true
+        });
+        
+      }
+
+      handleDelete = () => {
+        console.log('bio u handleDelete:' + this.state.productId)
+        /*axios.delete('http://127.0.0.1:8080/products/del',
+        {withCredentials:true})
+        .then(function(response){
+          console.log(response)
+        })*/
+
+        axios({
+          method: 'delete',
+          url: 'http://127.0.0.1:8080/products/del',
+          data: {
+            productId: this.state.productId
+          },
+          headers:{
+            withCredentials:true
+          }
+        });
       }
 
       handleName(event){
@@ -79,19 +121,23 @@ class Inventory extends React.Component{
       }
     render(){
 
-        const { products } = this.props;
+        const { products, showModal } = this.props;
         return(
             <Container style={{paddingLeft: 0, paddingRight: 0}}>
+
+            <ModalElement  input={this.state.input} modalData={this.state.modalData} 
+                          handleDel={this.handleDelete}/>  
+                
                 
                 {
                     products.map((product, index) => 
-                    <InventoryItem product={product} key={index} />
+                    <InventoryItem product={product} key={index} getKey={(id) => this.showModal(id)}/>
 
                     
                     
                     )
                 }
-
+              
 <Col style={{marginTop: '40px'}} xs={6}>
     <div style={{marginBottom: '20px'}}>
         <h6>
@@ -142,7 +188,8 @@ function mapDispatchToProps(dispatch) {
   
   const mapStateToProps = state => ({
       showModal: state.posts.showModal,
-      products: state.posts.products
+      products: state.posts.products,
+      showModal: state.posts.showModal
       });
   
   export default connect (mapStateToProps, mapDispatchToProps)(Inventory);

@@ -6,6 +6,8 @@ import { PRODUCT_DATA, SHOW_MODAL } from '../actions/types';
 import { fetchPosts } from '../actions/postActions';
 import axios from 'axios';
 
+
+
 class InventoryItem extends React.Component{
 
     constructor(props){
@@ -15,11 +17,17 @@ class InventoryItem extends React.Component{
             productId: 0,
             productPriceString: '',
             productQuantity: ''
-        }
+        },
+        modalData:{
+          modalTitle: 'Inventory',
+          modalLine1: 'Delete the product?'
+        },
+        input: 'inventory'
 
         
         }
         this.closeModal = this.closeModal.bind(this)
+        //this.showModal = this.showModal.bind(this)
     }
 
     componentDidMount(){
@@ -73,9 +81,20 @@ validateStock(s) {
       
     }
 
-    handleDelete(){
+    /*handleDelete(){
+      this.props.dispatch({
+        type: SHOW_MODAL,
+        payload: true
+      });
+    }*/
 
-    }
+    /*showModal = () => {
+      this.props.dispatch({
+        type: SHOW_MODAL,
+        payload: true
+      });
+      
+    }*/
 
     closeModal = () => {
         this.props.dispatch({
@@ -86,10 +105,13 @@ validateStock(s) {
       }
     render(){
 
-        const { product } = this.props;
+        const { product, showModal } = this.props;
 
         return(
             <Container>
+
+
+
                 <Table responsive="lg" bordered hover style={{marginBottom: '0px'}}>
   
   <tbody>
@@ -105,7 +127,8 @@ validateStock(s) {
         <Button style={{marginLeft: '20px', marginRight: '20px'}} 
                 onClick={this.handleUpdate.bind(this)}>Update</Button>
         
-        <Button variant="outline-danger" onClick={this.handleDelete.bind(this)}>Delete</Button>
+        <Button variant="outline-danger" 
+        onClick={() => this.props.getKey(this.props.product.productId)}>Delete</Button>
       
       </td>
     </tr>
@@ -128,7 +151,8 @@ function mapDispatchToProps(dispatch) {
   
   const mapStateToProps = state => ({
       showModal: state.posts.showModal,
-      products: state.posts.products
+      products: state.posts.products,
+      showModal: state.posts.showModal
       });
   
   export default connect (mapStateToProps, mapDispatchToProps)(InventoryItem);

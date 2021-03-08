@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { IS_LOGGED, GET_CART_PRODUCTS, UPDATE_COUNT, GET_LOCAL_CART_PRODUCTS, SHOW_MODAL } from '../actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { loadLocalStorage, updateCount } from '../Cart';
-import CartPopUp from './CartPopUp';
+import ModalElement from './ModalElement';
 
 
 
@@ -28,7 +28,14 @@ class SignUpForm extends React.Component{
             password: ''
             
         },
-        allowCheckIsLogged: false
+        allowCheckIsLogged: false,
+        modalData:{
+          modalTitle:'Cart',
+          modalLine1:'There are items in the guest cart.',
+          modalLine2:'Would you like to merge them with your saved items?'
+        },
+
+        input: 'cart'
     
         };
         this.handleChangeUsername = this.handleChangeUsername.bind(this)
@@ -202,7 +209,9 @@ class SignUpForm extends React.Component{
         return(
             <Container>
 
-              {showModal ? <CartPopUp mergeCart={() => this.mergeCart()}/> : null}
+              {showModal ? <ModalElement mergeCart={() => this.mergeCart()} 
+              modalData={this.state.modalData} input={this.state.input} /> : null}
+                
                 
                 <Col xs={4} >
             <div style={{marginTop: '50px', }}>

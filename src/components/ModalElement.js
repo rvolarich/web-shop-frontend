@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SHOW_MODAL } from '../actions/types';
 
-class CartPopUp extends React.Component{
+class ModalElement extends React.Component{
 
     constructor(props){
         super(props);
@@ -16,7 +16,9 @@ class CartPopUp extends React.Component{
           type: SHOW_MODAL,
           payload: false
         });
+        if(this.props.input === 'cart'){
         window.location.replace(localStorage.getItem('lastUrl'));
+      }
       }
     render(){
         return(
@@ -29,21 +31,26 @@ class CartPopUp extends React.Component{
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-        Cart
+        {this.props.modalData.modalTitle}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         
         <p>
-          There are items in the guest cart.
+        {this.props.modalData.modalLine1}
         </p>
         <p>
-          Would you like to merge them with your saved items?
+        {this.props.modalData.modalLine2}
         </p>
       </Modal.Body>
       <Modal.Footer>
+        {this.props.input == 'cart' ? <div>
         <Button onClick={this.closeModal}>Do not merge</Button>
-        <Button onClick={() => this.props.mergeCart()}>Merge</Button>
+        <Button onClick={() => this.props.mergeCart()}>Merge</Button> </div> :
+        
+        <div><Button onClick={this.closeModal}>Close</Button>
+        <Button onClick={() => this.props.handleDel()}>Delete</Button></div>
+    }
       </Modal.Footer>
     </Modal>
         )
@@ -61,4 +68,4 @@ function mapDispatchToProps(dispatch) {
       showModal: state.posts.showModal
       });
   
-  export default connect (mapStateToProps, mapDispatchToProps)(CartPopUp);
+  export default connect (mapStateToProps, mapDispatchToProps)(ModalElement);
