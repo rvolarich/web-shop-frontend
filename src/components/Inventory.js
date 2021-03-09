@@ -28,7 +28,8 @@ class Inventory extends React.Component{
 
               modalData:{
                 modalTitle:'Inventory',
-                modalLine1:'Delete the item?'
+                modalLine1:'Delete the item?',
+                modalLine2:'The product will be removed from the main products list!'
               },
 
               input:'inventory',
@@ -38,7 +39,7 @@ class Inventory extends React.Component{
         }
         this.closeModal = this.closeModal.bind(this)
         this.showModal = this.showModal.bind(this)
-        this.validatePriceIn = this.validatePriceIn.bind(this)
+        
         //this.allowAddButtonKey = this.allowAddButtonKey.bind(this)
         //this.handleDrop = this.handleDrop.bind(this)
     }
@@ -90,13 +91,7 @@ class Inventory extends React.Component{
       }
 
       handleDelete = () => {
-        console.log('bio u handleDelete:' + this.state.productId)
-        /*axios.delete('http://127.0.0.1:8080/products/del',
-        {withCredentials:true})
-        .then(function(response){
-          console.log(response)
-        })*/
-
+        
         axios({
           method: 'delete',
           url: 'http://127.0.0.1:8080/products/del',
@@ -111,50 +106,59 @@ class Inventory extends React.Component{
             type: INVENTORY_STATUS,
             payload: response.data
           })
+        }).then(() => {
+          this.props.dispatch({
+            type: SHOW_MODAL,
+            payload: false
+          });
+          window.location.reload();
+        }).catch(err => {
+          console.log(err);
         });
       }
 
-      validatePriceIn(s) {
+      validatePrice(s) {
         console.log('been in validate price')
         let rgx = /^[0-9]*\.?[0-9]*$/; // allows numbers and one dot
         return s.match(rgx);
     }
     
-    validateStockIn(s) {
+    validateStock(s) {
       let rgx = /^[0-9]*$/; // allows numbers only
       return s.match(rgx);
     }
 
       handleName(event){
+        //let nameLength = this.state.productData.productName.length;
+        //console.log('name length ' + nameLength)
+        if(event.target.value.length < 25){
         this.setState({productData:{...this.state.productData, productName: event.target.value}});
         this.allowAddButtonKey();
       }
+      }
     
       handleDesc(event){
+        if(event.target.value.length < 25){
         this.setState({productData:{...this.state.productData, productDescription: event.target.value}});
         this.allowAddButtonKey();
+        }
       }
     
       handlePrice(event){
-        console.log(JSON.stringify(this.validatePriceIn(event.target.value)))
-        if(this.validatePriceIn(event.target.value)){
+        if(this.validatePrice(event.target.value) && event.target.value.length < 15){
         this.setState({productData:{...this.state.productData, productPriceString: event.target.value}});
         this.allowAddButtonKey();
       }
       }
     
       handleQty(event){
-        if(this.validateStockIn(event.target.value)){
+        if(this.validateStock(event.target.value) && event.target.value.length < 9){
         this.setState({productData:{...this.state.productData, productQuantity: event.target.value}});
         this.allowAddButtonKey();
       }
       }
     
       handleInsert(){
-        /*this.props.dispatch({
-          type: PRODUCT_DATA,
-          payload: this.state.productData
-        })*/
     
         this.setState({productData:{...this.state.productData, productImage: localStorage.getItem('image')}})
     
@@ -166,6 +170,8 @@ class Inventory extends React.Component{
             type: INVENTORY_STATUS,
             payload: response.data
           })
+        }).then(() => {
+          window.location.reload();
         })
         .catch(function(err){
           console.log(err);
@@ -200,28 +206,29 @@ class Inventory extends React.Component{
             Add new product:
         </h6>
     </div>
-<Form >
+
+    <Form >
 
 <Form.Group  controlId="productName">
       <Form.Label>Product Name</Form.Label>
       <Form.Control type="text" placeholder="" onChange={this.handleName.bind(this)}
-        />
+        value={this.state.productData.productName}/>
     </Form.Group>
 <Form.Group  controlId="productDescription">
       <Form.Label>Product description</Form.Label>
       <Form.Control type="text" placeholder="" onChange={this.handleDesc.bind(this)}
-        />
+        value={this.state.productData.productDescription} />
     </Form.Group>
     <Form.Row>
     <Form.Group  as={Col} controlId="productPrice">
       <Form.Label>Price</Form.Label>
-      <Form.Control type="text" placeholder="" onChange={this.handlePrice.bind(this)}
-        />
+      <Form.Control type="text" onChange={this.handlePrice.bind(this)}
+        value={this.state.productData.productPriceString} />
     </Form.Group>
     <Form.Group  as={Col} controlId="productStock">
       <Form.Label>Quantity</Form.Label>
       <Form.Control type="text" placeholder="" onChange={this.handleQty.bind(this)}
-        />
+        value={this.state.productData.productQuantity} /> 
     </Form.Group>
     </Form.Row>
 </Form>

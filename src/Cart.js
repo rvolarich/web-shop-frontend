@@ -41,6 +41,7 @@ class Cart extends React.Component {
        // this.loadLocalStorage = this.loadLocalStorage.bind(this)
         this.addTodo = this.addTodo.bind(this)
         this.priceTotal = this.priceTotal.bind(this)
+        
        
     }
 
@@ -73,6 +74,7 @@ class Cart extends React.Component {
      this.props.getCartQty();
      this.props.fetchPosts();
      this.priceTotal();
+     
     }else{
     this.props.dispatch({
       type: GET_CART_PRODUCTS,
@@ -80,6 +82,7 @@ class Cart extends React.Component {
     });
 
     this.priceTotal();
+    
        /* allowCountUpdate = false;
       
       total = 0;
@@ -125,6 +128,7 @@ class Cart extends React.Component {
       
       }, 100); */
     } },30);
+    
 
     localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/cart');
   }
@@ -133,8 +137,19 @@ class Cart extends React.Component {
 
 
     deleteCart = () => {
+      if(this.props.isLogged){
         this.props.deleteCart();
         allowCountUpdate = false;
+      }else{
+        let keysToErase = [];
+        keysToErase = this.getLocalStorageProductKeys();
+        console.log('keys to erase: ' + this.getLocalStorageProductKeys())
+        for(let i = 0; i < keysToErase.length; i++){
+          localStorage.removeItem(keysToErase[i])
+        }
+      }
+       window.location.reload(); 
+        
  }
 
  priceTotal = () => {
@@ -181,7 +196,7 @@ class Cart extends React.Component {
      allowCountUpdate = false;
   
       
-      }, 100); 
+      }, 200); 
  }
  
 
@@ -213,6 +228,22 @@ window.location.reload();
     }
     });
 
+ }
+
+ getLocalStorageProductKeys(){
+  let index = 0;
+  let lskFiltered = [];
+  let storageKeysInteger = [];
+  for(let i = 0; i < Object.keys(localStorage).length; i++){
+    storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
+  }
+for(let i = 0; i < storageKeysInteger.length; i++){
+    if(storageKeysInteger[i] > 0){
+      lskFiltered[index] = storageKeysInteger[i];
+      index++;
+    }
+    }
+    return lskFiltered;
  }
 
 deleteCartItemById(id) {

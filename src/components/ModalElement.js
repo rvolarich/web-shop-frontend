@@ -29,7 +29,7 @@ class ModalElement extends React.Component{
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header >
         <Modal.Title id="contained-modal-title-vcenter">
         {this.props.modalData.modalTitle}
         </Modal.Title>
@@ -45,11 +45,11 @@ class ModalElement extends React.Component{
       </Modal.Body>
       <Modal.Footer>
         {this.props.input == 'cart' ? <div>
-        <Button onClick={this.closeModal}>Do not merge</Button>
-        <Button onClick={() => this.props.mergeCart()}>Merge</Button> </div> :
+        <Button onClick={this.closeModal} style={{marginRight:'15px'}}>Do not merge</Button>
+        <Button onClick={() => this.props.mergeCartMod()}>Merge</Button> </div> :
         
-        <div><Button onClick={this.closeModal}>Close</Button>
-        <Button onClick={() => this.props.handleDel()}>Delete</Button></div>
+        <div><Button onClick={this.closeModal} style={{marginRight:'15px'}}>Back</Button>
+        <Button onClick={() => this.props.handleDel()} variant="danger">Delete</Button></div>
     }
       </Modal.Footer>
     </Modal>

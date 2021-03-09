@@ -76,7 +76,7 @@ class DragAndDrop extends Component {
           :
         <div ref={this.dropRef} className="dropHere" style={{ float:'left', height:'200px', 
         border:'1px dashed', opacity:'0.7' }}>
-          <div style={{ marginTop:'60px' }}>
+          <div style={{ marginTop:'55px' }}>
             <p>Drop the product </p><br />
             <p>image here!</p>
           </div>   
@@ -87,7 +87,10 @@ class DragAndDrop extends Component {
 
         <div className="dropHere" >
           
-        {imgUploaded ? <img src={'images/img_icon.png'} style={{width: '50%', marginTop:'30px'}}alt=""></img> : null}
+        {imgUploaded ? <img src={'images/img_icon.png'} style={{width: '50%', marginTop:'30px'}}alt=""></img> : 
+        <p style={{fontSize:'15px', color: 'black', opacity:'.65', marginTop:'50px'}}>
+          Max image size 2MB.<br /><br />Allowed file formats:<br />
+        .jpg, .jpeg, .bmp, .gif, .png</p>}
          <div style={{width:'200px', overflow:'hidden', wordBreak:'break-all', whiteSpace:'normal', margin:'auto'}}>
            <p>{this.props.imgName}</p>
            </div>

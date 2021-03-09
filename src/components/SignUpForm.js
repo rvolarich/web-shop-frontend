@@ -105,10 +105,10 @@ class SignUpForm extends React.Component{
     }
 
     mergeCart = () => {
-
+      console.log('bio u MergeCart')
       axios.post('http://127.0.0.1:8080/post/cart/local', 
       this.props.localCartProducts, {withCredentials:true})
-    .then(response => response.data)
+    .then(response => response.data).then(() => localStorage.clear())
     .catch(function (error) {
       console.log(error);
     });
@@ -138,6 +138,7 @@ class SignUpForm extends React.Component{
           this.props.dispatch({
             type: GET_LOCAL_CART_PRODUCTS,
             payload: loadLocalStorage()
+            
           });
 
           localStorage.setItem('x_py35', this.state.authData.password);
@@ -147,6 +148,8 @@ class SignUpForm extends React.Component{
             payload: true
           });
           
+        }else{
+          window.location.replace(localStorage.getItem('lastUrl'))
         }
          /* axios.post('http://127.0.0.1:8080/post/cart/local', this.props.localCartProducts, {withCredentials:true})
     .then(response => response.data)
@@ -209,7 +212,7 @@ class SignUpForm extends React.Component{
         return(
             <Container>
 
-              {showModal ? <ModalElement mergeCart={() => this.mergeCart()} 
+              {showModal ? <ModalElement mergeCartMod={() => this.mergeCart()} 
               modalData={this.state.modalData} input={this.state.input} /> : null}
                 
                 

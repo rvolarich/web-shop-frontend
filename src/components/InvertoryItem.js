@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { INVENTORY_STATUS, PRODUCT_DATA, SHOW_MODAL } from '../actions/types';
 import { fetchPosts } from '../actions/postActions';
 import axios from 'axios';
+import '../App.css';
 
 
 
@@ -49,16 +50,15 @@ validateStock(s) {
 }
 
     handlePrice(event){
-      console.log(this.validatePrice(event.target.value))
-        if(this.validatePrice(event.target.value)){
-          //let priceRounded = (Math.round(parseInt(event.target.value)).toFixed(2));
-          this.setState({productPriceQty:{...this.state.productPriceQty, productPriceString: event.target.value}});
+     
+        if(this.validatePrice(event.target.value) && event.target.value.length < 15){
+         this.setState({productPriceQty:{...this.state.productPriceQty, productPriceString: event.target.value}});
         }
         
     }
 
     handleStock(event){
-      if(this.validateStock(event.target.value)){
+      if(this.validateStock(event.target.value) && event.target.value.length < 9){
         this.setState({productPriceQty:{...this.state.productPriceQty, productQuantity: event.target.value}});
       }
   }
@@ -77,6 +77,8 @@ validateStock(s) {
             type: INVENTORY_STATUS,
             payload: response.data
           })
+        }).then(() => {
+          window.location.reload();
         })
         .catch(function(err){
           console.log(err);
@@ -119,14 +121,14 @@ validateStock(s) {
 
                 <Table responsive="lg" bordered hover style={{marginBottom: '0px'}}>
   
-  <tbody>
+  <tbody >
     <tr>
-      <td style={{width: '30px'}}>{product.productId}</td>
-      <td style={{width: '300px'}}>{product.productName}</td>
-      <td style={{width: '300px'}}>{product.productDescription}</td>
+      <td style={{width: '70px'}}>{product.productId}</td>
+      <td style={{width: '280px'}}>{product.productName}</td>
+      <td style={{width: '280px'}}>{product.productDescription}</td>
       <td style={{width: '120px'}}><Form><Form.Control onChange={this.handlePrice.bind(this)}
           value={this.state.productPriceQty.productPriceString}/></Form></td>
-      <td style={{width: '90px'}}><Form><Form.Control onChange={this.handleStock.bind(this)} 
+      <td style={{width: '100px'}}><Form><Form.Control onChange={this.handleStock.bind(this)} 
           value={this.state.productPriceQty.productQuantity}/></Form></td>
       <td>
         <Button style={{marginLeft: '20px', marginRight: '20px'}} 
