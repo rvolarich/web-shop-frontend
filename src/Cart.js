@@ -324,11 +324,22 @@ addTotal = (total, shipping) => {
 
 
 confirmOrder = () => {
-      axios.post('http://localhost:8080/confirmorder', this.props.cartProducts)
+
+    if(!this.props.isLogged){
+      this.props.dispatch({
+        type: GET_CART_PRODUCTS,
+        payload: loadLocalStorage()
+      });
+
+      this.deleteCart();
+    }
+      axios.post('http://127.0.0.1:8080/confirmorder', this.props.cartProducts,
+      { withCredentials: true })
     .then(response => response.data)
     .catch(function (error) {
         console.log(error);
       });
+    
       window.location.reload();
       
     }
