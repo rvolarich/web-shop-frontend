@@ -31,7 +31,11 @@ class Cart extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            items: []
+            items: [],
+            userData:{
+              nameName:'Robert',
+              email:'robertvolaric973@hotmail.com',
+            }
         }
         this.deleteCart = this.deleteCart.bind(this)
         this.updateCart = this.updateCart.bind(this)
@@ -148,7 +152,7 @@ class Cart extends React.Component {
           localStorage.removeItem(keysToErase[i])
         }
       }
-       window.location.reload(); 
+       //window.location.reload(); 
         
  }
 
@@ -333,14 +337,37 @@ confirmOrder = () => {
 
       this.deleteCart();
     }
-      axios.post('http://127.0.0.1:8080/confirmorder', this.props.cartProducts,
+
+    let objectArray = [];
+    this.props.cartProducts.map((product) => {
+        objectArray.push(product)
+        
+    })
+
+    objectArray.push(this.state.userData)
+    console.log('array length' + objectArray.length)
+
+
+      axios.post('http://127.0.0.1:8080/send', objectArray,
       { withCredentials: true })
     .then(response => response.data)
     .catch(function (error) {
         console.log(error);
       });
+
+      /*axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8080/req',
+        data: {
+          this.props.cartProducts
+        },
+        headers:{
+          ContentType:'application/json',
+          withCredentials:true
+        }
+      });*/
     
-      window.location.reload();
+      //window.location.reload();
       
     }
 
