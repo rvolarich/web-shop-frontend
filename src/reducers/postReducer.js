@@ -156,7 +156,7 @@ export default function(state = initialState, action){
                         return{
                             ...state,
                             isLogged: action.payload.logged,
-                            username: action.payload.username,
+                            username: action.payload.nameName,
                             loginStatus: action.payload.loginStatus
                         }
                         

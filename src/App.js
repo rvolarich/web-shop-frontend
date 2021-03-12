@@ -98,7 +98,7 @@ render(){
    <Provider store={store}>
     <Router>
        
-    <Container >
+    <Container>
     <Row style={{minHeight:'100px', background:'grey', alignContent:'center'}}>
     <h1 style={{color:'white', marginLeft:'30px'}}>Webshop</h1>
     </Row>

@@ -35,6 +35,14 @@
   width: 40%;
 }
 
+.registerFormStatus{
+
+  float: right;
+  margin-left: 15px; 
+  margin-bottom: 0px; 
+  margin-top: 1%; 
+}
+
 /*.rt-td {
   white-space: normal !important
 }*/
