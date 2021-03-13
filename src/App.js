@@ -118,6 +118,7 @@ render(){
       <Route path="/loggedout" component={LoggedOut} />
       <Route path="/profile" component={MyProfile} />
       
+      
      
     </Container>
     

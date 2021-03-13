@@ -10,6 +10,7 @@ import 'react-bootstrap-country-select/dist/react-bootstrap-country-select.css';
 import axios from 'axios';
 
 
+
 class MyProfile extends React.Component{
 
     constructor(props){
@@ -18,18 +19,30 @@ class MyProfile extends React.Component{
             userData: {
                 nameName:'',
                 surname:'',
-                email:'',
-                password: localStorage.getItem('x_py35'),
+                username:'',
+                password: '',
                 address:'',
                 zip:'',
                 city:'',
                 country:''
-                }
+                },
+                retypePass:'',
+                allowPassMatch: true,
+                allowEmailFormat: true,
+                allowName: true,
+                allowSubmit: true,
+                updateStatus: ''
+                
         }
         this.closeModal = this.closeModal.bind(this)
+        this.validatePassword = this.validatePassword.bind(this)
+        this.validateEmail = this.validateEmail.bind(this)
     }
 
     componentDidMount(){
+
+      this.setState({retypePass: localStorage.getItem('x_py35'), userData:{...this.state.userData, 
+        password: localStorage.getItem('x_py35')}})
       console.log("password: " + this.state.userData.password);
       axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
       .then(response => {
@@ -57,12 +70,21 @@ class MyProfile extends React.Component{
         
         
           this.setState({userData: {...this.state.userData, nameName:response.data.nameName,
-          email:response.data.username}})
+          username:response.data.username}})
         
       })
       }
       
-    
+      validatePassword(str)
+      {
+          const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+          return re.test(str);
+      }
+
+      validateEmail(email) {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
 
     closeModal = () => {
         this.props.dispatch({
@@ -81,12 +103,16 @@ class MyProfile extends React.Component{
     }
 
     handleChangeEmail(event){
-        this.setState({ userData: {...this.state.userData , email : event.target.value }});
+        this.setState({ userData: {...this.state.userData , username : event.target.value }});
     }
 
     handleChangePassword(event){
         this.setState({ userData: {...this.state.userData , password : event.target.value }});
     }
+
+    handleChangeRetypePassword(event){
+      this.setState({...this.state , retypePass : event.target.value });
+  }
 
     handleChangeAddress(event){
         this.setState({ userData: {...this.state.userData , address : event.target.value }});
@@ -106,88 +132,174 @@ class MyProfile extends React.Component{
 
     handleSubmit(event){
         event.preventDefault();
+        
+        if(!this.validateEmail(this.state.userData.username)){
+          this.setState({allowEmailFormat: false})
+          if(this.state.userData.password === this.state.retypePass){
+            this.setState({allowPassMatch: true})
+          }
+          if(this.state.userData.nameName !== ''){
+            this.setState({allowName: true})
+          }
+          
+      }
+
+      if(this.state.userData.password !== this.state.retypePass){
+        console.log("bio u matchu!")
+        this.setState({allowPassMatch: false})
+        if(this.validateEmail(this.state.userData.username)){
+          this.setState({allowEmailFormat: true})
+        }
+        if(this.state.userData.nameName !== ''){
+          this.setState({allowName: true})
+        }
+      }
+
+      if(this.state.userData.nameName === ''){
+        this.setState({allowName:false})
+        if(this.validateEmail(this.state.userData.username)){
+          this.setState({allowEmailFormat: true})
+        }
+        if(this.state.userData.password === this.state.retypePass){
+          this.setState({allowPassMatch: true})
+        }
+      }
+      
+      if(this.validateEmail(this.state.userData.username) && this.state.userData.password === this.state.retypePass &&
+          this.state.userData.nameName !== ''){
+            this.setState({allowSubmit: false}) 
         axios.put('http://127.0.0.1:8080/users/update', this.state.userData,
         { withCredentials: true })
         .then(response => response.data)
+        .then(response => {
+          console.log("responseData " + JSON.stringify(response))
+          this.setState({updateStatus: response})
+          setTimeout(() => {console.log("updateStatus " + this.state.updateStatus)}, 0)
+        })
         .catch(error => {
             console.log("error " + error);
         });
-        //console.log("user data " + JSON.stringify(this.state.userData));
+        console.log("registration verified!")
+        this.setState({...this.state, allowEmailFormat: true, 
+          allowPassMatch: true, allowName: true})
+      }
+      
     }
     render(){
         return(
             <Container>
                 
-                <Col xs={5}>
+                <Col xs={8}>
             <Form style={{marginTop: '20px'}}>
     <Row>       
-    <Form.Group controlId="formGridName">
+    <Form.Group controlId="formGridName" style={{width:'50%'}}>
       <Form.Label>Name</Form.Label>
-      <Form.Control type="text" placeholder="" 
+      <Form.Control type="text" placeholder="" maxLength='50'
       onChange={this.handleChangeName.bind(this)} value={this.state.userData.nameName} />
     </Form.Group>
+    <p style={{float:'right', marginLeft:'5px', color:'red', marginTop:'5.3%'}}>*</p>
+                {this.state.allowName ? null :
+                <p className="registerFormStatus" style={{color:'red', marginTop:'5.3%'}}>Name cannot be empty!</p>
+                }
           </Row>
     <Row > 
-    <Form.Group  controlId="formGridSurname">
+    <Form.Group  controlId="formGridSurname" style={{width:'50%'}}>
       <Form.Label>Surname</Form.Label>
-      <Form.Control type="text" placeholder=""
+      <Form.Control type="text" placeholder="" maxLength='50'
       onChange={this.handleChangeSurname.bind(this)} value={this.state.userData.surname} />
     </Form.Group>
     </Row>
   
-    <Form.Group  controlId="formGridEmail">
+    <Row style={{padding:'0px'}}>
+    <Form.Group  controlId="formGridEmail" style={{width:'50%'}}>
       <Form.Label>Email</Form.Label>
-      <Form.Control type="email" placeholder="Enter email" 
-      onChange={this.handleChangeEmail.bind(this)} value={this.state.userData.email}/>
+      <Form.Control type="email" placeholder="Enter email" maxLength='50'
+      onChange={this.handleChangeEmail.bind(this)} value={this.state.userData.username}/>
     </Form.Group>
+    <p style={{float:'right', marginLeft:'5px', color:'red', marginTop:'5%'}}>*</p>
+                {this.state.allowEmailFormat ? null :
+                <p className="registerFormStatus" 
+                style={{color:'red', marginTop:'5.3%'}}>Email address format error!</p>
+                }
+    </Row>
 
-    <Form.Group  controlId="formGridPassword">
+    <Row>
+    <Form.Group  controlId="formGridPassword" style={{width:'50%'}}>
       <Form.Label>Password</Form.Label>
-      <Form.Control type="password" placeholder="Password" 
+      <Form.Control type="password" placeholder="Password" maxLength='20'
       onChange={this.handleChangePassword.bind(this)} value={this.state.userData.password}/>
     </Form.Group>
+    <p style={{float:'right', marginLeft:'5px', color:'red', marginTop:'5%'}}>*</p>
+                {this.state.userData.password === localStorage.getItem('x_py35') ?
+                <p className="registerFormStatus" style={{color:'gray', marginTop:'5.3%'}}>Min. 6, max. 20 characters,
+                 [A-Z], [a-z], [0-9]</p> : this.validatePassword(this.state.userData.password) ?
+                <p className="registerFormStatus" style={{color:'green', marginTop:'5.3%'}}>Password accepted!</p> : 
+                <p className="registerFormStatus" style={{color:'red', marginTop:'5.3%'}}>Password not accepted!</p>
+                }   
+    </Row>
 
-    <Form.Group controlId="formGridRTPassword">
-      <Form.Label>Password</Form.Label>
-      <Form.Control type="password" placeholder="retype password" 
-      onChange={this.handleChangePassword.bind(this)} value={this.state.userData.password}/>
+    <Row>
+    <Form.Group controlId="formGridRTPassword" style={{width:'50%'}}>
+      <Form.Label>Retype password</Form.Label>
+      <Form.Control type="password" placeholder="retype password" maxLength='20'
+      onChange={this.handleChangeRetypePassword.bind(this)} value={this.state.retypePass}/>
     </Form.Group>
-  
+    <p style={{float:'right', marginLeft:'5px', color:'red', marginTop:'5.3%'}}>*</p>
+                {this.state.allowPassMatch ? null :
+                <p className="registerFormStatus" style={{color:'red', marginTop:'5.3%'}}>Passwords do not match!</p>
+                }
+    </Row>
 
-  
-  <Form.Group  controlId="formGridAddress1">
+    <Row>
+  <Form.Group  controlId="formGridAddress1" style={{width:'50%'}}>
     <Form.Label>Address</Form.Label>
-    <Form.Control placeholder="" 
+    <Form.Control placeholder="" maxLength='100'
     onChange={this.handleChangeAddress.bind(this)} value={this.state.userData.address}/>
   </Form.Group>
-  <Form.Group  controlId="formGridZip">
+  </Row>
+
+  <Row>
+  <Form.Group  controlId="formGridZip" style={{width:'50%'}}>
       <Form.Label>Zip</Form.Label>
-      <Form.Control onChange={this.handleChangeZip.bind(this)} value={this.state.userData.zip}/>
+      <Form.Control onChange={this.handleChangeZip.bind(this)} maxLength='50'
+      value={this.state.userData.zip}/>
     </Form.Group>
-    
-  
-    <Form.Group  controlId="formGridCity">
+    </Row>
+
+    <Row>
+    <Form.Group  controlId="formGridCity" style={{width:'50%'}}>
       <Form.Label>City</Form.Label>
-      <Form.Control onChange={this.handleChangeCity.bind(this)} value={this.state.userData.city}/>
+      <Form.Control onChange={this.handleChangeCity.bind(this)} maxLength='50'
+      value={this.state.userData.city}/>
     </Form.Group>
+   </Row>
 
-    <Form.Group  controlId="formGridState">
+    <Row>
+    <Form.Group  controlId="formGridState" style={{width:'50%'}}>
       <Form.Label>State</Form.Label>
-      
-      <Form.Control value={this.state.userData.country} onChange={this.handleChangeCountry.bind(this)}/>
-        
-        
-      
-    </Form.Group>
-
+      <Form.Control value={this.state.userData.country} maxLength='50'
+      onChange={this.handleChangeCountry.bind(this)}/>
+      </Form.Group>
+    </Row>
     
   
 
   
-
+<Row>
   <Button variant="primary" type="submit" onClick={this.handleSubmit.bind(this)} style={{marginTop: '10px'}}>
     Submit
   </Button>
+  <Button variant="outline-danger" type="submit" onClick={this.handleSubmit.bind(this)} 
+  style={{marginTop: '10px', marginLeft:'15%'}}>
+    Delete account
+  </Button>
+  </Row>
+  <Row style={{border:'none'}}>
+    {this.state.allowSubmit ? <p style={{paddingTop:'2%', height:'20px'}}>{this.state.updateStatus}</p> :
+    <p style={{paddingTop:'2%', height:'20px'}}></p>
+  }
+  </Row>
+<hr></hr>
 </Form>
 </Col>
 
