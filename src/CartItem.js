@@ -49,7 +49,7 @@ class CartItem extends React.Component{
      }
 
     deleteCartItemById = () =>  {
-      //this.props.deleteCartProduct(this.props.product.productId);
+      this.props.deleteCartProduct(this.props.product.productId);
       localStorage.removeItem(this.props.product.productId);
       window.location.reload();
       }

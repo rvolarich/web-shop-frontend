@@ -152,9 +152,9 @@ class Cart extends React.Component {
           localStorage.removeItem(keysToErase[i])
         }
       }
-       //window.location.reload(); 
-        
- }
+       window.location.reload() 
+       
+    }
 
  priceTotal = () => {
   allowCountUpdate = false;
@@ -258,7 +258,7 @@ deleteCartItemById(id) {
       }
     this.props.deleteCartItem(prodObj); 
   }else{
-    console.log("ddddddddddddddddddddddddddddddddddddddddddddddddddd " + id)
+    
 
     let lskFiltered = [];
     let storageKeysInteger = [];
@@ -328,46 +328,40 @@ addTotal = (total, shipping) => {
 
 
 confirmOrder = () => {
-
+  console.log('bio u confirmOrder')
     if(!this.props.isLogged){
       this.props.dispatch({
         type: GET_CART_PRODUCTS,
         payload: loadLocalStorage()
       });
 
-      this.deleteCart();
+      
     }
 
-    let objectArray = [];
-    this.props.cartProducts.map((product) => {
-        objectArray.push(product)
-        
-    })
-
-    objectArray.push(this.state.userData)
-    console.log('array length' + objectArray.length)
-
-
-      axios.post('http://127.0.0.1:8080/send', objectArray,
-      { withCredentials: true })
-    .then(response => response.data)
-    .catch(function (error) {
-        console.log(error);
-      });
-
-      /*axios({
-        method: 'post',
-        url: 'http://127.0.0.1:8080/req',
-        data: {
-          this.props.cartProducts
-        },
-        headers:{
-          ContentType:'application/json',
-          withCredentials:true
-        }
-      });*/
+    setTimeout(() => {let objectArray = [];
+      this.props.cartProducts.map((product) => {
+          objectArray.push(product)
+          
+      })
+  
+      objectArray.push(this.state.userData)
+      console.log('array length' + objectArray.length)
+  
+  
+        axios.post('http://127.0.0.1:8080/confirmorder', objectArray,
+        { withCredentials: true })
+      .then(response => response.data)
+      .catch(function (error) {
+          console.log(error);
+        });}, 50)
     
-      //window.location.reload();
+        
+      
+      
+      setTimeout(() => {
+        this.deleteCart();
+        window.location.replace('http://127.0.0.1:3000/confirm')  
+      }, 50) 
       
     }
 
@@ -444,7 +438,7 @@ confirmOrder = () => {
      <Col xs={3.5} >
      {count !== null ? <div>
         <CartCalculator cTotal={cTotal} shipping={shipping} prodStock={cartProducts.productStock} 
-        totalAmount={this.addTotal(cTotal, shipping)} confirmOrder={this.confirmOrder} />
+        totalAmount={this.addTotal(cTotal, shipping)} confirmOrderKey={this.confirmOrder} />
      </div> : null}
      
      </Col>

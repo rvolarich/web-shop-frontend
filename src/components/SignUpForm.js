@@ -36,7 +36,7 @@ class SignUpForm extends React.Component{
         this.handleClick = this.handleClick.bind(this)
         this.closeModal = this.closeModal.bind(this)
         this.mergeCart = this.mergeCart.bind(this)
-        
+        this.deleteLocalStorageProductKeys = this.deleteLocalStorageProductKeys.bind(this)
       }
     
       /*selectCountry (val) {
@@ -101,16 +101,38 @@ class SignUpForm extends React.Component{
       console.log('bio u MergeCart')
       axios.post('http://127.0.0.1:8080/post/cart/local', 
       this.props.localCartProducts, {withCredentials:true})
-    .then(response => response.data).then(() => localStorage.clear())
+    .then(response => response.data)
+    .then(() => {
+      this.deleteLocalStorageProductKeys()
+      console.log('bio u localstorage clear')
+    })
     .catch(function (error) {
       console.log(error);
     });
         
-        this.setState({allowCheckIsLogged: true});
+        setTimeout(() => {this.setState({allowCheckIsLogged: true});}, 30) 
         this.closeModal();
       }
     
+      deleteLocalStorageProductKeys = () => {
+        let index = 0;
+        let lskFiltered = [];
+        let storageKeysInteger = [];
+        for(let i = 0; i < Object.keys(localStorage).length; i++){
+          storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
+        }
+      for(let i = 0; i < storageKeysInteger.length; i++){
+          if(storageKeysInteger[i] > 0){
+            lskFiltered[index] = storageKeysInteger[i];
+            index++;
+          }
+          }
 
+          for(let i = 0; i < lskFiltered.length; i++){
+            localStorage.removeItem(lskFiltered[i])
+          }
+          
+       }
     
 
     postLogData = () => {
