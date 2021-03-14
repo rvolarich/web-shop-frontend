@@ -31,26 +31,32 @@ class ModalElement extends React.Component{
     >
       <Modal.Header >
         <Modal.Title id="contained-modal-title-vcenter">
-        {this.props.modalData.modalTitle}
+        {this.props.modalTitle}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         
         <p>
-        {this.props.modalData.modalLine1}
+        {this.props.modalLine1}
         </p>
         <p>
-        {this.props.modalData.modalLine2}
+        {this.props.modalLine2}
         </p>
       </Modal.Body>
       <Modal.Footer>
         {this.props.input == 'cart' ? <div>
         <Button onClick={this.closeModal} style={{marginRight:'15px'}}>Do not merge</Button>
-        <Button onClick={() => this.props.mergeCartMod()}>Merge</Button> </div> :
+        <Button onClick={() => this.props.mergeCartMod()}>Merge</Button> </div> : null}
         
+        {this.props.input == 'inventory' ? 
         <div><Button onClick={this.closeModal} style={{marginRight:'15px'}}>Back</Button>
-        <Button onClick={() => this.props.handleDel()} variant="danger">Delete</Button></div>
-    }
+        <Button onClick={() => this.props.handleDel()} variant="danger">Delete</Button></div> : null
+        }
+
+        {this.props.input == 'profile' ? 
+        <div><Button onClick={this.closeModal} style={{marginRight:'15px'}}>Back</Button>
+        <Button onClick={() => this.props.handleDelUser()} variant="danger">Delete</Button></div> : null
+        }
       </Modal.Footer>
     </Modal>
         )

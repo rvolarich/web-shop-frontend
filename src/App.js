@@ -21,6 +21,7 @@ import Register from './components/Register';
 import LoggedOut from './components/LoggedOut';
 import MyProfile from './components/MyProfile';
 import CheckCenter from './components/CheckCenter';
+import Goodbye from './components/GoodBye';
 
 
 
@@ -117,6 +118,8 @@ render(){
       <Route path="/register" component={Register} />
       <Route path="/loggedout" component={LoggedOut} />
       <Route path="/profile" component={MyProfile} />
+      <Route path="/bye" component={Goodbye} />
+
       
       
      

@@ -8,6 +8,7 @@ import CountrySelect from 'react-bootstrap-country-select';
 import 'bootstrap/dist/css/bootstrap.css'; // or include from a CDN
 import 'react-bootstrap-country-select/dist/react-bootstrap-country-select.css';
 import axios from 'axios';
+import ModalElement from './ModalElement';
 
 
 
@@ -31,12 +32,16 @@ class MyProfile extends React.Component{
                 allowEmailFormat: true,
                 allowName: true,
                 allowSubmit: true,
-                updateStatus: ''
+                updateStatus: '',
+                allowModalUser: false
                 
         }
         this.closeModal = this.closeModal.bind(this)
         this.validatePassword = this.validatePassword.bind(this)
         this.validateEmail = this.validateEmail.bind(this)
+        this.confirmDelete = this.confirmDelete.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
+        
     }
 
     componentDidMount(){
@@ -95,39 +100,61 @@ class MyProfile extends React.Component{
       }
 
       handleChangeName(event){
-        this.setState({ userData: {...this.state.userData , nameName : event.target.value }});
+        this.setState({ updateStatus:'', userData: {...this.state.userData , nameName : event.target.value }});
       }
 
       handleChangeSurname(event){
-        this.setState({ userData: {...this.state.userData , surname : event.target.value }});
+        this.setState({ updateStatus:'', userData: {...this.state.userData , surname : event.target.value }});
     }
 
     handleChangeEmail(event){
-        this.setState({ userData: {...this.state.userData , username : event.target.value }});
+        this.setState({ updateStatus:'', userData: {...this.state.userData , username : event.target.value }});
     }
 
     handleChangePassword(event){
-        this.setState({ userData: {...this.state.userData , password : event.target.value }});
+        this.setState({ updateStatus:'', userData: {...this.state.userData , password : event.target.value }});
     }
 
     handleChangeRetypePassword(event){
-      this.setState({...this.state , retypePass : event.target.value });
+      this.setState({...this.state , retypePass : event.target.value, updateStatus:'' });
   }
 
     handleChangeAddress(event){
-        this.setState({ userData: {...this.state.userData , address : event.target.value }});
+        this.setState({ updateStatus:'', userData: {...this.state.userData , address : event.target.value }});
     }
 
     handleChangeZip(event){
-        this.setState({ userData: {...this.state.userData , zip : event.target.value }});
+        this.setState({ updateStatus:'', userData: {...this.state.userData , zip : event.target.value }});
     }
 
     handleChangeCity(event){
-        this.setState({ userData: {...this.state.userData , city : event.target.value }});
+        this.setState({ updateStatus:'', userData: {...this.state.userData , city : event.target.value }});
     }
 
     handleChangeCountry(event){
-        this.setState({ userData: {...this.state.userData , country : event.target.value }});
+        this.setState({ updateStatus:'', userData: {...this.state.userData , country : event.target.value }});
+    }
+
+    handleDelete(){
+      
+      this.props.dispatch({
+        type: SHOW_MODAL,
+        payload: true
+      })
+    }
+
+    confirmDelete = () => {
+      
+      axios.get('http://127.0.0.1:8080/user/del',
+      {withCredentials:true})
+      .then(response => {
+        console.log(response)
+        this.props.dispatch({
+          type: SHOW_MODAL,
+          payload: true
+        })
+        window.location.replace('http://127.0.0.1:3000/bye')
+      })
     }
 
     handleSubmit(event){
@@ -182,6 +209,7 @@ class MyProfile extends React.Component{
         console.log("registration verified!")
         this.setState({...this.state, allowEmailFormat: true, 
           allowPassMatch: true, allowName: true})
+          setTimeout(() => {window.location.reload();}, 1000)
       }
       
     }
@@ -289,19 +317,23 @@ class MyProfile extends React.Component{
   <Button variant="primary" type="submit" onClick={this.handleSubmit.bind(this)} style={{marginTop: '10px'}}>
     Submit
   </Button>
-  <Button variant="outline-danger" type="submit" onClick={this.handleSubmit.bind(this)} 
-  style={{marginTop: '10px', marginLeft:'15%'}}>
+  <Button variant="outline-info" onClick={this.handleDelete} 
+  style={{marginTop: '10px', marginLeft:'21%'}}>
     Delete account
   </Button>
   </Row>
   <Row style={{border:'none'}}>
-    {this.state.allowSubmit ? <p style={{paddingTop:'2%', height:'20px'}}>{this.state.updateStatus}</p> :
-    <p style={{paddingTop:'2%', height:'20px'}}></p>
+    {this.state.updateStatus.charAt(0) === 'S' ? <p style={{paddingTop:'2%', height:'20px', color:'green'}}>
+      {this.state.updateStatus}</p> :
+    <p style={{paddingTop:'2%', height:'20px', color:'red'}}>{this.state.updateStatus}</p>
   }
   </Row>
 <hr></hr>
 </Form>
 </Col>
+
+<ModalElement handleDelUser={this.confirmDelete}
+input='profile' modalTitle='My Profile' modalLine1='Delete the account?' modalLine2='' />
 
 </Container>
         )

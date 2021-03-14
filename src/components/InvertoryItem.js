@@ -18,14 +18,7 @@ class InventoryItem extends React.Component{
             productId: 0,
             productPriceString: '',
             productQuantity: ''
-        },
-        modalData:{
-          modalTitle: 'Inventory',
-          modalLine1: 'Delete the product?'
-        },
-        input: 'inventory'
-
-        
+        }
         }
         this.closeModal = this.closeModal.bind(this)
         //this.showModal = this.showModal.bind(this)

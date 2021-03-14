@@ -29,15 +29,8 @@ class SignUpForm extends React.Component{
             
         },
         allowCheckIsLogged: false,
-        modalData:{
-          modalTitle:'Cart',
-          modalLine1:'There are items in the guest cart.',
-          modalLine2:'Would you like to merge them with your saved items?'
-        },
-
-        input: 'cart'
-    
         };
+        
         this.handleChangeUsername = this.handleChangeUsername.bind(this)
         this.handleChangePassword = this.handleChangePassword.bind(this)
         this.handleClick = this.handleClick.bind(this)
@@ -213,7 +206,10 @@ class SignUpForm extends React.Component{
             <Container>
 
               {showModal ? <ModalElement mergeCartMod={() => this.mergeCart()} 
-              modalData={this.state.modalData} input={this.state.input} /> : null}
+              modalTitle='Cart'
+              modalLine1='There are items in the guest cart.' 
+              modalLine2='Would you like to merge them with your saved items?' 
+              input='cart' /> : null}
                 
                 
                 <Col xs={4} >

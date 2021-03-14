@@ -25,14 +25,6 @@ class Inventory extends React.Component{
                 productQuantity:'',
                 productImage:''
               },
-
-              modalData:{
-                modalTitle:'Inventory',
-                modalLine1:'Delete the item?',
-                modalLine2:'The product will be removed from the main products list!'
-              },
-
-              input:'inventory',
               productId: 0,
               allowAddButton:false
             
@@ -183,7 +175,8 @@ class Inventory extends React.Component{
         return(
             <Container style={{paddingLeft: 0, paddingRight: 0}}>
 
-            <ModalElement  input={this.state.input} modalData={this.state.modalData} 
+            <ModalElement  input='inventory' modalLine1='Delete the item?' modalTitle='Inventory' 
+                           modalLine2='The product will be removed from the main products list!'
                           handleDel={this.handleDelete}/>  
                 
                 
