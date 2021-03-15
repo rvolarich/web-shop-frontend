@@ -33,8 +33,8 @@ class Cart extends React.Component {
         this.state = {
             items: [],
             userData:{
-              nameName:'Robert',
-              email:'robertvolaric973@hotmail.com',
+              nameName:'',
+              email:''
             }
         }
         this.deleteCart = this.deleteCart.bind(this)
@@ -72,13 +72,19 @@ class Cart extends React.Component {
     }
 
     componentDidMount(){
-      setTimeout(() => {if(this.props.isLogged){
+      setTimeout(() => {
+        if(this.props.isLogged){
         console.log("bio u getcart");
     this.props.getCartProducts();
      this.props.getCartQty();
      this.props.fetchPosts();
      this.priceTotal();
-     
+     axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
+      .then(response => {
+        console.log('user: ' + JSON.stringify(response.data))
+        this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
+        setTimeout(() => {console.log('email: ' + this.state.userData)},20)
+      })
     }else{
     this.props.dispatch({
       type: GET_CART_PRODUCTS,
@@ -337,7 +343,14 @@ confirmOrder = () => {
 
       
     }
-
+   /* if(this.props.isLogged){
+    axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
+      .then(response => {
+        console.log('user: ' + JSON.stringify(response.data))
+        this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
+        setTimeout(() => {console.log('email: ' + this.state.userData)},20)
+      })
+    }*/
     setTimeout(() => {let objectArray = [];
       this.props.cartProducts.map((product) => {
           
@@ -483,7 +496,8 @@ const mapStateToProps = state => ({
     updateCart: state.posts.updateCart,
     cTotal: state.posts.cTotal,
     shipping: state.posts.shipping,
-    isLogged: state.posts.isLogged
+    isLogged: state.posts.isLogged,
+    username: state.posts.username
     
   });
 
