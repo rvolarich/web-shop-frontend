@@ -252,9 +252,13 @@ class SignUpForm extends React.Component{
 
            
             </div>
+            <Form.Group controlId="formBasicCheckbox">
+              
+            <Form.Check type="checkbox" label="Stay signed in" value="true" />
+            </Form.Group>
             
             <Button onClick={this.postLogData} 
-            style={{marginTop:'10px', marginBottom:'10px'}}>Login</Button>
+            style={{marginTop:'5px', marginBottom:'15px'}}>Login</Button>
             <div>
               Don't have an account? <a href="/register" onClick={this.handleClick}>Sign up!</a>
             </div>

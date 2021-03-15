@@ -100,10 +100,10 @@ render(){
    <Provider store={store}>
     <Router>
        
-    <Container>
-    <Row style={{minHeight:'100px', background:'grey', alignContent:'center'}}>
+    
+    <div style={{margin:'auto', width:'67%', height:'100px', backgroundColor:'gray'}}>
     <h1 style={{color:'white', marginLeft:'30px'}}>Webshop</h1>
-    </Row>
+    </div>
      
     <Navig />
     <SetLoggedIn />
@@ -125,7 +125,7 @@ render(){
       
       
      
-    </Container>
+    
     
     </Router>
     </Provider>

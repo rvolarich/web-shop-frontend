@@ -25,7 +25,7 @@ class Navig extends React.Component{
   return (
     
 
-    
+    <div style={{margin:'auto', width:'67%'}}>
     
     <Navbar bg="light" variant="light">
      <Nav className="mr-auto" >
@@ -39,7 +39,7 @@ class Navig extends React.Component{
     </Nav>
     </Navbar>
     
-    
+    </div>
     
 
   

@@ -33,7 +33,9 @@ class ShopItem extends React.Component{
             productPrice: this.props.product.productPrice,
             productDescription: this.props.product.productDescription,
             productImage: this.props.product.productImage
-          }
+          },
+
+          prodQty: this.props.product.productQuantity
           
         }
 
@@ -108,9 +110,7 @@ class ShopItem extends React.Component{
     //let increment = localStorage.setItem('count', parseInt(localStorage.getItem('count'))+1);
 
    
-    this.props.dispatch({
-          type: INCREMENT
-        });
+    
 
 
         
@@ -122,7 +122,6 @@ class ShopItem extends React.Component{
           payload: keySequence
         });*/
         
-
         setTimeout(() => {
           keySequence.push(this.props.product.productId);
         localStorage.setItem(Date.now(), this.props.product.productId);
@@ -132,7 +131,21 @@ class ShopItem extends React.Component{
         });
           let newArray = {...this.state.cartData};
         console.log("This state prodqty: " + this.props.cartProducts.productQuantity);
+        
+          
+          console.log('prodQty:' + this.state.prodQty)
         newArray= {...newArray, productQuantity: productQuantityLocal + 1}
+        console.log("racun: " + (this.props.product.productQuantity - this.state.cartData.productQuantity ))
+        if((this.props.product.productQuantity - newArray.productQuantity) < 0){
+          newArray= {...newArray, productQuantity: this.props.product.productQuantity}
+        }
+        else{
+          this.props.dispatch({
+            type: INCREMENT
+          });
+        }
+        
+      
         this.setState({cartData: newArray})
         this.setCartQtyState();
       
