@@ -10,10 +10,12 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getCartProducts, getCartQty, deleteCart, postCart,
           deleteCartItem, fetchPosts } from './actions/postActions';
-import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY, UPDATE_COUNT} from './actions/types';
+import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY, UPDATE_COUNT, SHOW_MODAL} from './actions/types';
 import { bindActionCreators } from 'redux';
 import { allowConfirmButton } from './components/CartCalculator';
 import SavedCartItem from './SavedCartItem';
+import ModalElement from './components/ModalElement';
+import ModalConfirmCart from './components/ModalConfirmCart';
 //import { getCartProducts } from './Repository2';
 
 
@@ -42,6 +44,7 @@ class Cart extends React.Component {
         //this.updateCount = this.updateCount.bind(this)
         this.addTotal = this.addTotal.bind(this)
         this.confirmOrder = this.confirmOrder.bind(this)
+        this.confirmOrderGuest = this.confirmOrderGuest.bind(this)
        // this.loadLocalStorage = this.loadLocalStorage.bind(this)
         this.addTodo = this.addTodo.bind(this)
         this.priceTotal = this.priceTotal.bind(this)
@@ -332,25 +335,50 @@ addTotal = (total, shipping) => {
     return (Math.round((Number(total) + Number(shipping)) * 100) / 100).toFixed(2);
     }
 
+confirmOrderGuest = (data) => {
+  console.log('bio u confirmOrderGuest, data:' + JSON.stringify(data))
+  setTimeout(() => {let objectArray = [];
+    this.props.cartProducts.map((product) => {
+        
+      objectArray.push(product)
+        
+    })
+
+    objectArray.push(data)
+    console.log('array length' + objectArray.length)
+
+
+      axios.post('http://127.0.0.1:8080/confirmorder', objectArray,
+      { withCredentials: true })
+    .then(response => response.data)
+    .catch(function (error) {
+        console.log(error);
+      });}, 50)
+  
+      setTimeout(() => {
+      this.deleteCart();
+      window.location.replace('http://127.0.0.1:3000/confirm')  
+    }, 50) 
+  }
+
+
+
 
 confirmOrder = () => {
-  console.log('bio u confirmOrder')
+  
     if(!this.props.isLogged){
       this.props.dispatch({
         type: GET_CART_PRODUCTS,
         payload: loadLocalStorage()
       });
 
+      this.props.dispatch({
+        type: SHOW_MODAL,
+        payload: true
+      })
       
     }
-   /* if(this.props.isLogged){
-    axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
-      .then(response => {
-        console.log('user: ' + JSON.stringify(response.data))
-        this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
-        setTimeout(() => {console.log('email: ' + this.state.userData)},20)
-      })
-    }*/
+   else{
     setTimeout(() => {let objectArray = [];
       this.props.cartProducts.map((product) => {
           
@@ -376,7 +404,7 @@ confirmOrder = () => {
         this.deleteCart();
         window.location.replace('http://127.0.0.1:3000/confirm')  
       }, 50) 
-      
+    }
     }
 
     
@@ -419,6 +447,8 @@ confirmOrder = () => {
      
   return (
     <Container>
+
+      <ModalConfirmCart confOrder={(data) => this.confirmOrderGuest(data)} />
         
     <Row >
               <Button variant="outline-info" onClick={this.deleteCart} 

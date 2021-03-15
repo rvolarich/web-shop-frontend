@@ -57,6 +57,7 @@ class ModalElement extends React.Component{
         <div><Button onClick={this.closeModal} style={{marginRight:'15px'}}>Back</Button>
         <Button onClick={() => this.props.handleDelUser()} variant="danger">Delete</Button></div> : null
         }
+
       </Modal.Footer>
     </Modal>
         )
