@@ -340,7 +340,8 @@ confirmOrder = () => {
 
     setTimeout(() => {let objectArray = [];
       this.props.cartProducts.map((product) => {
-          objectArray.push(product)
+          
+        objectArray.push(product)
           
       })
   
