@@ -10,7 +10,8 @@ class SetLoggedIn extends React.Component{
         }
 
     componentDidMount(){
-        axios.get('http://127.0.0.1:8080/logged_in', { withCredentials: true })
+        axios.get(`http://127.0.0.1:8080/logged_in?sessionExpired=${this.props.sessionExpired}`, 
+        { withCredentials: true })
         .then(response => {
           console.log("logged_in = " + response.data) 
           this.props.dispatch({

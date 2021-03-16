@@ -49,11 +49,9 @@ class MyProfile extends React.Component{
 
       setTimeout(() => {if(this.props.sessionExpired){
 
-        axios.get('http://127.0.0.1:8080/reset')
-    
-        window.location.replace('http://127.0.0.1:3000/sessionexp')
+         window.location.replace('http://127.0.0.1:3000/sessionexp')
       }
-    }, 30)
+    }, 500)
 
     this.props.getCartQty();
 

@@ -52,12 +52,10 @@ class SignUpForm extends React.Component{
       componentDidMount(){
 
         setTimeout(() => {if(this.props.sessionExpired){
-
-          axios.get('http://127.0.0.1:8080/reset')
       
           window.location.replace('http://127.0.0.1:3000/sessionexp')
         }
-      }, 30)
+      }, 100)
 
         this.props.dispatch({
           type: GET_CART_PRODUCTS,
@@ -180,7 +178,7 @@ class SignUpForm extends React.Component{
           });
           
         }else{
-          window.location.replace(localStorage.getItem('lastUrl'))
+         window.location.replace(localStorage.getItem('lastUrl'))
         }
          /* axios.post('http://127.0.0.1:8080/post/cart/local', this.props.localCartProducts, {withCredentials:true})
     .then(response => response.data)

@@ -113,19 +113,17 @@ render(){
       <Route path="/shop" component={Shop} />
       <Route path="/inv" component={Inventory} />
       <Route path="/cart" component={Cart} />
+      <Route path="/profile" component={MyProfile} />
       <Route path="/signup" component={SignUp} />
       <Route path="/login" component={LogIn} />
       <Route path="/confirm" component={Confirm} />
       <Route path="/logout" component={Logout} />
       <Route path="/register" component={Register} />
       <Route path="/loggedout" component={LoggedOut} />
-      <Route path="/profile" component={MyProfile} />
       <Route path="/bye" component={Goodbye} />
       <Route path="/activation" component={Activation} />
       <Route path="/sessionexp" component={SessionExpired} />
 
-      
-      {this.state.allowExpired ? this.setState({allowExpired: false}) : null}
      
     
     

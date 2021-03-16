@@ -1,13 +1,23 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
-
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class Logout extends React.Component{
 
     constructor(props){
         super(props);
         this.handleClick = this.handleClick.bind(this);
+    }
+
+    componentDidMount(){
+        
+        setTimeout(() => {if(this.props.sessionExpired){
+
+            window.location.replace('http://127.0.0.1:3000/sessionexp')
+          }
+        }, 30)
     }
 
     handleClick = () => {
@@ -39,4 +49,15 @@ class Logout extends React.Component{
     }
 }
 
-export default Logout;
+function mapDispatchToProps(dispatch) {
+    return{
+      dispatch,
+       ...bindActionCreators({ }, dispatch)
+  }
+  }
+  
+  const mapStateToProps = state => ({
+      sessionExpired: state.posts.sessionExpired
+      });
+  
+  export default connect (mapStateToProps, mapDispatchToProps)(Logout);
