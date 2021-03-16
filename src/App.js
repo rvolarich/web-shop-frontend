@@ -23,6 +23,7 @@ import MyProfile from './components/MyProfile';
 import CheckCenter from './components/CheckCenter';
 import Goodbye from './components/GoodBye';
 import Activation from './components/Activation';
+import SessionExpired from './components/SessionExpired';
 
 
 
@@ -36,7 +37,7 @@ constructor(props){
   super(props);
   this.state = {
     loggedInStatus: "NOT_LOGGED_IN",
-    
+    allowExpired: true
    }
   
   
@@ -121,9 +122,10 @@ render(){
       <Route path="/profile" component={MyProfile} />
       <Route path="/bye" component={Goodbye} />
       <Route path="/activation" component={Activation} />
+      <Route path="/sessionexp" component={SessionExpired} />
 
       
-      
+      {this.state.allowExpired ? this.setState({allowExpired: false}) : null}
      
     
     

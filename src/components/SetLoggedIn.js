@@ -10,7 +10,7 @@ class SetLoggedIn extends React.Component{
         }
 
     componentDidMount(){
-        axios.get("http://127.0.0.1:8080/logged_in", { withCredentials: true })
+        axios.get('http://127.0.0.1:8080/logged_in', { withCredentials: true })
         .then(response => {
           console.log("logged_in = " + response.data) 
           this.props.dispatch({
@@ -32,9 +32,11 @@ class SetLoggedIn extends React.Component{
       }
 
     render(){
+
+      const { sessionExpired } = this.props;
         return(
             <div>
-
+              
             </div>
         )
     }
@@ -42,7 +44,8 @@ class SetLoggedIn extends React.Component{
 
 const mapStateToProps = state => ({
     isLogged: state.posts.isLogged,
-    username: state.posts.username
+    username: state.posts.username,
+    sessionExpired: state.posts.sessionExpired
     });
 
 export default connect(mapStateToProps)(SetLoggedIn);

@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.css'; // or include from a CDN
 import 'react-bootstrap-country-select/dist/react-bootstrap-country-select.css';
 import axios from 'axios';
 import ModalElement from './ModalElement';
+import { fetchPosts, getCartQty } from '../actions/postActions';
 
 
 
@@ -45,6 +46,16 @@ class MyProfile extends React.Component{
     }
 
     componentDidMount(){
+
+      setTimeout(() => {if(this.props.sessionExpired){
+
+        axios.get('http://127.0.0.1:8080/reset')
+    
+        window.location.replace('http://127.0.0.1:3000/sessionexp')
+      }
+    }, 30)
+
+    this.props.getCartQty();
 
       this.setState({retypePass: localStorage.getItem('x_py35'), userData:{...this.state.userData, 
         password: localStorage.getItem('x_py35')}})
@@ -343,12 +354,13 @@ input='profile' modalTitle='My Profile' modalLine1='Delete the account?' modalLi
 function mapDispatchToProps(dispatch) {
     return{
       dispatch,
-       ...bindActionCreators({ }, dispatch)
+       ...bindActionCreators({ getCartQty }, dispatch)
   }
   }
   
   const mapStateToProps = state => ({
-      showModal: state.posts.showModal
+      showModal: state.posts.showModal,
+      sessionExpired: state.posts.sessionExpired
       });
   
   export default connect (mapStateToProps, mapDispatchToProps)(MyProfile);

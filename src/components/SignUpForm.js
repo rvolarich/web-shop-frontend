@@ -25,7 +25,8 @@ class SignUpForm extends React.Component{
             region: '' ,
             authData : {
             username: '',
-            password: ''
+            password: '',
+            stayLogged: false
             
         },
         allowCheckIsLogged: false,
@@ -33,6 +34,7 @@ class SignUpForm extends React.Component{
         
         this.handleChangeUsername = this.handleChangeUsername.bind(this)
         this.handleChangePassword = this.handleChangePassword.bind(this)
+        this.handleStayLogged = this.handleStayLogged.bind(this)
         this.handleClick = this.handleClick.bind(this)
         this.closeModal = this.closeModal.bind(this)
         this.mergeCart = this.mergeCart.bind(this)
@@ -48,6 +50,15 @@ class SignUpForm extends React.Component{
       }*/
 
       componentDidMount(){
+
+        setTimeout(() => {if(this.props.sessionExpired){
+
+          axios.get('http://127.0.0.1:8080/reset')
+      
+          window.location.replace('http://127.0.0.1:3000/sessionexp')
+        }
+      }, 30)
+
         this.props.dispatch({
           type: GET_CART_PRODUCTS,
           payload: loadLocalStorage()
@@ -74,7 +85,12 @@ class SignUpForm extends React.Component{
         this.setState({ authData: {...this.state.authData , password : event.target.value }});
     }
 
-    postAuthData = () => {
+    handleStayLogged(event){
+      this.setState({ authData: {...this.state.authData , stayLogged : event.target.checked }});
+      //setTimeout(() => {console.log(this.state.authData.stayLogged)}, 0) 
+    }
+
+   /* postAuthData = () => {
         console.log("authData: " + JSON.stringify(this.state.authData));
         axios.post('http://127.0.0.1:8080/reg', 
         this.state.authData).then(function (response){
@@ -83,7 +99,7 @@ class SignUpForm extends React.Component{
         
         
     }.bind(this));
-    }
+    }*/
 
     handleClick = () => {
       this.setState({registerForm: true});
@@ -142,7 +158,7 @@ class SignUpForm extends React.Component{
     this.state.authData, { withCredentials: true }
 
     ).then(response => {
-        console.log(this.state.authData);
+        console.log('response od login: ' + response.data);
         this.props.dispatch({
             type: IS_LOGGED,
             payload: response.data
@@ -254,7 +270,7 @@ class SignUpForm extends React.Component{
             </div>
             <Form.Group controlId="formBasicCheckbox">
               
-            <Form.Check type="checkbox" label="Stay signed in" value="true" />
+            <Form.Check type="checkbox" label="Stay signed in" value="true" onChange={this.handleStayLogged}/>
             </Form.Group>
             
             <Button onClick={this.postLogData} 
@@ -282,7 +298,8 @@ const mapStateToProps = state => ({
     count: state.posts.count,
     cartProducts: state.posts.cartProducts,
     localCartProducts: state.posts.localCartProducts,
-    showModal: state.posts.showModal
+    showModal: state.posts.showModal,
+    sessionExpired: state.posts.sessionExpired
 
     });
 

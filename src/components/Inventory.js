@@ -41,6 +41,15 @@ class Inventory extends React.Component{
       }*/
 
     componentDidMount(){
+
+      setTimeout(() => {if(this.props.sessionExpired){
+
+        axios.get('http://127.0.0.1:8080/reset')
+    
+        window.location.replace('http://127.0.0.1:3000/sessionexp')
+      }
+    }, 30)
+
         this.props.fetchPosts();
         console.log("been in inventory");
     }
@@ -249,7 +258,8 @@ function mapDispatchToProps(dispatch) {
       products: state.posts.products,
       showModal: state.posts.showModal,
       allowAddProduct: state.posts.allowAddProduct,
-      inventoryStatus: state.posts.inventoryStatus
+      inventoryStatus: state.posts.inventoryStatus,
+      sessionExpired: state.posts.sessionExpired
       });
   
   export default connect (mapStateToProps, mapDispatchToProps)(Inventory);

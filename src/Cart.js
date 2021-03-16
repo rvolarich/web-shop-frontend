@@ -75,75 +75,59 @@ class Cart extends React.Component {
     }
 
     componentDidMount(){
+
       setTimeout(() => {
+        if(this.props.sessionExpired){
+
+        axios.get('http://127.0.0.1:8080/reset')
+    
+        window.location.replace('http://127.0.0.1:3000/sessionexp')
+      }else{
+
         if(this.props.isLogged){
-        console.log("bio u getcart");
-    this.props.getCartProducts();
-     this.props.getCartQty();
-     this.props.fetchPosts();
-     this.priceTotal();
-     axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
-      .then(response => {
-        console.log('user: ' + JSON.stringify(response.data))
-        this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
-        setTimeout(() => {console.log('email: ' + this.state.userData)},20)
-      })
+        
+          this.props.getCartProducts();
+          this.props.getCartQty();
+          this.props.fetchPosts();
+          this.priceTotal();
+     
+          axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
+          .then(response => {
+            this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
+        })
     }else{
-    this.props.dispatch({
-      type: GET_CART_PRODUCTS,
-      payload: loadLocalStorage()
-    });
-
-    this.priceTotal();
-    
-       /* allowCountUpdate = false;
-      
-      total = 0;
-      let totalCount = 0;
-  
-      let totalRounded = 0;
-      
-      setTimeout(() => { 
+          this.props.dispatch({
+            type: GET_CART_PRODUCTS,
+            payload: loadLocalStorage()
+          });
         
-        if(this.props.cartProducts != null){
-        
-        for(let i = 0; i < this.props.cartProducts.length; i++){
-            total += this.props.cartProducts[i].productPrice * this.props.cartProducts[i].productQuantity;
-          }
+          this.priceTotal();
+    } 
       }
-       else{
-        total = 0;
+    }, 30)
+
+     /* setTimeout(() => {
+        if(this.props.isLogged){
         
-       }    
-       totalRounded = (Math.round(total * 100) / 100).toFixed(2);
-       this.props.dispatch({ 
-        type: UPDATE_CART_TOTAL,
-        payload: Number(totalRounded)
-      });
+          this.props.getCartProducts();
+          this.props.getCartQty();
+          this.props.fetchPosts();
+          this.priceTotal();
      
-      this.props.dispatch({
-        type: GET_CART_QTY,
-        payload: this.props.updateCart.totalCartQty
-     })
-
-     for(let i = 0; i < this.props.cartProducts.length; i++){
-        totalCount = totalCount + this.props.cartProducts[i].productQuantity;
-     }
-
-     
-      
-     this.props.dispatch({
-      type: UPDATE_COUNT,
-      payload: totalCount
-   })
-     allowCountUpdate = false;
-  
-      
-      }, 100); */
-    } },30);
+          axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
+          .then(response => {
+            this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
+        })
+    }else{
+          this.props.dispatch({
+            type: GET_CART_PRODUCTS,
+            payload: loadLocalStorage()
+          });
+        
+          this.priceTotal();
+    } },30);*/
     
-
-    localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/cart');
+      localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/cart');
   }
 
    
@@ -527,7 +511,8 @@ const mapStateToProps = state => ({
     cTotal: state.posts.cTotal,
     shipping: state.posts.shipping,
     isLogged: state.posts.isLogged,
-    username: state.posts.username
+    username: state.posts.username,
+    sessionExpired: state.posts.sessionExpired
     
   });
 

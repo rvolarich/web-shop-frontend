@@ -19,3 +19,4 @@ export const SHOW_MODAL = 'SHOW_MODAL';
 export const PRODUCT_DATA = 'PRODUCT_DATA';
 export const ALLOW_ADD_PRODUCT = 'ALLOW_ADD_PRODUCT';
 export const INVENTORY_STATUS = 'INVENTORY_STATUS';
+export const STAY_LOGGED = 'STAY_LOGGED';

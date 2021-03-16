@@ -10,6 +10,7 @@ import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'universal-cookie';
 import { bindActionCreators } from 'redux';
 import { loadLocalStorage, updateCount } from './Cart';
+import axios from 'axios';
 
 
 class Shop extends React.Component {
@@ -25,6 +26,13 @@ class Shop extends React.Component {
 
 componentDidMount(){
    
+  setTimeout(() => {if(this.props.sessionExpired){
+
+    axios.get('http://127.0.0.1:8080/reset')
+
+    window.location.replace('http://127.0.0.1:3000/sessionexp')
+  }
+}, 30)
   
   this.props.fetchPosts();
   
@@ -97,7 +105,8 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = state => ({
   products: state.posts.products,
   cartProducts: state.posts.cartProducts,
-  isLogged: state.posts.isLogged
+  isLogged: state.posts.isLogged,
+  sessionExpired: state.posts.sessionExpired
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(Shop);
