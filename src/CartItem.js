@@ -17,12 +17,15 @@ class CartItem extends React.Component{
         this.state = {
           fieldData: {
             input: '',
-           prodId: null}
+           prodId: null
+          },
+          qtyState: 0
         }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteCartItemById = this.deleteCartItemById.bind(this)
     this.updateCartItemById = this.updateCartItemById.bind(this)
+    this.validateStock = this.validateStock.bind(this)
     /*this.updateCart = this.updateCart.bind(this)*/
     }
 
@@ -30,6 +33,7 @@ class CartItem extends React.Component{
       
       getCartItemQty();
       console.log("cartitem component did mount ");
+      this.setState({...this.state, qtyState: this.props.product.productQuantity})
     }
 
     /*componentDidUpdate(){
@@ -48,6 +52,11 @@ class CartItem extends React.Component{
       allowCountUpdate = true;*/
      }
 
+     validateStock(s) {
+      let rgx = /^[0-9]*$/; // allows numbers only
+      return s.match(rgx);
+    }
+
     deleteCartItemById = () =>  {
       this.props.deleteCartProduct(this.props.product.productId);
       localStorage.removeItem(this.props.product.productId);
@@ -56,9 +65,16 @@ class CartItem extends React.Component{
 
     handleChange(event){
       
-      
+      if(this.validateStock(event.target.value)){
+        if(event.target.value >= this.props.product.productStock){
+          this.setState({...this.state, qtyState: this.props.product.productStock})
+          event.target.value = this.props.product.productStock;
+        }else{
+        this.setState({...this.state, qtyState: event.target.value})
+      }
+      }
       const re = /^[0-9\b]+$/;
-      if (event.target.value === '' || re.test(event.target.value)) {
+     // if (event.target.value === '' || re.test(event.target.value)) {
         console.log("handleChange: " + event.target.value);
         
           getCartProducts();
@@ -68,9 +84,7 @@ class CartItem extends React.Component{
           else{
             allowConfirmButton(5);
           }
-          if(event.target.value > this.props.product.productStock){
-            event.target.value = this.props.product.productStock;
-          }
+          
           //this.setState({fieldData: {input: event.target.value, prodId: this.props.product.productId}});
            this.props.dispatch({type: SET_CART_PRODUCT_QUANTITY ,
                     payload: {
@@ -80,7 +94,7 @@ class CartItem extends React.Component{
                     });
 
                     allowUpdateCart(1);
-        }
+      //  }
 
     }
       
@@ -88,10 +102,10 @@ class CartItem extends React.Component{
       event.preventDefault();
       
       
-      this.setState({fieldData: {input: event.target.value, prodId: this.props.product.productId}});
+      this.setState({fieldData: {...this.state.fieldData, input: event.target.value, prodId: this.props.product.productId}});
       
       if(this.state.fieldData.input == ''){
-        this.setState({fieldData: {input: this.props.product.productQuantity}});
+        this.setState({fieldData: {...this.state.fieldData, input: this.props.product.productQuantity}});
         console.log("bio u handleSubmit");
         console.log("input " + this.state.fieldData.input);
         console.log("bio u prodId " + this.state.fieldData.prodId);
@@ -127,9 +141,9 @@ class CartItem extends React.Component{
                   </Col>
                   <Col style={{marginTop: '50px'}}>
                   <form onSubmit={this.handleSubmit}>
-                  <input key="index" type="text"  size="3" 
+                  <input key="index" type="text"  size="3" maxLength="10"
                   defaultValue={product.productQuantity}
-              onChange={this.handleChange} />
+              onChange={this.handleChange} value={this.state.qtyState}/>
               
               <Button type="submit" variant="outline-info" onClick={() => {this.props.updateCartItems()}} size="sm"
               style={{marginLeft:'65px', marginTop:'-58px'}}>Update</Button>
