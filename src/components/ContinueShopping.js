@@ -9,7 +9,7 @@ class ContinueShopping extends React.Component{
         
         return(
             <Button variant="outline-secondary"  href="/shop" 
-              style={{marginTop:'40px', marginBottom:'20px', marginRight:'5px'}}>To Shop</Button>
+              style={{marginTop:'30px', marginBottom:'20px', marginLeft:'4%'}}>Continue shopping</Button>
         );
     }
 }

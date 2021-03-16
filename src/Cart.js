@@ -462,8 +462,9 @@ confirmOrder = () => {
 
     
      
-     <Col xs={3} >
-     {count !== null ? <div>
+     <Col xs={4}>
+     {count !== null ? <div 
+     >
         <CartCalculator cTotal={cTotal} shipping={shipping} prodStock={cartProducts.productStock} 
         totalAmount={this.addTotal(cTotal, shipping)} confirmOrderKey={this.confirmOrder} />
      </div> : null}
