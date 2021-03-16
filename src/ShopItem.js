@@ -10,7 +10,7 @@ import AddToCartButton from './AddToCartButton';
 import ShopItemSelected from './ShopItemSelected';
 import Navig from './Navig';
 import { cartChildren } from './App'
-import { getCartQty } from './actions/postActions';
+import { getCartQty, getCartProducts } from './actions/postActions';
 import { GET_DATA, POST_DATA, GET_CART_QTY, INCREMENT, 
   SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE, GET_CART_PRODUCTS  }  from './actions/types';
 import { loadLocalStorage } from './Cart';
@@ -55,46 +55,8 @@ class ShopItem extends React.Component{
 
    clickMe = () => {
 
-    if(this.props.isLogged){
-
-     /* fetch('http://127.0.0.1:8080/pcp', {
-        credentials: 'include',
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(this.props.product)
-        
-    }).then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });*/
-     axios.post('http://127.0.0.1:8080/pcp', 
-      this.props.product, { withCredentials: true }).then(function (response) {
-        console.log(response);
-        
-        })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-      this.props.dispatch({
-        type: INCREMENT
-      });
-      /*axios({
-        method: 'post',
-        url: 'http://127.0.0.1:8080/pcp',
-        data: this.props.product,
-        withCredentials: 'true',
-        headers:{
-          'Content-Type': 'application/json'
-        }
-      });*/
-    }else{
-    
     let productQuantityLocal = 0;
-    let updateCartQuantityArray = [];
+    //let updateCartQuantityArray = [];
     let cartProductQuantity = [];
     cartProductQuantity = this.props.cartProducts;
     console.log("cartProducts " + JSON.stringify(cartProductQuantity.length));
@@ -107,29 +69,7 @@ class ShopItem extends React.Component{
       }
     }
 
-    //let increment = localStorage.setItem('count', parseInt(localStorage.getItem('count'))+1);
-
-   
-    
-
-
-        
-        
-       /* keySequence.push(this.props.product.productId);
-        localStorage.setItem(Date.now(), keySequence);
-        this.props.dispatch({
-          type: KEY_SEQUENCE,
-          payload: keySequence
-        });*/
-        
-        setTimeout(() => {
-          keySequence.push(this.props.product.productId);
-        localStorage.setItem(Date.now(), this.props.product.productId);
-        this.props.dispatch({
-          type: KEY_SEQUENCE,
-          payload: keySequence
-        });
-          let newArray = {...this.state.cartData};
+    let newArray = {...this.state.cartData};
         console.log("This state prodqty: " + this.props.cartProducts.productQuantity);
         
           
@@ -143,15 +83,44 @@ class ShopItem extends React.Component{
           this.props.dispatch({
             type: INCREMENT
           });
+
+          if(this.props.isLogged){
+
+            axios.post('http://127.0.0.1:8080/pcp', 
+             this.state.cartData, { withCredentials: true }).then(() => {
+               
+               this.props.getCartProducts();
+                //this.props.getCartQty();
+               })
+             .catch(function (error) {
+               console.log(error);
+             });
+      
+             
+           }else{
+             setTimeout(() => {
+                keySequence.push(this.props.product.productId);
+              localStorage.setItem(Date.now(), this.props.product.productId);
+              /*this.props.dispatch({
+                type: KEY_SEQUENCE,
+                payload: keySequence
+              });*/
+                
+              
+            
+              
+              this.setCartQtyState();
+            
+            
+            }, 40);
+          
+          }
         }
-        
-      
-        this.setState({cartData: newArray})
-        this.setCartQtyState();
-      
-      
-      }, 20);
-    }
+
+    setTimeout(() => {this.setState({cartData: newArray})}, 20)
+
+  
+    
       }
 
       setCartQtyState = () => {
@@ -221,7 +190,7 @@ class ShopItem extends React.Component{
 function mapDispatchToProps(dispatch) {
   return{
     dispatch,
-     ...bindActionCreators({ getCartQty }, dispatch)
+     ...bindActionCreators({ getCartQty, getCartProducts }, dispatch)
 }
 }
 
