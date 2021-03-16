@@ -144,7 +144,7 @@ class ShopItem extends React.Component{
         return(
 <Container>
       
-        <Row key={product.productId} style={{minHeight:'200px', marginTop:'20px'}}>
+        <Row key={product.productId} style={{minHeight:'200px', marginTop:'70px'}}>
           <Col  xs={4}>
           <img className="rounded mb-0" alt="100x100" 
           src={product.productImage} alt=""></img>

@@ -180,8 +180,12 @@ class Inventory extends React.Component{
 
         const { products, showModal } = this.props;
         return(
-            <Container style={{paddingLeft: 0, paddingRight: 0}}>
+            
+          <div style={{margin:'auto', width:'67%'}}>
 
+            <div style={{paddingLeft:'2%', marginTop:'30px', marginBottom:'20px'}}>
+            <h4>Inventory</h4>
+            </div>
             <ModalElement  input='inventory' modalLine1='Delete the item?' modalTitle='Inventory' 
                            modalLine2='The product will be removed from the main products list!'
                           handleDel={this.handleDelete}/>  
@@ -239,7 +243,7 @@ class Inventory extends React.Component{
 
 </Col>
 
-            </Container>
+</div>
         )
     }
 }

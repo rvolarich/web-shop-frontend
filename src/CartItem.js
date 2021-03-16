@@ -130,10 +130,10 @@ class CartItem extends React.Component{
                 <Row id={"cartChild"}>
                   <Col>
                   <img src={product.productImage} style={{width:'9vw',
-                              marginBottom: 'auto' }} alt=""></img>
+                              paddingTop: '45px' }} alt=""></img>
                   </Col>
                   <Col>
-                  <p style={{marginTop: '50px'}}>{product.productName}</p>
+                  <p style={{marginTop: '50px'}}><span style={{fontWeight:'bold'}}>{product.productName}</span></p>
                   <p>{product.productDescription}</p>
                   <br />
                   {product.productStock <= 0 ? <p><span style={{color: 'red'}}>Out of stock</span></p> :
@@ -157,10 +157,10 @@ class CartItem extends React.Component{
                   <Col>
                   
                   
-              <h6 style={{marginTop:'50px', marginLeft: '100px', marginBottom: 'auto'}}>EUR 
+              <h6 style={{marginTop:'50px', marginLeft: '10%', marginBottom: 'auto'}}>EUR 
               {parseFloat(product.productPrice).toFixed(2)}</h6>
               <Button variant="outline-danger" onClick={/*this.deleteCartItemById*/() => this.props.deleteCartProduct(this.props.product.productId)} 
-                   style={{marginLeft:'80px', marginTop:'35px'}}>Remove</Button>
+                   style={{marginLeft:'10%', marginTop:'35px'}}>Remove</Button>
                   </Col>
                 </Row>
                 <hr />

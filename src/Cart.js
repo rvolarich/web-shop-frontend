@@ -428,19 +428,20 @@ confirmOrder = () => {
     const { cartProducts, total, count, cTotal, shipping, isLogged} = this.props;
      
   return (
-    <Container>
+    <div style={{margin:'auto', width:'67%', minHeight:'410px'}}>
 
       <ModalConfirmCart confOrder={(data) => this.confirmOrderGuest(data)} />
         
-    <Row >
-              <Button variant="outline-info" onClick={this.deleteCart} 
-              style={{marginTop:'40px', marginBottom:'20px'}}>Clear cart</Button>
-    </Row>
+      <div style={{width:'67%', height:'100px', paddingLeft:'4%'}}>
+              <Button variant="outline-info" onClick={this.deleteCart} style={{marginTop:'37px'}}
+              >Clear cart</Button>
+         </div>     
+    <hr style={{width:'73%', marginLeft:'10px'}}/>
     
     <Row>
         <Col>
-          <hr />      
-            {count !== null ?  <div>
+                
+            {count !== 0 ?  <div>
         {
           cartProducts.map((product, index) => 
           <CartItem product={product} key={index} 
@@ -461,7 +462,7 @@ confirmOrder = () => {
 
     
      
-     <Col xs={3.5} >
+     <Col xs={3} >
      {count !== null ? <div>
         <CartCalculator cTotal={cTotal} shipping={shipping} prodStock={cartProducts.productStock} 
         totalAmount={this.addTotal(cTotal, shipping)} confirmOrderKey={this.confirmOrder} />
@@ -473,10 +474,10 @@ confirmOrder = () => {
      </Row>
     
     <div>
-                  {/*count === null || count === 0 ? <h2>You have no items</h2> : null*/}
+                  {count === 0 ? <h2>You have no items</h2> : null}
               </div>
         
-    </Container>
+              </div>
         
 
         

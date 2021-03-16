@@ -11,6 +11,7 @@ import Cookies from 'universal-cookie';
 import { bindActionCreators } from 'redux';
 import { loadLocalStorage, updateCount } from './Cart';
 import axios from 'axios';
+import Footer from './components/Footer';
 
 
 class Shop extends React.Component {
@@ -76,7 +77,7 @@ setTimeout(() => {
   return (
     
     
-    <div>
+    <div style={{margin:'auto', width:'67%'}}>
        
        {
 products.map((product, index) =>
@@ -86,7 +87,7 @@ products.map((product, index) =>
     
     }
    
-
+              
 </div>
        
     

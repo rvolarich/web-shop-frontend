@@ -24,6 +24,8 @@ import CheckCenter from './components/CheckCenter';
 import Goodbye from './components/GoodBye';
 import Activation from './components/Activation';
 import SessionExpired from './components/SessionExpired';
+import RegisterInfo from './components/RegisterInfo';
+import Footer from './components/Footer';
 
 
 
@@ -102,8 +104,8 @@ render(){
     <Router>
        
     
-    <div style={{margin:'auto', width:'67%', height:'100px', backgroundColor:'gray'}}>
-    <h1 style={{color:'white', marginLeft:'30px'}}>Webshop</h1>
+    <div style={{margin:'auto', width:'100%', height:'150px', backgroundColor:'gray'}}>
+    <h1 style={{color:'white', paddingLeft:'17%', paddingTop:'42px'}}>OneStop-ShipShop</h1>
     </div>
      
     <Navig />
@@ -123,8 +125,9 @@ render(){
       <Route path="/bye" component={Goodbye} />
       <Route path="/activation" component={Activation} />
       <Route path="/sessionexp" component={SessionExpired} />
+      <Route path="/reginfo" component={RegisterInfo} />
 
-     
+      <Footer />
     
     
     </Router>

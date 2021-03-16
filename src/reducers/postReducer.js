@@ -4,7 +4,7 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_QTY,
     DELETE_CART_ITEM, 
     UPDATE_CART_TOTAL, IS_LOGGED, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE, 
     GET_LOCAL_CART_PRODUCTS, SHOW_MODAL, PRODUCT_DATA, ALLOW_ADD_PRODUCT,
-    INVENTORY_STATUS, STAY_LOGGED}  from '../actions/types';
+    INVENTORY_STATUS, SET_EMAIL}  from '../actions/types';
 import update from 'immutability-helper';
 import { actions } from 'react-table';
 
@@ -26,6 +26,7 @@ const initialState = {
     username: '',
     loginStatus: '',
     sessionExpired: false,
+    email: '',
     cartProductQuantity: {
         prodId: 1,
         cartProductQuantityNumber: 5
@@ -131,12 +132,12 @@ export default function(state = initialState, action){
                 
             } 
 
-        /*case STAY_LOGGED:
+        case SET_EMAIL:
             return{
                 ...state,
-                stayLogged: action.payload
+                email: action.payload
                 
-            } */
+            } 
 
             case UPDATE_CART:
             return{

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 class Activation extends React.Component{
 
 componentDidMount(){
@@ -13,9 +14,12 @@ componentDidMount(){
 
 render(){
     return(
-        <Container>
-        <h4 style={{marginTop:'5%'}}>You have successfully activated your account!</h4>
-        </Container>
+        
+        <div style={{margin:'auto', width:'67%', textAlign:'center'}}> 
+        <h4 style={{paddingTop:'50px', paddingBottom:'50px'}}>You have successfully activated your account!</h4>
+
+        <Button href="/login">Login</Button>
+        </div>
     )
 }
     

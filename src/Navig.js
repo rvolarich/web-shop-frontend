@@ -25,11 +25,11 @@ class Navig extends React.Component{
   return (
     
 
-    <div style={{margin:'auto', width:'67%'}}>
+    <div style={{margin:'auto', width:'100%'}}>
     
     <Navbar bg="light" variant="light">
-     <Nav className="mr-auto" >
-      <Nav.Link href="/shop">Shop</Nav.Link>
+     <Nav className="mr-auto" style={{paddingLeft:'16.2%'}}>
+      <Nav.Link href="/shop" >Shop</Nav.Link>
       <Nav.Link href="/inv">Inventory</Nav.Link>
   <Nav.Link href="/cart">Cart <span style={{color: 'green'}}>{count === 0 ? null : count}</span></Nav.Link>
       

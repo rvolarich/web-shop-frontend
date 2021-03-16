@@ -6,7 +6,7 @@ import 'react-bootstrap-country-select/dist/react-bootstrap-country-select.css';
 import CountrySelect from 'react-bootstrap-country-select';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { IS_LOGGED } from '../actions/types';
+import { IS_LOGGED, SET_EMAIL } from '../actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
@@ -122,6 +122,13 @@ allowRegisterButtonKey(){
         console.log("registered: " + response.data);
         this.setState({userExists: response.data, allowCheckUserExists: true});
         }.bind(this));
+
+        this.props.dispatch({
+            type: SET_EMAIL,
+            payload: this.state.authData.username
+        })
+
+        localStorage.setItem('email',this.state.authData.username)
         }
         
         
@@ -215,7 +222,7 @@ allowRegisterButtonKey(){
             <Button  onClick={this.postAuthData} style={{marginTop:'5px', marginBottom:'10px'}} disabled>Register</Button>
             }
             </Row>
-            {allowCheckUserExists ? userExists ? window.location.replace("http://127.0.0.1:3000/login") : 
+            {allowCheckUserExists ? userExists ? window.location.replace("http://127.0.0.1:3000/reginfo") : 
             <div style={{color: 'red'}}>Username not available! Please choose a different one.</div> : null}
             
             
