@@ -20,6 +20,7 @@ const initialState = {
     cTotal: 0,
     shipping: 52.24,
     isLogged: false,
+    adminLogged: false,
     showModal: false,
     inventoryStatus:'',
     allowAddProduct:false,
@@ -167,7 +168,8 @@ export default function(state = initialState, action){
                             isLogged: action.payload.logged,
                             username: action.payload.nameName,
                             loginStatus: action.payload.loginStatus,
-                            sessionExpired: action.payload.sessionExpired
+                            sessionExpired: action.payload.sessionExpired,
+                            adminLogged: action.payload.adminLogged
                         }
                         
                         

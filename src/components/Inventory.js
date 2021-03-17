@@ -40,6 +40,8 @@ class Inventory extends React.Component{
         this.setState({file: files})
       }*/
 
+    
+
     componentDidMount(){
 
       setTimeout(() => {if(this.props.sessionExpired){
@@ -50,6 +52,8 @@ class Inventory extends React.Component{
 
         this.props.fetchPosts();
         console.log("been in inventory");
+
+        localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/inv');
     }
     closeModal = () => {
         this.props.dispatch({

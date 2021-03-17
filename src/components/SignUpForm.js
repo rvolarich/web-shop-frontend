@@ -73,7 +73,10 @@ class SignUpForm extends React.Component{
 
     localStorage.setItem('count', this.props.count);
      }, 100);
-      }
+      
+     
+    
+    }
 
       handleChangeUsername(event){
         this.setState({ authData: {...this.state.authData , username : event.target.value }});

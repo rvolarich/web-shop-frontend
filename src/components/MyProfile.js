@@ -87,6 +87,7 @@ class MyProfile extends React.Component{
           username:response.data.username}})
         
       })
+      localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/profile');
       }
       
       validatePassword(str)

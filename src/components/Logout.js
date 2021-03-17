@@ -18,6 +18,7 @@ class Logout extends React.Component{
             window.location.replace('http://127.0.0.1:3000/sessionexp')
           }
         }, 30)
+
     }
 
     handleClick = () => {

@@ -26,6 +26,7 @@ import Activation from './components/Activation';
 import SessionExpired from './components/SessionExpired';
 import RegisterInfo from './components/RegisterInfo';
 import Footer from './components/Footer';
+import ModalInventory from './components/ModalInventory';
 
 
 
@@ -126,6 +127,7 @@ render(){
       <Route path="/activation" component={Activation} />
       <Route path="/sessionexp" component={SessionExpired} />
       <Route path="/reginfo" component={RegisterInfo} />
+      <Route path="/log" component={ModalInventory} />
 
       <Footer />
     
