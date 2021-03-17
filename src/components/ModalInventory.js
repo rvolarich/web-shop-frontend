@@ -63,7 +63,7 @@ class ModalInventory extends React.Component{
         In order to use the resorce you must be logged in with an administrator account!
         </p>
         <p>
-        HINT: try <span style={{color:'green'}}>Admin fF5555</span>
+        HINT: try <span style={{color:'green'}}>admin@admin.com fF5555</span>
         </p>
       </Modal.Body>
       <Modal.Footer>

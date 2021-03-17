@@ -55,6 +55,7 @@ class ShopItem extends React.Component{
 
    clickMe = () => {
 
+    localStorage.setItem('count', '1')
     let productQuantityLocal = 0;
     //let updateCartQuantityArray = [];
     let cartProductQuantity = [];

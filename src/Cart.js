@@ -10,12 +10,13 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getCartProducts, getCartQty, deleteCart, postCart,
           deleteCartItem, fetchPosts } from './actions/postActions';
-import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY, UPDATE_COUNT, SHOW_MODAL} from './actions/types';
+import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY, UPDATE_COUNT, SHOW_MODAL, DELETE_CART_PRODUCT} from './actions/types';
 import { bindActionCreators } from 'redux';
 import { allowConfirmButton } from './components/CartCalculator';
 import SavedCartItem from './SavedCartItem';
 import ModalElement from './components/ModalElement';
 import ModalConfirmCart from './components/ModalConfirmCart';
+import ContinueShopping from './components/ContinueShopping';
 //import { getCartProducts } from './Repository2';
 
 
@@ -37,11 +38,13 @@ class Cart extends React.Component {
             userData:{
               nameName:'',
               email:''
-            }
+            },
+
+            cartProds:[]
         }
         this.deleteCart = this.deleteCart.bind(this)
         this.updateCart = this.updateCart.bind(this)
-        //this.updateCount = this.updateCount.bind(this)
+        this.updateCountNumber = this.updateCountNumber.bind(this)
         this.addTotal = this.addTotal.bind(this)
         this.confirmOrder = this.confirmOrder.bind(this)
         this.confirmOrderGuest = this.confirmOrderGuest.bind(this)
@@ -76,6 +79,7 @@ class Cart extends React.Component {
 
     componentDidMount(){
 
+      
       setTimeout(() => {
         if(this.props.sessionExpired){
     
@@ -100,6 +104,8 @@ class Cart extends React.Component {
           });
         
           this.priceTotal();
+
+          
     } 
       }
     }, 30)
@@ -124,7 +130,10 @@ class Cart extends React.Component {
         
           this.priceTotal();
     } },30);*/
-    
+  
+      setTimeout(() => {if(this.props.count == 0){
+        localStorage.setItem('count', '0');
+      }}, 200)
       localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/cart');
   }
 
@@ -132,6 +141,14 @@ class Cart extends React.Component {
 
 
     deleteCart = () => {
+
+      this.props.dispatch({
+        type: UPDATE_COUNT,
+        payload: 0
+      })
+
+      localStorage.setItem('count', '0')
+
       if(this.props.isLogged){
         this.props.deleteCart();
         allowCountUpdate = false;
@@ -143,7 +160,7 @@ class Cart extends React.Component {
           localStorage.removeItem(keysToErase[i])
         }
       }
-       window.location.reload() 
+       //window.location.reload() 
        
     }
 
@@ -151,7 +168,7 @@ class Cart extends React.Component {
   allowCountUpdate = false;
       
       total = 0;
-      let totalCount = 0;
+      //let totalCount = 0;
   
       let totalRounded = 0;
       
@@ -178,7 +195,7 @@ class Cart extends React.Component {
         payload: this.props.updateCart.totalCartQty
      })
 
-     for(let i = 0; i < this.props.cartProducts.length; i++){
+     /*for(let i = 0; i < this.props.cartProducts.length; i++){
         totalCount = totalCount + this.props.cartProducts[i].productQuantity;
      }
 
@@ -187,7 +204,7 @@ class Cart extends React.Component {
      this.props.dispatch({
       type: UPDATE_COUNT,
       payload: totalCount
-   })
+   })*/
      allowCountUpdate = false;
   
       
@@ -195,22 +212,37 @@ class Cart extends React.Component {
  }
  
 
- updateCart = () => {
-  
-  if(this.props.isLogged){
-  this.props.postCart(this.props.cartProducts);
-  
-}else{
-  for(let i = 0; i < this.props.cartProducts.length; i++){
-    localStorage.setItem(this.props.cartProducts[i].productId, JSON.stringify(this.props.cartProducts[i]));
+ updateCart = (id, qty) => {
+
+  this.props.dispatch({
+    type: SET_CART_PRODUCT_QUANTITY ,
+    payload: {
+    fieldValue: qty,
+    prodId: id
     }
+    })
+
+    this.updateCountNumber();
+    this.priceTotal();
   
+  setTimeout(() => {
+
+    
+    
+    if(this.props.isLogged){
+    this.props.postCart(this.props.cartProducts);
+    
+  }else{
+    for(let i = 0; i < this.props.cartProducts.length; i++){
+      localStorage.setItem(this.props.cartProducts[i].productId, JSON.stringify(this.props.cartProducts[i]));
+      }
+    }}, 500) 
   
   //allowCountUpdate = true;
   
   //allowUpdateCart(0);
-}
-window.location.reload();
+
+//window.location.reload();
  }
 
 
@@ -243,6 +275,14 @@ for(let i = 0; i < storageKeysInteger.length; i++){
 
 deleteCartItemById(id) {
   
+  this.props.dispatch({
+    type: DELETE_CART_PRODUCT,
+    payload: id
+   })
+
+   this.updateCountNumber();
+   this.priceTotal();
+
   if(this.props.isLogged){
     let prodObj = {
       productId: id
@@ -250,12 +290,11 @@ deleteCartItemById(id) {
     this.props.deleteCartItem(prodObj); 
   }else{
     
-
     let lskFiltered = [];
     let storageKeysInteger = [];
     let temp = [];
     let keysToErase = [];
-    let totalCount = 0;
+    
     let index = 0;
     for(let i = 0; i < Object.keys(localStorage).length; i++){
         storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
@@ -285,15 +324,32 @@ deleteCartItemById(id) {
 
        
   
-       updateCount();
+       //updateCount();
+
+       //let totalCount = 0;
+   /* setTimeout(() => {
+      for(let i = 0; i < this.props.cartProducts.length; i++){
+        totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+     }
+     this.props.dispatch({
+      type: UPDATE_COUNT,
+      payload: totalCount
+    });
+     }, 20);*/
         
-       
+     /*for(let i = 0; i < this.props.cartProducts.length; i++){
+      totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+   }
+   this.props.dispatch({
+    type: UPDATE_COUNT,
+    payload: totalCount
+  });*/
      
 
-     console.log("totalCount " + totalCount);
+     
 
-    setTimeout(() => {if(totalCount == 0){
-      console.log("bio u total countttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+    setTimeout(() => {if(temp.length == 0){
+      
       localStorage.clear();
       
       
@@ -301,7 +357,7 @@ deleteCartItemById(id) {
   }
   
   
-  window.location.reload();
+  //window.location.reload();
   
             
   
@@ -309,6 +365,17 @@ deleteCartItemById(id) {
   
   //allowCountUpdate = false;
   
+  }
+
+  updateCountNumber = () => {
+    let totalCount = 0;
+   for(let i = 0; i < this.props.cartProducts.length; i++){
+      totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+   }
+   this.props.dispatch({
+    type: UPDATE_COUNT,
+    payload: totalCount
+  });
   }
 
   
@@ -428,33 +495,39 @@ confirmOrder = () => {
     const { cartProducts, total, count, cTotal, shipping, isLogged} = this.props;
      
   return (
+
+
     <div style={{margin:'auto', width:'67%', minHeight:'410px'}}>
 
       <ModalConfirmCart confOrder={(data) => this.confirmOrderGuest(data)} />
         
-      <div style={{width:'67%', height:'100px', paddingLeft:'4%'}}>
+       {localStorage.getItem('count') == '0'  ? 
+       
+       <div style={{margin:'auto', paddingTop:'100px'}}>Your cart is empty!</div> : <div>
+      
+      <div style={{width:'67%', height:'75px', paddingLeft:'1%'}}>
               <Button variant="outline-info" onClick={this.deleteCart} style={{marginTop:'37px'}}
               >Clear cart</Button>
-         </div>     
-    <hr style={{width:'73%', marginLeft:'10px'}}/>
+         </div>  
+    <hr style={{width:'64%', marginLeft:'10px'}}/>
     
     <Row>
         <Col>
                 
-            {count !== 0 ?  <div>
+            
         {
-          cartProducts.map((product, index) => 
+          this.props.cartProducts.map((product, index) => 
           <CartItem product={product} key={index} 
-          deleteCartProduct={(num) => this.deleteCartItemById(num)}  updateCartItems={() => this.updateCart()} 
+          deleteCartProduct={(num) => this.deleteCartItemById(num)}  updateCartItems={(id, qty) => this.updateCart(id, qty)} 
           onSubmit={this.addTodo} />
           
           )
           
         }
         
-                
+         <ContinueShopping />       
         
-                </div> : null} 
+                
 
                 
                 
@@ -463,22 +536,20 @@ confirmOrder = () => {
     
      
      <Col xs={4}>
-     {count !== null ? <div 
-     >
+      
+     
         <CartCalculator cTotal={cTotal} shipping={shipping} prodStock={cartProducts.productStock} 
         totalAmount={this.addTotal(cTotal, shipping)} confirmOrderKey={this.confirmOrder} />
-     </div> : null}
+     
      
      </Col>
      
 
      </Row>
     
-    <div>
-                  {count === 0 ? <h2>You have no items</h2> : null}
-              </div>
+     </div>}
         
-              </div>
+              </div> 
         
 
         

@@ -18,24 +18,24 @@ class CartCalculator extends React.Component{
         
         return(
   <div>
-  <div style={{border:'solid 1px', width:'100%', borderRadius:'15px', 
+  <div style={{border:'solid 1px', width:'100%', borderRadius:'5px', borderColor:'#5CAEBB', backgroundColor:'#EFFAFC',
      marginTop:'-17px', minHeight:'250px'}}>
      
         
-      <h5 style={{paddingLeft:'15px', paddingTop:'25px'}}>Cart overview</h5>
+      <h5 style={{paddingLeft:'15px', paddingTop:'25px', color:'gray'}}>Cart overview</h5>
         
      <hr />
       
-    <h6 style={{paddingLeft:'15px'}}>Cart total:<span style={{float:'right', paddingRight:'15px'}}> {cTotal}</span></h6>
+    <h6 style={{paddingLeft:'15px', color:'gray'}}>Cart total:<span style={{float:'right', paddingRight:'15px', color:'gray'}}> {cTotal}</span></h6>
     
     <hr />
      
-       <h5 style={{paddingLeft:'15px'}}>Shipping:<span style={{float:'right', paddingRight:'15px'}}> {shipping}</span></h5>
+       <h5 style={{paddingLeft:'15px', color:'gray'}}>Shipping:<span style={{float:'right', paddingRight:'15px', color:'gray'}}> {shipping}</span></h5>
      
      
        <hr />
      
-       <h5 style={{paddingLeft:'15px'}}>Total:<span style={{float:'right', paddingRight:'15px'}}> {totalAmount}</span></h5>
+       <h5 style={{paddingLeft:'15px', color:'gray'}}>Total:<span style={{float:'right', paddingRight:'15px', color:'gray'}}> {totalAmount}</span></h5>
      
        </div>
     
@@ -43,11 +43,11 @@ class CartCalculator extends React.Component{
               
               {allowConfirm === false ? <Button   variant="outline-info" 
               onClick={() => this.props.confirmOrderKey()}
-              style={{marginTop:'10px', marginBottom:'20px', marginLeft:'10px',
-              paddingLeft:'115px', paddingRight:'115px', paddingTop:'15px', paddingBottom:'15px'}}>Confirm order</Button> : <Button href="/confirm" variant="outline-info" onClick={() => {confirmOrder()}}
+              style={{marginTop:'10px', marginBottom:'20px', width:'100%',
+               paddingTop:'15px', paddingBottom:'15px'}}>Confirm order</Button> : <Button href="/confirm" variant="outline-info" onClick={() => {confirmOrder()}}
               style={{marginTop:'10px', marginBottom:'20px'}} disabled>Confirm order</Button>}
      </div>
-     <div><ContinueShopping /></div>
+     
      </div>
             
         );

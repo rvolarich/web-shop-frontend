@@ -5,8 +5,8 @@ class Footer extends React.Component{
 
 render(){
     return(
-        <div style={{margin:'auto', width:'100%', height:'300px', textAlign:'center', backgroundColor:'gray'}}>
-        <h4 style={{paddingTop:'100px'}}>OneStop-ShipShop</h4>
+        <div style={{margin:'auto', width:'100%', height:'300px', textAlign:'center', backgroundColor:'#447297'}}>
+        <h1 style={{paddingTop:'130px', color:'white'}}>OneStop-ShipShop</h1>
         </div>
     )
 }

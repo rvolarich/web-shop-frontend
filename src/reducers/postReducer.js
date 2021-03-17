@@ -4,7 +4,7 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_QTY,
     DELETE_CART_ITEM, 
     UPDATE_CART_TOTAL, IS_LOGGED, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE, 
     GET_LOCAL_CART_PRODUCTS, SHOW_MODAL, PRODUCT_DATA, ALLOW_ADD_PRODUCT,
-    INVENTORY_STATUS, SET_EMAIL}  from '../actions/types';
+    INVENTORY_STATUS, SET_EMAIL, DELETE_CART_PRODUCT}  from '../actions/types';
 import update from 'immutability-helper';
 import { actions } from 'react-table';
 
@@ -47,10 +47,10 @@ export default function(state = initialState, action){
             }
         case GET_CART_QTY:
             console.log('been in setting cart qty');
-            if(action.payload === 0){
+            if(action.payload == 0){
                 return{
                     ...state,
-                    count: null
+                    count: 0
                 }
             }else{
             return{
@@ -91,7 +91,7 @@ export default function(state = initialState, action){
                         cartProducts: action.payload,
                         
                     }
-        case SET_CART_PRODUCT_QUANTITY:
+        /*case SET_CART_PRODUCT_QUANTITY:
             var x = 0;
              console.log('been in seeeeeeet: ' + action.payload);
                // const newState = {...state};
@@ -110,7 +110,38 @@ export default function(state = initialState, action){
                 
              })
              
+            }*/
+
+            case SET_CART_PRODUCT_QUANTITY:
+            var x = 0;
+             console.log('been in seeeeeeet: ' + action.payload);
+               
+             return {
+             ...state,
+             cartProducts: state.cartProducts.map((item) => {
+
+                if(item.productId === action.payload.prodId){
+                    return {
+                        ...item,
+                        productQuantity: parseInt(action.payload.fieldValue)
+                        
+                }
             }
+                return item;
+                
+             })
+             
+            }
+
+            case DELETE_CART_PRODUCT:
+                console.log('delete cart product action payload: ' + action.payload)
+                return{
+                    ...state,
+                    cartProducts: state.cartProducts.filter(function(product){
+                        return product.productId !== action.payload
+                    })
+                    
+                }
 
             case SET_CART_PRODUCT_QUANTITY_LOCAL:
             var x = 0;
@@ -148,7 +179,7 @@ export default function(state = initialState, action){
             } 
 
         case UPDATE_COUNT:
-            console.log('bio u countu');
+            console.log('bio u countu sad:' + JSON.stringify(state.cartProducts));
             return{
                 ...state,
                // count: state.updateCart.totalCartQty

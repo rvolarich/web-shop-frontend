@@ -242,8 +242,10 @@ class SignUpForm extends React.Component{
         
         
         return(
+            
+          <div style={{margin:'auto', minHeight:'410px'}}>
             <Container>
-
+              
               {showModal ? <ModalElement mergeCartMod={() => this.mergeCart()} 
               modalTitle='Cart'
               modalLine1='There are items in the guest cart.' 
@@ -256,7 +258,7 @@ class SignUpForm extends React.Component{
                 
                 <Form>
                 
-                <Form.Group controlId="formBasicEmail" style={{marginTop: '20px'}}>
+                <Form.Group controlId="formBasicEmail" style={{paddingTop: '40px'}}>
                     <Form.Control type="email" placeholder="e-mail" onChange={this.handleChangeUsername} />
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword" style={{marginTop: '20px'}}>
@@ -284,8 +286,8 @@ class SignUpForm extends React.Component{
             <div style={{color: 'red'}}>{loginStatus}</div> : null}
             </div>
             </Col>
-            
             </Container>
+            </div> 
         )
     }
 }

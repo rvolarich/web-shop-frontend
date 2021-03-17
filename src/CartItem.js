@@ -23,7 +23,7 @@ class CartItem extends React.Component{
         }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.deleteCartItemById = this.deleteCartItemById.bind(this)
+   // this.deleteCartItemById = this.deleteCartItemById.bind(this)
     this.updateCartItemById = this.updateCartItemById.bind(this)
     this.validateStock = this.validateStock.bind(this)
     /*this.updateCart = this.updateCart.bind(this)*/
@@ -57,11 +57,11 @@ class CartItem extends React.Component{
       return s.match(rgx);
     }
 
-    deleteCartItemById = () =>  {
+   /* deleteCartItemById = () =>  {
       this.props.deleteCartProduct(this.props.product.productId);
       localStorage.removeItem(this.props.product.productId);
       window.location.reload();
-      }
+      }*/
 
     handleChange(event){
       
@@ -73,10 +73,7 @@ class CartItem extends React.Component{
         this.setState({...this.state, qtyState: event.target.value})
       }
       }
-      const re = /^[0-9\b]+$/;
-     // if (event.target.value === '' || re.test(event.target.value)) {
-        console.log("handleChange: " + event.target.value);
-        
+      
           getCartProducts();
           if(event.target.value <= 0){
             allowConfirmButton(1);
@@ -86,12 +83,7 @@ class CartItem extends React.Component{
           }
           
           //this.setState({fieldData: {input: event.target.value, prodId: this.props.product.productId}});
-           this.props.dispatch({type: SET_CART_PRODUCT_QUANTITY ,
-                    payload: {
-                    fieldValue: event.target.value,
-                    prodId: this.props.product.productId
-                    }
-                    });
+           
 
                     allowUpdateCart(1);
       //  }
@@ -140,14 +132,15 @@ class CartItem extends React.Component{
                <p><span style={{color: 'green'}}>In Stock:</span> {product.productStock}</p>} 
                   </Col>
                   <Col style={{marginTop: '50px'}}>
-                  <form onSubmit={this.handleSubmit}>
+                  
                   <input key="index" type="text"  size="3" maxLength="10"
-                  defaultValue={product.productQuantity}
-              onChange={this.handleChange} value={this.state.qtyState}/>
+                  
+              onChange={this.handleChange} defaultValue={product.productQuantity}/>
               
-              <Button type="submit" variant="outline-info" onClick={() => {this.props.updateCartItems()}} size="sm"
+              <Button type="submit" variant="outline-info" 
+              onClick={() => this.props.updateCartItems(product.productId, this.state.qtyState)} size="sm"
               style={{marginLeft:'65px', marginTop:'-58px'}}>Update</Button>
-              </form>
+              
                
           
        

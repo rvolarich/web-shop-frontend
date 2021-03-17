@@ -242,8 +242,8 @@ class Inventory extends React.Component{
 </Form>
 <FileList allowButtAdd={() => this.allowAddButtonKey()}/>
 
-{this.state.allowAddButton ? <Button onClick={this.handleInsert.bind(this)} >Add product</Button> :
-<Button onClick={this.handleInsert.bind(this)} disabled >Add product</Button>}
+{this.state.allowAddButton ? <Button onClick={this.handleInsert.bind(this)} style={{marginBottom:'70px'}}>Add product</Button> :
+<Button style={{marginBottom:'70px'}} onClick={this.handleInsert.bind(this)} disabled >Add product</Button>}
 
 </Col>
 
