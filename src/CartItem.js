@@ -117,9 +117,9 @@ class CartItem extends React.Component{
         //console.log("render " + this.state.quantity);
         return (
 
-            <Container>
+            <div name="cartItem" style={{margin:'auto', width:'96%'}}>
               
-                <Row id={"cartChild"}>
+                <Row>
                   <Col>
                   <img src={product.productImage} style={{width:'9vw',
                               paddingTop: '45px' }} alt=""></img>
@@ -157,7 +157,7 @@ class CartItem extends React.Component{
                   </Col>
                 </Row>
                 <hr />
-            </Container>
+                </div>
 
 
 

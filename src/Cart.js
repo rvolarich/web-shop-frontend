@@ -40,7 +40,8 @@ class Cart extends React.Component {
               email:''
             },
 
-            cartProds:[]
+            isCartEmpty:false
+            //cartProds:[]
         }
         this.deleteCart = this.deleteCart.bind(this)
         this.updateCart = this.updateCart.bind(this)
@@ -80,6 +81,13 @@ class Cart extends React.Component {
     componentDidMount(){
 
       
+      let cartItemElements;
+      cartItemElements = document.getElementsByName("cartMain")
+      //let child = document.cartItemElements.getElementsByTagName("input")
+      console.log("u cart component did mount: " + cartItemElements.length)
+      if(this.props.cartProducts <= 0){
+        setTimeout(() => {this.setState({...this.state, isCartEmpty: true})}, 100)
+    }
       setTimeout(() => {
         if(this.props.sessionExpired){
     
@@ -214,17 +222,31 @@ class Cart extends React.Component {
 
  updateCart = (id, qty) => {
 
+  let inputNodes = [];
+  let inputValues = [];
+  
+  inputNodes = document.getElementsByTagName("input")
+  
+  let i = 0;
+  for(let i = 0; i < inputNodes.length; i++){
+    
+    let k = parseInt(inputNodes[i].value)
+    inputValues.push(k)
+   }
+  console.log('niz vrijednosti: ' + inputValues)
+ // console.log('i: ' + nodes.length)
   this.props.dispatch({
-    type: SET_CART_PRODUCT_QUANTITY ,
+    type: SET_CART_PRODUCT_QUANTITY,
     payload: {
-    fieldValue: qty,
+    fieldValue: inputValues,
     prodId: id
     }
     })
 
-    this.updateCountNumber();
+    
+    
     this.priceTotal();
-  
+    this.updateCountNumber();
   setTimeout(() => {
 
     
@@ -369,9 +391,13 @@ deleteCartItemById(id) {
 
   updateCountNumber = () => {
     let totalCount = 0;
+
+    console.log('updateCount length' + this.props.cartProducts.length)
    for(let i = 0; i < this.props.cartProducts.length; i++){
       totalCount = totalCount + this.props.cartProducts[i].productQuantity;
    }
+
+   console.log('updateCount total ' + totalCount)
    this.props.dispatch({
     type: UPDATE_COUNT,
     payload: totalCount
@@ -501,9 +527,9 @@ confirmOrder = () => {
 
       <ModalConfirmCart confOrder={(data) => this.confirmOrderGuest(data)} />
         
-       {localStorage.getItem('count') == '0'  ? 
+       {this.props.cartProducts.length <= 0 ? this.state.isCartEmpty ? 
        
-       <div style={{margin:'auto', paddingTop:'100px'}}>Your cart is empty!</div> : <div>
+       <div style={{margin:'auto', paddingTop:'100px'}}>Your cart is empty!</div> : null : <div>
       
       <div style={{width:'67%', height:'75px', paddingLeft:'1%'}}>
               <Button variant="outline-info" onClick={this.deleteCart} style={{marginTop:'37px'}}
@@ -514,17 +540,17 @@ confirmOrder = () => {
     <Row>
         <Col>
                 
-            
+            <div name="cartMain">
         {
-          this.props.cartProducts.map((product, index) => 
-          <CartItem product={product} key={index} 
+          this.props.cartProducts.map((product) => 
+          <CartItem product={product} key={product.productId}
           deleteCartProduct={(num) => this.deleteCartItemById(num)}  updateCartItems={(id, qty) => this.updateCart(id, qty)} 
           onSubmit={this.addTodo} />
           
           )
           
         }
-        
+        </div>
          <ContinueShopping />       
         
                 

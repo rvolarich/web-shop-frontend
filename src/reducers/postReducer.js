@@ -50,7 +50,7 @@ export default function(state = initialState, action){
             if(action.payload == 0){
                 return{
                     ...state,
-                    count: 0
+                    count: null
                 }
             }else{
             return{
@@ -113,28 +113,23 @@ export default function(state = initialState, action){
             }*/
 
             case SET_CART_PRODUCT_QUANTITY:
-            var x = 0;
+            
              console.log('been in seeeeeeet: ' + action.payload);
                
              return {
              ...state,
-             cartProducts: state.cartProducts.map((item) => {
+             cartProducts: state.cartProducts.map((item, index) => {
 
-                if(item.productId === action.payload.prodId){
+                
                     return {
                         ...item,
-                        productQuantity: parseInt(action.payload.fieldValue)
-                        
-                }
-            }
-                return item;
-                
-             })
-             
-            }
+                        productQuantity: parseInt(action.payload.fieldValue[index])
+                         }
+                })
+             }
 
             case DELETE_CART_PRODUCT:
-                console.log('delete cart product action payload: ' + action.payload)
+                
                 return{
                     ...state,
                     cartProducts: state.cartProducts.filter(function(product){
@@ -179,12 +174,12 @@ export default function(state = initialState, action){
             } 
 
         case UPDATE_COUNT:
-            console.log('bio u countu sad:' + JSON.stringify(state.cartProducts));
+            console.log('updateCount total u postreducer ' + action.payload)
             return{
                 ...state,
-               // count: state.updateCart.totalCartQty
                count: action.payload
             }
+
         case UPDATE_CART_TOTAL:
             console.log('bio u update_cart_total');
                 return{
