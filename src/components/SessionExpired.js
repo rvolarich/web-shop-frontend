@@ -10,10 +10,10 @@ class SessionExpired extends React.Component{
 
 render(){
     return(
-        <div style={{margin:'auto', width:'67%'}}>
-        <h4 style={{marginTop:'5%'}}>Your session has expired!</h4>
+        <div style={{margin:'auto', minHeight:'410px', paddingTop:'90px', textAlign:'center'}}>
+        <h3 style={{marginBottom:'20px'}}>Your session has expired!</h3>
         <br />
-        <Button href="/login">Login</Button>
+        <Button variant="outline-info" href="/login" style={{width:'18%'}}>Login</Button>
         </div>
         
     )
