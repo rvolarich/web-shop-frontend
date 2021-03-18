@@ -7,14 +7,17 @@ class LoggedOut extends React.Component{
         
         
         return(
-            <div>
-                <Container>
-                <h3 style={{marginTop: '20px', marginBottom: '20px'}}>You are logged out!</h3>
-                <div>
+           
+           <div style={{margin:'auto', minHeight:'410px', paddingTop:'90px', textAlign:'center'}}>
+                
+                <div style={{marginBottom: '20px'}}>
+                <h3 >You are logged out!</h3>
+                </div>
+
                 <Button variant="outline-secondary"  href="/shop" 
             style={{marginTop:'10px'}}>Continue shopping</Button>
-                </div>
-                </Container>
+                
+               
             </div>
             
             

@@ -45,7 +45,7 @@ export default function(state = initialState, action){
                 ...state,
                 products: action.payload
             }
-        case GET_CART_QTY:
+       case GET_CART_QTY:
             console.log('been in setting cart qty');
             if(action.payload == 0){
                 return{
@@ -123,7 +123,7 @@ export default function(state = initialState, action){
                 
                     return {
                         ...item,
-                        productQuantity: parseInt(action.payload.fieldValue[index])
+                        productQuantity: parseInt(action.payload[index])
                          }
                 })
              }

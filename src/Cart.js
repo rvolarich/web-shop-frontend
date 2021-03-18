@@ -10,7 +10,8 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getCartProducts, getCartQty, deleteCart, postCart,
           deleteCartItem, fetchPosts } from './actions/postActions';
-import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY, UPDATE_COUNT, SHOW_MODAL, DELETE_CART_PRODUCT} from './actions/types';
+import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY, 
+  UPDATE_COUNT, SHOW_MODAL, DELETE_CART_PRODUCT, DELETE_CART} from './actions/types';
 import { bindActionCreators } from 'redux';
 import { allowConfirmButton } from './components/CartCalculator';
 import SavedCartItem from './SavedCartItem';
@@ -81,10 +82,11 @@ class Cart extends React.Component {
     componentDidMount(){
 
       
-      let cartItemElements;
+      /*let cartItemElements;
       cartItemElements = document.getElementsByName("cartMain")
-      //let child = document.cartItemElements.getElementsByTagName("input")
-      console.log("u cart component did mount: " + cartItemElements.length)
+      let child = document.cartItemElements.getElementsByTagName("input")
+      console.log("u cart component did mount: " + cartItemElements.length)*/
+      
       if(this.props.cartProducts <= 0){
         setTimeout(() => {this.setState({...this.state, isCartEmpty: true})}, 100)
     }
@@ -112,7 +114,7 @@ class Cart extends React.Component {
           });
         
           this.priceTotal();
-
+          this.updateCountNumber();
           
     } 
       }
@@ -139,9 +141,9 @@ class Cart extends React.Component {
           this.priceTotal();
     } },30);*/
   
-      setTimeout(() => {if(this.props.count == 0){
+     /* setTimeout(() => {if(this.props.count == 0){
         localStorage.setItem('count', '0');
-      }}, 200)
+      }}, 200)*/
       localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/cart');
   }
 
@@ -151,15 +153,20 @@ class Cart extends React.Component {
     deleteCart = () => {
 
       this.props.dispatch({
+        type: DELETE_CART,
+        payload: []
+      })
+
+      this.props.dispatch({
         type: UPDATE_COUNT,
         payload: 0
       })
 
-      localStorage.setItem('count', '0')
+      //localStorage.setItem('count', '0')
 
       if(this.props.isLogged){
         this.props.deleteCart();
-        allowCountUpdate = false;
+       // allowCountUpdate = false;
       }else{
         let keysToErase = [];
         keysToErase = this.getLocalStorageProductKeys();
@@ -173,7 +180,7 @@ class Cart extends React.Component {
     }
 
  priceTotal = () => {
-  allowCountUpdate = false;
+ // allowCountUpdate = false;
       
       total = 0;
       //let totalCount = 0;
@@ -198,10 +205,10 @@ class Cart extends React.Component {
         payload: Number(totalRounded)
       });
      
-      this.props.dispatch({
+     /* this.props.dispatch({
         type: GET_CART_QTY,
         payload: this.props.updateCart.totalCartQty
-     })
+     })*/
 
      /*for(let i = 0; i < this.props.cartProducts.length; i++){
         totalCount = totalCount + this.props.cartProducts[i].productQuantity;
@@ -213,14 +220,14 @@ class Cart extends React.Component {
       type: UPDATE_COUNT,
       payload: totalCount
    })*/
-     allowCountUpdate = false;
+    // allowCountUpdate = false;
   
       
       }, 200); 
  }
  
 
- updateCart = (id, qty) => {
+ updateCart = () => {
 
   let inputNodes = [];
   let inputValues = [];
@@ -237,16 +244,13 @@ class Cart extends React.Component {
  // console.log('i: ' + nodes.length)
   this.props.dispatch({
     type: SET_CART_PRODUCT_QUANTITY,
-    payload: {
-    fieldValue: inputValues,
-    prodId: id
-    }
+    payload: inputValues
     })
 
     
     
     this.priceTotal();
-    this.updateCountNumber();
+    setTimeout(() => { this.updateCountNumber();}, 100)
   setTimeout(() => {
 
     
@@ -302,7 +306,7 @@ deleteCartItemById(id) {
     payload: id
    })
 
-   this.updateCountNumber();
+   setTimeout(() => {this.updateCountNumber();}, 100) 
    this.priceTotal();
 
   if(this.props.isLogged){
@@ -431,8 +435,15 @@ confirmOrderGuest = (data) => {
       });}, 50)
   
       setTimeout(() => {
-      this.deleteCart();
-      window.location.replace('http://127.0.0.1:3000/confirm')  
+      
+      window.location.replace('http://127.0.0.1:3000/confirm') 
+       
+    }, 50) 
+
+    setTimeout(() => {
+      
+      window.location.replace('http://127.0.0.1:3000/confirm') 
+      
     }, 50) 
   }
 
@@ -476,7 +487,7 @@ confirmOrder = () => {
       
       
       setTimeout(() => {
-        this.deleteCart();
+        
         window.location.replace('http://127.0.0.1:3000/confirm')  
       }, 50) 
     }
@@ -518,7 +529,7 @@ confirmOrder = () => {
     render(){
     
       
-    const { cartProducts, total, count, cTotal, shipping, isLogged} = this.props;
+    const { cartProducts, total, cTotal, shipping, isLogged} = this.props;
      
   return (
 
@@ -529,7 +540,14 @@ confirmOrder = () => {
         
        {this.props.cartProducts.length <= 0 ? this.state.isCartEmpty ? 
        
-       <div style={{margin:'auto', paddingTop:'100px'}}>Your cart is empty!</div> : null : <div>
+       <div style={{margin:'auto', paddingTop:'110px', textAlign:'center'}}>
+         
+         <h3>Your cart is empty!</h3> 
+
+         <Button href="/shop" variant="outline-info" 
+         style={{marginTop:'40px', width:'25%'}}>To Shop</Button>
+         
+         </div> : null : <div>
       
       <div style={{width:'67%', height:'75px', paddingLeft:'1%'}}>
               <Button variant="outline-info" onClick={this.deleteCart} style={{marginTop:'37px'}}
@@ -544,7 +562,7 @@ confirmOrder = () => {
         {
           this.props.cartProducts.map((product) => 
           <CartItem product={product} key={product.productId}
-          deleteCartProduct={(num) => this.deleteCartItemById(num)}  updateCartItems={(id, qty) => this.updateCart(id, qty)} 
+          deleteCartProduct={(num) => this.deleteCartItemById(num)}  updateCartItems={() => this.updateCart()} 
           onSubmit={this.addTodo} />
           
           )
@@ -603,7 +621,6 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = state => ({
     cartProducts: state.posts.cartProducts,
     products: state.posts.products,
-    count: state.posts.count,
     updateCart: state.posts.updateCart,
     cTotal: state.posts.cTotal,
     shipping: state.posts.shipping,

@@ -15,12 +15,9 @@ class CartItem extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-          fieldData: {
-            input: '',
-           prodId: null
-          },
-          qtyState: 0
-        }
+              
+              input: 0
+          }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
    // this.deleteCartItemById = this.deleteCartItemById.bind(this)
@@ -33,7 +30,7 @@ class CartItem extends React.Component{
       
       getCartItemQty();
       console.log("cartitem component did mount ");
-      this.setState({...this.state, qtyState: this.props.product.productQuantity})
+      this.setState({...this.state, input: this.props.product.productQuantity})
     }
 
     /*componentDidUpdate(){
@@ -67,10 +64,10 @@ class CartItem extends React.Component{
       
       if(this.validateStock(event.target.value)){
         if(event.target.value >= this.props.product.productStock){
-          this.setState({...this.state, qtyState: this.props.product.productStock})
+          this.setState({...this.state, input: this.props.product.productStock})
           event.target.value = this.props.product.productStock;
         }else{
-        this.setState({...this.state, qtyState: event.target.value})
+        this.setState({...this.state, input: event.target.value})
       }
       }
       
@@ -135,10 +132,10 @@ class CartItem extends React.Component{
                   
                   <input key="index" type="text"  size="3" maxLength="10"
                   
-              onChange={this.handleChange} defaultValue={product.productQuantity}/>
+              onChange={this.handleChange} value={this.state.input}/>
               
               <Button type="submit" variant="outline-info" 
-              onClick={() => this.props.updateCartItems(product.productId, this.state.qtyState)} size="sm"
+              onClick={() => this.props.updateCartItems()} size="sm"
               style={{marginLeft:'65px', marginTop:'-58px'}}>Update</Button>
               
                
