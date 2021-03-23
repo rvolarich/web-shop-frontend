@@ -77,7 +77,7 @@ setTimeout(() => {
   return (
     
     
-    <div style={{margin:'auto', width:'67%'}}>
+    <div style={{margin:'auto', width:'67%', minHeight:'410px'}}>
        
        {
 products.map((product, index) =>

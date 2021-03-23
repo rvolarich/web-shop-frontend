@@ -7,8 +7,8 @@ class RegisterInfo extends React.Component{
         
         
         return(
-            <div style={{margin:'auto', width:'67%', height:'200px', textAlign:'center'}}>
-                <h4 style={{paddingTop:'50px'}}>Thank you for registering with OneStop-ShipShop</h4>
+            <div style={{margin:'auto', width:'67%', textAlign:'center', minHeight:'410px'}}>
+                <h4 style={{paddingTop:'80px'}}>Thank you for registering with OneStop-ShipShop</h4>
                 <br />
                 <p>An email has been sent to  <span style={{color:'green'}}>{localStorage.getItem('email')}</span>!</p>
                 <p>Please click the link in the email to activate your account.</p>

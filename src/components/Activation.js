@@ -15,7 +15,7 @@ componentDidMount(){
 render(){
     return(
         
-        <div style={{margin:'auto', width:'67%', textAlign:'center'}}> 
+        <div style={{margin:'auto', width:'67%', textAlign:'center', minHeight:'410px'}}> 
         <h4 style={{paddingTop:'50px', paddingBottom:'50px'}}>You have successfully activated your account!</h4>
 
         <Button href="/login">Login</Button>
