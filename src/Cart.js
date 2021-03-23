@@ -14,7 +14,7 @@ import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QU
   UPDATE_COUNT, SHOW_MODAL, DELETE_CART_PRODUCT, DELETE_CART} from './actions/types';
 import { bindActionCreators } from 'redux';
 import { allowConfirmButton } from './components/CartCalculator';
-import SavedCartItem from './SavedCartItem';
+
 import ModalElement from './components/ModalElement';
 import ModalConfirmCart from './components/ModalConfirmCart';
 import ContinueShopping from './components/ContinueShopping';
@@ -103,7 +103,7 @@ class Cart extends React.Component {
           this.props.fetchPosts();
           this.priceTotal();
      
-          axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
+          axios.get('/get/user', { withCredentials:true})
           .then(response => {
             this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
         })
@@ -170,7 +170,7 @@ class Cart extends React.Component {
       }else{
         let keysToErase = [];
         keysToErase = this.getLocalStorageProductKeys();
-        console.log('keys to erase: ' + this.getLocalStorageProductKeys())
+        
         for(let i = 0; i < keysToErase.length; i++){
           localStorage.removeItem(keysToErase[i])
         }
@@ -427,7 +427,7 @@ confirmOrderGuest = (data) => {
     console.log('array length' + objectArray.length)
 
 
-      axios.post('http://127.0.0.1:8080/confirmorder', objectArray,
+      axios.post('/confirmorder', objectArray,
       { withCredentials: true })
     .then(response => response.data)
     .catch(function (error) {
@@ -476,7 +476,7 @@ confirmOrder = () => {
       console.log('array length' + objectArray.length)
   
   
-        axios.post('http://127.0.0.1:8080/confirmorder', objectArray,
+        axios.post('/confirmorder', objectArray,
         { withCredentials: true })
       .then(response => response.data)
       .catch(function (error) {

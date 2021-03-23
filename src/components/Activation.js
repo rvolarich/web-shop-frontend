@@ -9,7 +9,7 @@ componentDidMount(){
     const token = query.get('token')
     console.log('token: ' + token)
 
-    axios.get(`http://127.0.0.1:8080/activate?token=${token}`, {withCredentials:true})
+    axios.get(`/activate?token=${token}`, {withCredentials:true})
 }
 
 render(){

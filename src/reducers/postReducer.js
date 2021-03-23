@@ -46,7 +46,7 @@ export default function(state = initialState, action){
                 products: action.payload
             }
        case GET_CART_QTY:
-            console.log('been in setting cart qty');
+            
             if(action.payload == 0){
                 return{
                     ...state,
@@ -58,34 +58,34 @@ export default function(state = initialState, action){
                 count: action.payload
             }}
         case GET_CART_PRODUCTS:
-                console.log('been in actions qty');
+               
                 return{
                     ...state,
                     cartProducts: action.payload
                 }
 
         case GET_LOCAL_CART_PRODUCTS:
-                    console.log('been in localCartProducts');
+                    
                     return{
                         ...state,
                         localCartProducts: action.payload
                     }        
 
         case SET_CART_QTY:
-                console.log('been in set cart qty');
+                
                 return{
                     ...state,
                     cartQtyState: action.payload
                     }
         case DELETE_CART:
-                console.log('been in actions qty');
+               
                 return{
                     ...state,
                     cartProducts: action.payload,
                     count: null
                 }
         case DELETE_CART_ITEM:
-                    console.log('been in delete cart item: ' + action.payload);
+                    //console.log('been in delete cart item: ' + action.payload);
                     return{
                         ...state,
                         cartProducts: action.payload,
@@ -114,7 +114,7 @@ export default function(state = initialState, action){
 
             case SET_CART_PRODUCT_QUANTITY:
             
-             console.log('been in seeeeeeet: ' + action.payload);
+            // console.log('been in seeeeeeet: ' + action.payload);
                
              return {
              ...state,
@@ -140,7 +140,7 @@ export default function(state = initialState, action){
 
             case SET_CART_PRODUCT_QUANTITY_LOCAL:
             var x = 0;
-             console.log('been in set product quantity local: ' + action.payload);
+            // console.log('been in set product quantity local: ' + action.payload);
                
              return {
              ...state,

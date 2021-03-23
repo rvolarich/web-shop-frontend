@@ -14,7 +14,7 @@ import axios from 'axios';
 
 export const fetchPosts = () => dispatch => {
     console.log('been in fetchPosts');
-    axios.get('http://127.0.0.1:8080/products', {withCredentials:true})
+    axios.get('/products', {withCredentials:true})
     .then(response => response.data)
     .then(products => dispatch({
         type: GET_DATA,
@@ -24,7 +24,7 @@ export const fetchPosts = () => dispatch => {
 
 export const getCartQty = () => dispatch => {
     console.log('been in getCartQty');
-    axios.get('http://127.0.0.1:8080/getcartqty', {withCredentials:true})
+    axios.get('/getcartqty', {withCredentials:true})
     .then(response => response.data)
     .then(cartQty => dispatch({
         type: GET_CART_QTY,
@@ -34,7 +34,7 @@ export const getCartQty = () => dispatch => {
 
 export const getCartProducts = () => dispatch => {
     console.log('been in getCartProducts');
-    axios.get('http://127.0.0.1:8080/getcart', {withCredentials:true})
+    axios.get('/getcart', {withCredentials:true})
     .then(response => response.data)
     .then(cartProducts => dispatch({
         type: GET_CART_PRODUCTS,
@@ -44,7 +44,7 @@ export const getCartProducts = () => dispatch => {
 
 export const getCartItemQty = () => dispatch => {
     console.log('been in getCartItemQty');
-    axios.get('http://127.0.0.1:8080/getcartitemqtys', {withCredentials:true})
+    axios.get('/getcartitemqtys', {withCredentials:true})
     .then(response => response.data)
     .then(cartQtyState => dispatch({
         type: SET_CART_QTY,
@@ -54,7 +54,7 @@ export const getCartItemQty = () => dispatch => {
 
 export const deleteCart = () => dispatch => {
     console.log('been in deleteCart');
-    axios.get('http://127.0.0.1:8080/deletecart', {withCredentials:true})
+    axios.get('/deletecart', {withCredentials:true})
     .then(response => response.data)
     .then(cartProducts => dispatch({
         type: DELETE_CART,
@@ -64,7 +64,7 @@ export const deleteCart = () => dispatch => {
 
 export const deleteCartItem = (product) => dispatch => {
     console.log('been in deleteCart: ' + product);
-    axios.post('http://127.0.0.1:8080/deletecartbyid', product, {withCredentials:true})
+    axios.post('/deletecartbyid', product, {withCredentials:true})
     .then(response => response.data)
     .then(cartProducts => dispatch({
         type: DELETE_CART_ITEM,
@@ -74,7 +74,7 @@ export const deleteCartItem = (product) => dispatch => {
 
 export const postCart = (products) => dispatch => {
     console.log("sent cart");
-    axios.post('http://127.0.0.1:8080/postcartall', products, {withCredentials:true})
+    axios.post('/postcartall', products, {withCredentials:true})
     .then(response => response.data)
     .then(countQty => dispatch({
       type: UPDATE_CART,

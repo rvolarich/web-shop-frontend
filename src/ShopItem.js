@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Shop from './Shop';
 import count from './Shop'
 import AddToCartButton from './AddToCartButton';
-import ShopItemSelected from './ShopItemSelected';
+
 import Navig from './Navig';
 import { cartChildren } from './App'
 import { getCartQty, getCartProducts } from './actions/postActions';

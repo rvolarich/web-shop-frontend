@@ -11,7 +11,7 @@ import Cart from './Cart';
 import { Button, Container, Row } from 'react-bootstrap';
 import store from './store';
 import Shop from './Shop';
-import ShopItemSelected from './ShopItemSelected';
+
 import Confirm from './components/Confirm';
 import axios from 'axios';
 import Logout from './components/Logout';

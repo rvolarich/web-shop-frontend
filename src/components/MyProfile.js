@@ -58,7 +58,7 @@ class MyProfile extends React.Component{
       this.setState({retypePass: localStorage.getItem('x_py35'), userData:{...this.state.userData, 
         password: localStorage.getItem('x_py35')}})
       console.log("password: " + this.state.userData.password);
-      axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
+      axios.get('/get/user', { withCredentials:true})
       .then(response => {
         console.log('user: ' + JSON.stringify(response.data))
         
@@ -155,7 +155,7 @@ class MyProfile extends React.Component{
 
     confirmDelete = () => {
       
-      axios.get('http://127.0.0.1:8080/user/del',
+      axios.get('/user/del',
       {withCredentials:true})
       .then(response => {
         console.log(response)
@@ -205,7 +205,7 @@ class MyProfile extends React.Component{
       if(this.validateEmail(this.state.userData.username) && this.state.userData.password === this.state.retypePass &&
           this.state.userData.nameName !== ''){
             this.setState({allowSubmit: false}) 
-        axios.put('http://127.0.0.1:8080/users/update', this.state.userData,
+        axios.put('/users/update', this.state.userData,
         { withCredentials: true })
         .then(response => response.data)
         .then(response => {

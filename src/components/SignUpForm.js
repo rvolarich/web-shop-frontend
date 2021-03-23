@@ -116,7 +116,7 @@ class SignUpForm extends React.Component{
 
     mergeCart = () => {
       console.log('bio u MergeCart')
-      axios.post('http://127.0.0.1:8080/post/cart/local', 
+      axios.post('/post/cart/local', 
       this.props.localCartProducts, {withCredentials:true})
     .then(response => response.data)
     .then(() => {
@@ -155,7 +155,7 @@ class SignUpForm extends React.Component{
     postLogData = () => {
       console.log("authData " + JSON.stringify(this.state.authData));
       this.setState({allowCheckIsLogged: false});
-        axios.post('http://127.0.0.1:8080/login', 
+        axios.post('/login', 
     this.state.authData, { withCredentials: true }
 
     ).then(response => {

@@ -10,12 +10,6 @@ import { SHOW_MODAL } from './actions/types';
 import ModalInventory from './components/ModalInventory';
 
 class Navig extends React.Component{
-
-  componentDidMount(){
-  
-      //this.props.getCartQty();
-      console.log('been in navig');
-  }
   
   showModal(){
     this.props.dispatch({
@@ -50,29 +44,6 @@ class Navig extends React.Component{
 
   </div>
     
-
-  
-
-    /*<nav>
-    <h1 className="nav">Webshop</h1>
-    <ul className="navLinks">
-       <Link style={navStyle} to="/shop">
-        <li>Shop</li>
-        </Link>
-      <Link style={navStyle} to="/cart">
-        <li>Cart</li>
-        </Link>
-        <Link style={navStyle} to="/inv">
-      <li>Inventory</li>
-      </Link>
-      <Link style={navStyle} to="/signup">
-        <li>SignUp</li>
-        </Link>
-        <Link style={navStyle} to="/login">
-      <li>LogIn</li>
-      </Link>
-    </ul>
-  </nav>*/
   );
   }
 }

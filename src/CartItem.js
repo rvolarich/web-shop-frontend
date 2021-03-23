@@ -29,7 +29,7 @@ class CartItem extends React.Component{
     componentDidMount(){
       
       getCartItemQty();
-      console.log("cartitem component did mount ");
+     
       this.setState({...this.state, input: this.props.product.productQuantity})
     }
 
@@ -95,9 +95,6 @@ class CartItem extends React.Component{
       
       if(this.state.fieldData.input == ''){
         this.setState({fieldData: {...this.state.fieldData, input: this.props.product.productQuantity}});
-        console.log("bio u handleSubmit");
-        console.log("input " + this.state.fieldData.input);
-        console.log("bio u prodId " + this.state.fieldData.prodId);
       }
       setTimeout(() => {this.props.onSubmit(this.state.fieldData);
         console.log(this.state);}, 50);

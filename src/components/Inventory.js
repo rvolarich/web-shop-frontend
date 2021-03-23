@@ -97,7 +97,7 @@ class Inventory extends React.Component{
         
         axios({
           method: 'delete',
-          url: 'http://127.0.0.1:8080/products/del',
+          url: '/products/del',
           data: {
             productId: this.state.productId
           },
@@ -165,7 +165,7 @@ class Inventory extends React.Component{
     
         this.setState({productData:{...this.state.productData, productImage: localStorage.getItem('image')}})
     
-        setTimeout(() => {axios.post('http://127.0.0.1:8080/products/insert', this.state.productData,
+        setTimeout(() => {axios.post('/products/insert', this.state.productData,
         {withCredentials:true})
         .then(response => {
           console.log(response);

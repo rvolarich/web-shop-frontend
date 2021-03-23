@@ -36,7 +36,7 @@ componentDidMount(){
   this.props.fetchPosts();
   
   localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/shop');
-    console.log("isLogged u Shop " + this.props.isLogged )
+    
 setTimeout(() => {
   
   if(this.props.isLogged){
@@ -64,7 +64,7 @@ setTimeout(() => {
    
     
 
-    console.log('been in shop mount');
+    
 }
  render(){
    

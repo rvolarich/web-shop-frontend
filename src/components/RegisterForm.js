@@ -26,7 +26,8 @@ class RegisterForm extends React.Component{
                 nameName:'',
                 surname:'',
                 username: '',
-                password: ''
+                password: '',
+                adminAuth: false
            },
            retypePass:'',
            userExists: true,
@@ -45,6 +46,7 @@ class RegisterForm extends React.Component{
         this.validatePassword = this.validatePassword.bind(this)
         this.handleClick = this.handleClick.bind(this)
         this.postAuthData = this.postAuthData.bind(this)
+        this.handleAdminAuth = this.handleAdminAuth.bind(this)
         
       }
 
@@ -96,12 +98,14 @@ allowRegisterButtonKey(){
         this.allowRegisterButtonKey();
       }
 
+      handleAdminAuth(event){
+        this.setState({authData:{...this.state.authData, adminAuth: event.target.checked}})
+      }
+
       
 
     postAuthData = () => {
-        console.log("authData: " + JSON.stringify(this.state.authData));
-        console.log("email verified: " + this.validateEmail(this.state.authData.username))
-        console.log("password verified: " + this.validatePassword(this.state.authData.password))
+        
 
         if(!this.validateEmail(this.state.authData.username)){
             this.setState({...this.state, allowEmailFormat: false})
@@ -117,7 +121,7 @@ allowRegisterButtonKey(){
             console.log("registration verified!")
             this.setState({...this.state, allowEmailFormat: true, allowPassMatch: true})
             
-            axios.post('http://127.0.0.1:8080/reg', 
+            axios.post('/reg', 
         this.state.authData).then(function (response){
         console.log("registered: " + response.data);
         this.setState({userExists: response.data, allowCheckUserExists: true});
@@ -221,9 +225,16 @@ allowRegisterButtonKey(){
             <Button  onClick={this.postAuthData} style={{marginTop:'5px', marginBottom:'10px'}}>Register</Button> :
             <Button  onClick={this.postAuthData} style={{marginTop:'5px', marginBottom:'10px'}} disabled>Register</Button>
             }
+
+<Form.Group controlId="formBasicCheckbox">
+              
+              <Form.Check type="checkbox" label="Give me administrator authority" value="true" 
+              onChange={this.handleAdminAuth} style={{marginLeft:'25px', paddingTop:'10px'}} />
+              </Form.Group>
             </Row>
             {allowCheckUserExists ? userExists ? window.location.replace("http://127.0.0.1:3000/reginfo") : 
-            <div style={{color: 'red'}}>Username not available! Please choose a different one.</div> : null}
+            <div style={{color: 'red', height:'20px', marginBottom:'30px', marginLeft:'-16px'}}>Username not available!</div> :
+            <div style={{color: 'red', height:'20px', marginBottom:'30px'}}></div>}
             
             
             </Col>
