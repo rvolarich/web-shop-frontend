@@ -3,6 +3,8 @@ import { Container } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { URLL } from '../actions/types';
+import { Link } from 'react-router-dom';
 
 class Logout extends React.Component{
 
@@ -15,7 +17,7 @@ class Logout extends React.Component{
         
         setTimeout(() => {if(this.props.sessionExpired){
 
-            window.location.replace('http://127.0.0.1:3000/sessionexp')
+            window.location.replace(`${URLL}/sessionexp`)
           }
         }, 30)
 
@@ -29,6 +31,7 @@ class Logout extends React.Component{
         }).then(response => response.json())
         .then(data => {
             console.log("logout data: ", data)
+            window.location.replace(`${URLL}/loggedout`)
         })
         .catch((error) => {
             console.log("error: ", error)
@@ -42,8 +45,11 @@ class Logout extends React.Component{
             <div style={{margin:'auto', minHeight:'410px', paddingTop:'90px', textAlign:'center'}}>
                
                     <h3 style={{marginBottom: '20px'}}>Do you really want to logout?</h3>
-                    <Button variant="outline-info" href="/loggedout" style={{marginRight: '15px'}} onClick={this.handleClick}>Yes</Button>
-                    <Button variant="outline-info" href="/shop" >No</Button>
+                    <Button variant="outline-info" style={{marginRight: '15px'}} onClick={this.handleClick}>Yes</Button>
+                    
+                    <Link to={"/shop"} >
+                    <Button variant="outline-info" >No</Button>
+                    </Link>
                 
             </div>
         )

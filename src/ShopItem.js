@@ -87,7 +87,7 @@ class ShopItem extends React.Component{
 
           if(this.props.isLogged){
 
-            axios.post('http://127.0.0.1:8080/pcp', 
+            axios.post('/pcp', 
              this.state.cartData, { withCredentials: true }).then(() => {
                
                this.props.getCartProducts();

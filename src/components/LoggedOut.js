@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 class LoggedOut extends React.Component{
 
@@ -14,9 +15,10 @@ class LoggedOut extends React.Component{
                 <h3 >You are logged out!</h3>
                 </div>
 
-                <Button variant="outline-secondary"  href="/shop" 
+                <Link  to={"/shop"}>
+                <Button variant="outline-secondary"  
             style={{marginTop:'10px'}}>Continue shopping</Button>
-                
+                </Link>
                
             </div>
             

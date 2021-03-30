@@ -5,7 +5,7 @@ import { Container, Button, Row, Col } from 'react-bootstrap';
 import { getProducts } from './Repository2';
 import { connect } from 'react-redux';
 import { fetchPosts, getCartQty } from './actions/postActions';
-import { GET_DATA, POST_DATA, INCREMENT, GET_CART_PRODUCTS, UPDATE_COUNT  }  from './actions/types';
+import { GET_DATA, POST_DATA, INCREMENT, GET_CART_PRODUCTS, UPDATE_COUNT, URLL  }  from './actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'universal-cookie';
 import { bindActionCreators } from 'redux';
@@ -35,7 +35,7 @@ componentDidMount(){
   
   this.props.fetchPosts();
   
-  localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/shop');
+  localStorage.setItem('lastUrl', `${URLL}/shop`);
     
 setTimeout(() => {
   

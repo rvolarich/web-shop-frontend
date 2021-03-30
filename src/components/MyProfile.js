@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SHOW_MODAL } from '../actions/types';
+import { SHOW_MODAL, URLL } from '../actions/types';
 import { Form, Row, Col, Container } from 'react-bootstrap';
 import CountrySelect from 'react-bootstrap-country-select';
 import 'bootstrap/dist/css/bootstrap.css'; // or include from a CDN
@@ -49,7 +49,7 @@ class MyProfile extends React.Component{
 
       setTimeout(() => {if(this.props.sessionExpired){
 
-         window.location.replace('http://127.0.0.1:3000/sessionexp')
+         window.location.replace(`${URLL}/sessionexp`)
       }
     }, 500)
 
@@ -163,7 +163,7 @@ class MyProfile extends React.Component{
           type: SHOW_MODAL,
           payload: true
         })
-        window.location.replace('http://127.0.0.1:3000/bye')
+        window.location.replace(`${URLL}/bye`)
       })
     }
 

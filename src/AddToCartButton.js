@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class AddToCartButton extends React.Component{
 
@@ -10,8 +11,11 @@ class AddToCartButton extends React.Component{
         return(
             <div>
                 <Button onClick={postToCart} style={{marginLeft:'20px', marginTop:'100px'}}>Add to cart</Button>
-                <Button href="/cart" variant="outline-info" 
+                
+                <Link to="/cart">
+                <Button variant="outline-info" 
                 style={{marginLeft:'140px', marginTop:'-65px'}}>To cart</Button>
+                </Link>
             </div>
         )
     }

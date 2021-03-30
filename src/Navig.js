@@ -7,6 +7,7 @@ import { render } from '@testing-library/react';
 import { connect } from 'react-redux';
 import { getCartQty } from './actions/postActions';
 import { SHOW_MODAL } from './actions/types';
+import { Link } from 'react-router-dom';
 import ModalInventory from './components/ModalInventory';
 
 class Navig extends React.Component{
@@ -31,16 +32,18 @@ class Navig extends React.Component{
     
     <Navbar bg="light" variant="light">
      <Nav className="mr-auto" style={{paddingLeft:'16.2%'}}>
-     <Nav.Link href="/" >Home</Nav.Link>
-      <Nav.Link href="/shop" >Shop</Nav.Link>
-      <Nav.Link {... this.props.isLogged && this.props.adminLogged ? {href: '/inv'} : {href: '/log'} } >Inventory</Nav.Link>
-  <Nav.Link href="/cart">Cart <span style={{color: 'green'}}>{count === 0 ? null : count}</span></Nav.Link>
+     <Link to={"/"} className="nav-link">Home</Link>
+     <Link to={"/shop"} className="nav-link">Shop</Link>
+      <Link className="nav-link" {... this.props.isLogged && this.props.adminLogged ? {to: '/inv'} : {to: '/log'} } >Inventory</Link>
+  <Link to={"/cart"} className="nav-link">Cart <span style={{color: 'green'}}>{count === 0 ? null : count}</span></Link>
       
-      {isLogged ? <Nav.Link href="/logout">Logout</Nav.Link> : <Nav.Link href="/login">Login</Nav.Link>}
-      {isLogged ? <Nav.Link href="/profile">My Profile</Nav.Link> : null}
+      {isLogged ? <Link to={"/logout"} className="nav-link">Logout</Link> : <Link to={"/login"} className="nav-link">Login</Link>}
+      {isLogged ? <Link to={"/profile"} className="nav-link">My Profile</Link> : null}
       {isLogged ? <div style={{marginLeft: '11px', marginTop: '8px', color: 'gray'}}>Welcome, {username}</div> : null}
     </Nav>
     </Navbar>
+
+    
 
   </div>
     

@@ -2,6 +2,7 @@ import React from 'react';
 import 'react-table-6/react-table.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import ContinueShopping from './ContinueShopping';
+import { Link } from 'react-router-dom';
 
 let allowConfirm = new Boolean();
 class CartCalculator extends React.Component{
@@ -44,8 +45,8 @@ class CartCalculator extends React.Component{
               {allowConfirm === false ? <Button   variant="outline-info" 
               onClick={() => this.props.confirmOrderKey()}
               style={{marginTop:'10px', marginBottom:'20px', width:'100%',
-               paddingTop:'15px', paddingBottom:'15px'}}>Confirm order</Button> : <Button href="/confirm" variant="outline-info" onClick={() => {confirmOrder()}}
-              style={{marginTop:'10px', marginBottom:'20px'}} disabled>Confirm order</Button>}
+               paddingTop:'15px', paddingBottom:'15px'}}>Confirm order</Button> : <Link to={"/confirm"}> <Button variant="outline-info" onClick={() => {confirmOrder()}}
+              style={{marginTop:'10px', marginBottom:'20px'}} disabled>Confirm order</Button></Link>}
      </div>
      
      </div>

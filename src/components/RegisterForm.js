@@ -6,7 +6,7 @@ import 'react-bootstrap-country-select/dist/react-bootstrap-country-select.css';
 import CountrySelect from 'react-bootstrap-country-select';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { IS_LOGGED, SET_EMAIL } from '../actions/types';
+import { IS_LOGGED, SET_EMAIL, URLL } from '../actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
@@ -47,6 +47,7 @@ class RegisterForm extends React.Component{
         this.handleClick = this.handleClick.bind(this)
         this.postAuthData = this.postAuthData.bind(this)
         this.handleAdminAuth = this.handleAdminAuth.bind(this)
+       // this.handleLocation = this.handleLocation.bind(this)
         
       }
 
@@ -102,7 +103,9 @@ allowRegisterButtonKey(){
         this.setState({authData:{...this.state.authData, adminAuth: event.target.checked}})
       }
 
-      
+    /*  handleLocation = () => {
+        window.location.replace(`${URLL}/reginfo`)
+      }*/
 
     postAuthData = () => {
         
@@ -132,7 +135,7 @@ allowRegisterButtonKey(){
             payload: this.state.authData.username
         })
 
-        localStorage.setItem('email',this.state.authData.username)
+        setTimeout (() => {localStorage.setItem('email',this.state.authData.username)}, 20) 
         }
         
         
@@ -232,7 +235,7 @@ allowRegisterButtonKey(){
               onChange={this.handleAdminAuth} style={{marginLeft:'25px', paddingTop:'10px'}} />
               </Form.Group>
             </Row>
-            {allowCheckUserExists ? userExists ? window.location.replace("http://127.0.0.1:3000/reginfo") : 
+            {allowCheckUserExists ? userExists ? window.location.replace(`${URLL}/reginfo`) : 
             <div style={{color: 'red', height:'20px', marginBottom:'30px', marginLeft:'-16px'}}>Username not available!</div> :
             <div style={{color: 'red', height:'20px', marginBottom:'30px'}}></div>}
             

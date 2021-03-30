@@ -1,14 +1,16 @@
 import React from 'react';
-import { Form, Container, Col, Button } from 'react-bootstrap';
+import { Form, Container, Col, Button, Nav } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'; // or include from a CDN
 import 'react-bootstrap-country-select/dist/react-bootstrap-country-select.css';
 import CountrySelect from 'react-bootstrap-country-select';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { IS_LOGGED, GET_CART_PRODUCTS, UPDATE_COUNT, GET_LOCAL_CART_PRODUCTS, SHOW_MODAL } from '../actions/types';
+import { Link } from 'react-router-dom';
+import { IS_LOGGED, GET_CART_PRODUCTS, UPDATE_COUNT, GET_LOCAL_CART_PRODUCTS, SHOW_MODAL, URLL } from '../actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { loadLocalStorage, updateCount } from '../Cart';
 import ModalElement from './ModalElement';
+
 
 
 
@@ -53,7 +55,7 @@ class SignUpForm extends React.Component{
 
         setTimeout(() => {if(this.props.sessionExpired){
       
-          window.location.replace('http://127.0.0.1:3000/sessionexp')
+          window.location.replace(`${URLL}/sessionexp`)
         }
       }, 100)
 
@@ -278,8 +280,9 @@ class SignUpForm extends React.Component{
             
             <Button onClick={this.postLogData} 
             style={{marginTop:'5px', marginBottom:'15px'}}>Login</Button>
-            <div>
-              Don't have an account? <a href="/register" onClick={this.handleClick}>Sign up!</a>
+
+            <div >
+              Don't have an account? <Link to="/register" onClick={this.handleClick} style={{marginLeft:'-16px'}}>Sign up!</Link>
             </div>
             <div style={{marginTop:'8px'}}>
             {allowCheckIsLogged ? isLogged ? window.location.replace(localStorage.getItem('lastUrl')) : 

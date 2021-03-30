@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
+
 import Navig from './Navig';
 import SignUp from './components/SignUp';
 import LogIn from './LogIn';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {Switch, Route, HashRouter, BrowserRouter, Link} from 'react-router-dom';
 import Inventory from './components/Inventory';
 import { Provider } from 'react-redux';
 import Cookies from 'universal-cookie';
@@ -46,7 +47,7 @@ constructor(props){
   
   
   this.updateCount = this.updateCount.bind(this);
-  //this.handleCookie = this.handleCookie(this);
+  
   
 }
 
@@ -55,46 +56,16 @@ constructor(props){
 }
 
 updateCount(){
-  console.log("bin in updatecount");
+  
   
   this.setState({count: x});
   
 }
-/*checkLoginStatus(){
-  axios.get("http://127.0.0.1:8080/logged_in", { withCredentials: true })
-  .then(response => {
-    console.log("logged_in = " + response.data) 
-    this.props.dispatch({
-      type: IS_LOGGED,
-      payload: response.data
-  });
-  })
-  .catch(error => {
-    console.log("check login error", error);
-  });
-}*/
 
-componentDidMount(){
-  
-  //localStorage.setItem("count", 0);
-  /*axios.post('http://127.0.0.1:8080/login', { withCredentials: true},
-   {
-     username: 'mila'
-   }).then(function(response){
-     console.log(response);
-   })*/
-   
-}
 
-/*handleCookie = () => {
-  axios.post('http://127.0.0.1:8080/login', { withCredentials: true},
-   {
-     username: 'mila'
-   }).then(function(response){
-     console.log(response);
-   })
-   console.log("all ok super");
- }*/
+
+
+
 
   
 render(){
@@ -102,18 +73,17 @@ render(){
   
   
   return (
-   <Provider store={store}>
-    <Router>
-       
+   
     
-    <div style={{margin:'auto', width:'100%', height:'150px', backgroundColor:'#447297'}}>
+    <Provider store={store}>
+   
+  <BrowserRouter>
+<div style={{margin:'auto', width:'100%', height:'150px', backgroundColor:'#447297'}}>
     <h1 style={{color:'white', paddingLeft:'17%', paddingTop:'42px'}}>OneStop-ShipShop</h1>
     </div>
-     
-    <Navig />
-    <SetLoggedIn />
-    
-    
+<SetLoggedIn />
+<Navig />
+  
       <Route path="/" component={Home} exact />
       <Route path="/shop" component={Shop} />
       <Route path="/inv" component={Inventory} />
@@ -130,19 +100,21 @@ render(){
       <Route path="/sessionexp" component={SessionExpired} />
       <Route path="/reginfo" component={RegisterInfo} />
       <Route path="/log" component={ModalInventory} />
-
-      <Footer />
+      
+     
     
     
-    </Router>
+    </BrowserRouter>
+    <Footer />
     </Provider>
+   
   );
 }
 }
 
 
 
-//ReactDOM.render(<App />, document.getElementById('root'));
+
 export default App;
 
 export function cartChildren(child){
@@ -151,17 +123,5 @@ export function cartChildren(child){
   
 }
 
-/*function ComponentList(){
- return courses.map(function(course){
-    return (<div key={course.id}>
-      <span>| This is title: {course.owner}</span><br/>
-
-      <span>{course.title}</span>
-     </div>
-       )
-
-    })
-
-}*/
 
 

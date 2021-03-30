@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { SHOW_MODAL } from '../actions/types';
 
@@ -70,8 +71,10 @@ class ModalInventory extends React.Component{
 
         
         <Button onClick={this.closeModal} style={{marginRight:'15px'}}>Back</Button>
-        <Button href="/login" onClick={this.redirect}>Login</Button>
         
+        <Link href={"/login"}>
+        <Button onClick={this.redirect}>Login</Button>
+        </Link>
 
       </Modal.Footer>
     </Modal>

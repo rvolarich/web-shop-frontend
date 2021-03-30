@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Container, Modal, Table, Form, Col} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SHOW_MODAL, INVENTORY_STATUS } from '../actions/types';
+import { SHOW_MODAL, INVENTORY_STATUS, URLL } from '../actions/types';
 import { fetchPosts } from '../actions/postActions';
 import InventoryItem from './InvertoryItem';
 import DragAndDrop from './DragAndDrop';
@@ -46,14 +46,14 @@ class Inventory extends React.Component{
 
       setTimeout(() => {if(this.props.sessionExpired){
 
-        window.location.replace('http://127.0.0.1:3000/sessionexp')
+        window.location.replace(`${URLL}/sessionexp`)
       }
     }, 30)
 
         this.props.fetchPosts();
         console.log("been in inventory");
 
-        localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/inv');
+        localStorage.setItem('lastUrl', `${URLL}/inv`);
     }
     closeModal = () => {
         this.props.dispatch({

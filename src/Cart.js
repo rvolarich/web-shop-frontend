@@ -11,13 +11,14 @@ import { connect } from 'react-redux';
 import { getCartProducts, getCartQty, deleteCart, postCart,
           deleteCartItem, fetchPosts } from './actions/postActions';
 import { GET_CART_PRODUCTS, GET_CART_QTY, UPDATE_CART_TOTAL, SET_CART_PRODUCT_QUANTITY, 
-  UPDATE_COUNT, SHOW_MODAL, DELETE_CART_PRODUCT, DELETE_CART} from './actions/types';
+  UPDATE_COUNT, SHOW_MODAL, DELETE_CART_PRODUCT, DELETE_CART, URLL} from './actions/types';
 import { bindActionCreators } from 'redux';
 import { allowConfirmButton } from './components/CartCalculator';
 
 import ModalElement from './components/ModalElement';
 import ModalConfirmCart from './components/ModalConfirmCart';
 import ContinueShopping from './components/ContinueShopping';
+import { Link } from 'react-router-dom';
 //import { getCartProducts } from './Repository2';
 
 
@@ -93,7 +94,7 @@ class Cart extends React.Component {
       setTimeout(() => {
         if(this.props.sessionExpired){
     
-        window.location.replace('http://127.0.0.1:3000/sessionexp')
+        window.location.replace(`${URLL}/sessionexp`)
       }else{
 
         if(this.props.isLogged){
@@ -144,7 +145,7 @@ class Cart extends React.Component {
      /* setTimeout(() => {if(this.props.count == 0){
         localStorage.setItem('count', '0');
       }}, 200)*/
-      localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/cart');
+      localStorage.setItem('lastUrl', `${URLL}/cart`);
   }
 
    
@@ -436,15 +437,15 @@ confirmOrderGuest = (data) => {
   
       setTimeout(() => {
       
-      window.location.replace('http://127.0.0.1:3000/confirm') 
+      window.location.replace(`${URLL}/confirm`) 
        
     }, 50) 
 
-    setTimeout(() => {
+    /*setTimeout(() => {
       
-      window.location.replace('http://127.0.0.1:3000/confirm') 
+      window.location.replace(`${URLL}/confirm`) 
       
-    }, 50) 
+    }, 50) */
   }
 
 
@@ -488,7 +489,7 @@ confirmOrder = () => {
       
       setTimeout(() => {
         
-        window.location.replace('http://127.0.0.1:3000/confirm')  
+        window.location.replace(`${URLL}/confirm`)  
       }, 50) 
     }
     }
@@ -544,9 +545,10 @@ confirmOrder = () => {
          
          <h3>Your cart is empty!</h3> 
 
-         <Button href="/shop" variant="outline-info" 
+        <Link to={"/shop"}>
+         <Button  variant="outline-info" 
          style={{marginTop:'40px', width:'25%'}}>To Shop</Button>
-         
+         </Link>
          </div> : null : <div>
       
       <div style={{width:'67%', height:'75px', paddingLeft:'1%'}}>
