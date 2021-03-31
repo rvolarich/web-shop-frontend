@@ -58,37 +58,17 @@ class Cart extends React.Component {
        
     }
 
-    /*componentDidMount(){
-       getCartProducts().then((products) => {
-           let total = 0;
-           if(products != null){
-            for(var i = 0; i < products.length; i++){
-                total += products[i].productPrice * products[i].productQuantity;
-                
-            }
-            this.setState({ products, total});
-                
-           }
-           else{
-            total = 0;
-            this.setState({total});
-        }
-       });
-    }*/
+   
 
     componentDidUpdate(){
      // loadLocalStorage();
     }
 
     componentDidMount(){
-
       
-      /*let cartItemElements;
-      cartItemElements = document.getElementsByName("cartMain")
-      let child = document.cartItemElements.getElementsByTagName("input")
-      console.log("u cart component did mount: " + cartItemElements.length)*/
+     
       
-      if(this.props.cartProducts <= 0){
+      if(this.props.cartProducts.length <= 0){
         setTimeout(() => {this.setState({...this.state, isCartEmpty: true})}, 100)
     }
       setTimeout(() => {
@@ -99,10 +79,27 @@ class Cart extends React.Component {
 
         if(this.props.isLogged){
         
-          this.props.getCartProducts();
-          this.props.getCartQty();
+         this.props.getCartProducts();
+         axios.get('/getcart', {withCredentials:true})
+         .then(response => response.data)
+         .then(data => {
+          for(let i = 0; i < data.length; i++){
+            localStorage.setItem(data[i].productId, JSON.stringify(data[i]));
+            localStorage.setItem(Date.now(), data[i].productId);
+            for(let k = 0; k < 100; k++){}
+        }
+          this.props.dispatch({
+          type: GET_CART_PRODUCTS,
+          payload: loadLocalStorage()
+         })
+      }
+         )
+         
+         this.priceTotal();
+         this.updateCountNumber();
+          //this.props.getCartQty();
           this.props.fetchPosts();
-          this.priceTotal();
+          
      
           axios.get('/get/user', { withCredentials:true})
           .then(response => {
@@ -121,30 +118,7 @@ class Cart extends React.Component {
       }
     }, 30)
 
-     /* setTimeout(() => {
-        if(this.props.isLogged){
-        
-          this.props.getCartProducts();
-          this.props.getCartQty();
-          this.props.fetchPosts();
-          this.priceTotal();
      
-          axios.get('http://127.0.0.1:8080/get/user', { withCredentials:true})
-          .then(response => {
-            this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
-        })
-    }else{
-          this.props.dispatch({
-            type: GET_CART_PRODUCTS,
-            payload: loadLocalStorage()
-          });
-        
-          this.priceTotal();
-    } },30);*/
-  
-     /* setTimeout(() => {if(this.props.count == 0){
-        localStorage.setItem('count', '0');
-      }}, 200)*/
       localStorage.setItem('lastUrl', `${URLL}/cart`);
   }
 
@@ -168,23 +142,27 @@ class Cart extends React.Component {
       if(this.props.isLogged){
         this.props.deleteCart();
        // allowCountUpdate = false;
-      }else{
+      }
         let keysToErase = [];
         keysToErase = this.getLocalStorageProductKeys();
         
         for(let i = 0; i < keysToErase.length; i++){
           localStorage.removeItem(keysToErase[i])
         }
-      }
-       //window.location.reload() 
+      
+        
+         
+          this.setState({isCartEmpty: true})
+          setTimeout(() => {console.log('isCartEmpty: ' + this.state.isCartEmpty)}, 20) 
+        localStorage.setItem('count', '0') 
        
     }
 
  priceTotal = () => {
- // allowCountUpdate = false;
+ 
       
       total = 0;
-      //let totalCount = 0;
+     
   
       let totalRounded = 0;
       
@@ -206,22 +184,7 @@ class Cart extends React.Component {
         payload: Number(totalRounded)
       });
      
-     /* this.props.dispatch({
-        type: GET_CART_QTY,
-        payload: this.props.updateCart.totalCartQty
-     })*/
-
-     /*for(let i = 0; i < this.props.cartProducts.length; i++){
-        totalCount = totalCount + this.props.cartProducts[i].productQuantity;
-     }
-
-     
-      
-     this.props.dispatch({
-      type: UPDATE_COUNT,
-      payload: totalCount
-   })*/
-    // allowCountUpdate = false;
+    
   
       
       }, 200); 
@@ -301,7 +264,7 @@ for(let i = 0; i < storageKeysInteger.length; i++){
  }
 
 deleteCartItemById(id) {
-  
+ 
   this.props.dispatch({
     type: DELETE_CART_PRODUCT,
     payload: id
@@ -315,7 +278,7 @@ deleteCartItemById(id) {
       productId: id
       }
     this.props.deleteCartItem(prodObj); 
-  }else{
+  }
     
     let lskFiltered = [];
     let storageKeysInteger = [];
@@ -332,8 +295,8 @@ deleteCartItemById(id) {
           index++;
         }
         }
-
-        console.log("storageKeysInteger " + lskFiltered);
+        
+       
         
         for(let i = 0; i < lskFiltered.length; i++){
           if(localStorage.getItem(lskFiltered[i]) === id.toString()){
@@ -341,14 +304,22 @@ deleteCartItemById(id) {
             localStorage.removeItem(temp[index]);
             index++;
           }
-        }
-
+          
+            
         //console.log("temp " + temp[1]);
-
+          localStorage.removeItem(id)
         
-
-        console.log("keys to erase " + keysToErase);
-
+          loadLocalStorage()
+          let cartProds = [];
+          cartProds = this.props.cartProducts;
+          
+         if(cartProds.length <= 1){
+         
+          this.setState({isCartEmpty: true})
+          setTimeout(() => {console.log('isCartEmpty: ' + this.state.isCartEmpty)}, 20) 
+        }
+        
+       
        
   
        //updateCount();
@@ -375,12 +346,13 @@ deleteCartItemById(id) {
 
      
 
-    setTimeout(() => {if(temp.length == 0){
+   /* setTimeout(() => {if(temp.length == 0){
       
+      this.setState({isCartEmpty: true})
       localStorage.clear();
       
-      
-   }}, 25); 
+      console.log('isCartEmpty: ' + this.state.isCartEmpty)
+   }}, 0); */
   }
   
   
@@ -415,7 +387,8 @@ addTotal = (total, shipping) => {
     return (Math.round((Number(total) + Number(shipping)) * 100) / 100).toFixed(2);
     }
 
-confirmOrderGuest = (data) => {
+
+    confirmOrderGuest = (data) => {
   console.log('bio u confirmOrderGuest, data:' + JSON.stringify(data))
   setTimeout(() => {let objectArray = [];
     this.props.cartProducts.map((product) => {
@@ -539,7 +512,7 @@ confirmOrder = () => {
 
       <ModalConfirmCart confOrder={(data) => this.confirmOrderGuest(data)} />
         
-       {this.props.cartProducts.length <= 0 ? this.state.isCartEmpty ? 
+       {this.state.isCartEmpty && localStorage.getItem('count') === '0' ? 
        
        <div style={{margin:'auto', paddingTop:'110px', textAlign:'center'}}>
          
@@ -549,7 +522,7 @@ confirmOrder = () => {
          <Button  variant="outline-info" 
          style={{marginTop:'40px', width:'25%'}}>To Shop</Button>
          </Link>
-         </div> : null : <div>
+         </div> : <div>
       
       <div style={{width:'67%', height:'75px', paddingLeft:'1%'}}>
               <Button variant="outline-info" onClick={this.deleteCart} style={{marginTop:'37px'}}
@@ -689,3 +662,23 @@ export function loadLocalStorage(){
     });
      }, 20);
   }
+
+  export function eraseLocalStorageProductKeys(){
+    let index = 0;
+    let lskFiltered = [];
+    let storageKeysInteger = [];
+    for(let i = 0; i < Object.keys(localStorage).length; i++){
+      storageKeysInteger[i] = parseInt(Object.keys(localStorage)[i]);
+    }
+  for(let i = 0; i < storageKeysInteger.length; i++){
+      if(storageKeysInteger[i] > 0){
+        lskFiltered[index] = storageKeysInteger[i];
+        index++;
+      }
+      }
+
+      for(let i = 0; i < lskFiltered.length; i++){
+        localStorage.removeItem(lskFiltered[i])
+      }
+      
+   }

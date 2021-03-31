@@ -12,13 +12,13 @@ componentDidMount(){
 
         if(this.props.isLogged){
             this.props.deleteCart();
-          }else{
+          }
             let keysToErase = [];
             keysToErase = this.getLocalStorageProductKeys();
             for(let i = 0; i < keysToErase.length; i++){
               localStorage.removeItem(keysToErase[i])
             }
-          }
+          
         }, 1500) 
 }
 

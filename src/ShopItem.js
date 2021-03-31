@@ -17,7 +17,7 @@ import { loadLocalStorage } from './Cart';
 import { bindActionCreators } from 'redux';
 
 let compare = 0;
-let keySequence = [];
+
 class ShopItem extends React.Component{
    
   
@@ -55,28 +55,23 @@ class ShopItem extends React.Component{
 
    clickMe = () => {
 
+    let keySequence = [];
     localStorage.setItem('count', '1')
     let productQuantityLocal = 0;
-    //let updateCartQuantityArray = [];
     let cartProductQuantity = [];
     cartProductQuantity = this.props.cartProducts;
-    console.log("cartProducts " + JSON.stringify(cartProductQuantity.length));
-    console.log("cartProductsProductId " + JSON.stringify(this.props.product.productId));
+    
     for(let i = 0; i < cartProductQuantity.length; i++){
       if(cartProductQuantity[i].productId === this.props.product.productId){
         
         productQuantityLocal = cartProductQuantity[i].productQuantity;
-        console.log("productQuantityLocal " + productQuantityLocal);
       }
     }
 
     let newArray = {...this.state.cartData};
-        console.log("This state prodqty: " + this.props.cartProducts.productQuantity);
         
-          
-          console.log('prodQty:' + this.state.prodQty)
         newArray= {...newArray, productQuantity: productQuantityLocal + 1}
-        console.log("racun: " + (this.props.product.productQuantity - this.state.cartData.productQuantity ))
+
         if((this.props.product.productQuantity - newArray.productQuantity) < 0){
           newArray= {...newArray, productQuantity: this.props.product.productQuantity}
         }
@@ -85,37 +80,28 @@ class ShopItem extends React.Component{
             type: INCREMENT
           });
 
+          setTimeout(() => {
+          localStorage.setItem(Date.now(), this.props.product.productId);
+           this.setCartQtyState();
+        
+        
+        }, 100);
+
           if(this.props.isLogged){
 
             axios.post('/pcp', 
              this.state.cartData, { withCredentials: true }).then(() => {
-               
-               this.props.getCartProducts();
-                //this.props.getCartQty();
-               })
+               //this.props.getCartProducts();
+              })
              .catch(function (error) {
                console.log(error);
              });
       
              
-           }else{
-             setTimeout(() => {
-                keySequence.push(this.props.product.productId);
-              localStorage.setItem(Date.now(), this.props.product.productId);
-              /*this.props.dispatch({
-                type: KEY_SEQUENCE,
-                payload: keySequence
-              });*/
-                
-              
+           }
             
-              
-              this.setCartQtyState();
-            
-            
-            }, 40);
           
-          }
+          
         }
 
     setTimeout(() => {this.setState({cartData: newArray})}, 20)
@@ -125,9 +111,11 @@ class ShopItem extends React.Component{
       }
 
       setCartQtyState = () => {
+  
         let id = this.props.product.productId;
+        
         localStorage.setItem(id, JSON.stringify(this.state.cartData));
-        console.log("idddddddddddddddddddddddddddddddddddddddd " + id)
+    
         setTimeout(function() { //Start the timer
           
           this.props.dispatch({

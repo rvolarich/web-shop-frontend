@@ -62,7 +62,7 @@ validateStock(s) {
       
       this.setState({productPriceQty:{...this.state.productPriceQty, 
                      productId: this.props.product.productId}});
-        setTimeout(() => {axios.post('/update', this.state.productPriceQty,
+        setTimeout(() => {axios.post('/products/update', this.state.productPriceQty,
         {withCredentials:true})
         .then(response => {
           console.log('update response' + JSON.stringify(response.data));

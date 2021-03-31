@@ -39,7 +39,13 @@ export const getCartProducts = () => dispatch => {
     .then(cartProducts => dispatch({
         type: GET_CART_PRODUCTS,
         payload: cartProducts
-    }));
+    })
+    
+    )
+    .then(function (cartProducts){
+    
+        
+    });
 }
 
 export const getCartItemQty = () => dispatch => {

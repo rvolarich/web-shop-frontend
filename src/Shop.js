@@ -16,49 +16,54 @@ import Footer from './components/Footer';
 
 class Shop extends React.Component {
 
-  /*constructor(props){
+  constructor(props){
     super(props);
-    this.state = {
-        products: [],
-        total: 0
-    }
-    this.state.total = 200;
-}*/
+   this.updateCountNumber = this.updateCountNumber.bind(this)
+}
 
 componentDidMount(){
-   
-  setTimeout(() => {if(this.props.sessionExpired){
 
-    window.location.replace('http://127.0.0.1:3000/sessionexp')
+  this.props.fetchPosts();
+   
+  setTimeout(() => {
+    
+    if(this.props.sessionExpired){
+
+    window.location.replace(`${URLL}/sessionexp`)
   }
 }, 30)
   
-  this.props.fetchPosts();
-  
-  localStorage.setItem('lastUrl', `${URLL}/shop`);
+localStorage.setItem('lastUrl', `${URLL}/shop`);
     
 setTimeout(() => {
   
   if(this.props.isLogged){
     
-  this.props.getCartQty();
-}else{
-  this.props.dispatch({
-    type: GET_CART_PRODUCTS,
-    payload: loadLocalStorage()
-  });
+         axios.get('/getcart', {withCredentials:true})
+         .then(response => response.data)
+         .then(data => {
+          for(let i = 0; i < data.length; i++){
+            localStorage.setItem(data[i].productId, JSON.stringify(data[i]));
+            localStorage.setItem(Date.now(), data[i].productId);
+            for(let k = 0; k < 100; k++){}
+        }
+          this.props.dispatch({
+          type: GET_CART_PRODUCTS,
+          payload: loadLocalStorage()
+         });
+         this.updateCountNumber();
+      }
+         )
+
+         }else{
+          this.props.dispatch({
+            type: GET_CART_PRODUCTS,
+            payload: loadLocalStorage()
+            });
   
-  let totalCount = 0;
-  setTimeout(() => {
-  for(let i = 0; i < this.props.cartProducts.length; i++){
-    totalCount = totalCount + this.props.cartProducts[i].productQuantity;
- }
- this.props.dispatch({
-  type: UPDATE_COUNT,
-  payload: totalCount
-})
- }, 20);
-}}, 50); 
+          this.updateCountNumber();
+        }
+        }, 30); 
    
     
    
@@ -66,6 +71,19 @@ setTimeout(() => {
 
     
 }
+updateCountNumber = () => {
+  let totalCount = 0;
+
+  for(let i = 0; i < this.props.cartProducts.length; i++){
+    totalCount = totalCount + this.props.cartProducts[i].productQuantity;
+ }
+ 
+ this.props.dispatch({
+  type: UPDATE_COUNT,
+  payload: totalCount
+});
+}
+
  render(){
    
   const { products } = this.props;

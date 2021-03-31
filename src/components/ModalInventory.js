@@ -3,7 +3,7 @@ import { Button, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { SHOW_MODAL } from '../actions/types';
+import { SHOW_MODAL, URLL } from '../actions/types';
 
 class ModalInventory extends React.Component{
 
@@ -22,7 +22,7 @@ class ModalInventory extends React.Component{
     }
 
     redirect = () => {
-        localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/inv')
+        localStorage.setItem('lastUrl', `${URLL}/inv`)
     }
 
     closeModal = () => {
@@ -64,7 +64,7 @@ class ModalInventory extends React.Component{
         In order to use the resorce you must be logged in with an administrator account!
         </p>
         <p>
-        HINT: try <span style={{color:'green'}}>admin@admin.com fF5555</span>
+        You can create it by selecting "Give me administrator authority" option when registering a new account!
         </p>
       </Modal.Body>
       <Modal.Footer>
@@ -72,9 +72,9 @@ class ModalInventory extends React.Component{
         
         <Button onClick={this.closeModal} style={{marginRight:'15px'}}>Back</Button>
         
-        <Link href={"/login"}>
-        <Button onClick={this.redirect}>Login</Button>
-        </Link>
+        
+        <Button href="/login" onClick={this.redirect}>Login</Button>
+        
 
       </Modal.Footer>
     </Modal>

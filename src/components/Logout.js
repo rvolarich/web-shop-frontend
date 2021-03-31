@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { URLL } from '../actions/types';
 import { Link } from 'react-router-dom';
+import { eraseLocalStorageProductKeys } from '../Cart';
 
 class Logout extends React.Component{
 
@@ -25,6 +26,7 @@ class Logout extends React.Component{
 
     handleClick = () => {
         localStorage.removeItem('x_py35');
+        eraseLocalStorageProductKeys();
         fetch('/logout', {
             credentials: 'include',
             method: 'GET'

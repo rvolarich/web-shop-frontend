@@ -21,4 +21,4 @@ export const ALLOW_ADD_PRODUCT = 'ALLOW_ADD_PRODUCT';
 export const INVENTORY_STATUS = 'INVENTORY_STATUS';
 export const SET_EMAIL = 'SET_EMAIL';
 export const DELETE_CART_PRODUCT = 'DELETE_CART_PRODUCT';
-export const URLL = 'http://www.volare-automation.com:8080';
+export const URLL = 'http://volare-automation.com:8080';

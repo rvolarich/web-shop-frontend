@@ -8,8 +8,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { IS_LOGGED, GET_CART_PRODUCTS, UPDATE_COUNT, GET_LOCAL_CART_PRODUCTS, SHOW_MODAL, URLL } from '../actions/types';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-import { loadLocalStorage, updateCount } from '../Cart';
+import { eraseLocalStorageProductKeys, loadLocalStorage, updateCount } from '../Cart';
 import ModalElement from './ModalElement';
+import { getCartProducts } from '../actions/postActions';
+import { bindActionCreators } from 'redux';
 
 
 
@@ -93,16 +95,6 @@ class SignUpForm extends React.Component{
       //setTimeout(() => {console.log(this.state.authData.stayLogged)}, 0) 
     }
 
-   /* postAuthData = () => {
-        console.log("authData: " + JSON.stringify(this.state.authData));
-        axios.post('http://127.0.0.1:8080/reg', 
-        this.state.authData).then(function (response){
-        console.log(response.headers);
-        
-        
-        
-    }.bind(this));
-    }*/
 
     handleClick = () => {
       this.setState({registerForm: true});
@@ -117,22 +109,33 @@ class SignUpForm extends React.Component{
     }
 
     mergeCart = () => {
-      console.log('bio u MergeCart')
+      
       axios.post('/post/cart/local', 
       this.props.localCartProducts, {withCredentials:true})
-    .then(response => response.data)
-    .then(() => {
-      this.deleteLocalStorageProductKeys()
-      console.log('bio u localstorage clear')
+      .then(() => {
+        axios.get('/getcart', {withCredentials:true})
+        .then(response => response.data)
+        .then(data => {
+          for(let i = 0; i < data.length; i++){
+            localStorage.setItem(data[i].productId, JSON.stringify(data[i]));
+            localStorage.setItem(Date.now(), data[i].productId);
+            for(let k = 0; k < 100; k++){}
+        }
+         /* this.props.dispatch({
+          type: GET_CART_PRODUCTS,
+          payload: loadLocalStorage()
+         })*/
+      }
+         )
     })
-    .catch(function (error) {
-      console.log(error);
-    });
+      
+      
+    
         
         setTimeout(() => {this.setState({allowCheckIsLogged: true});}, 30) 
         this.closeModal();
       }
-    
+   
       deleteLocalStorageProductKeys = () => {
         let index = 0;
         let lskFiltered = [];
@@ -155,25 +158,28 @@ class SignUpForm extends React.Component{
     
 
     postLogData = () => {
-      console.log("authData " + JSON.stringify(this.state.authData));
+      
       this.setState({allowCheckIsLogged: false});
-        axios.post('/login', 
-    this.state.authData, { withCredentials: true }
+       
+      axios.post('/login', 
+      this.state.authData, { withCredentials: true }
 
-    ).then(response => {
-        console.log('response od login: ' + response.data);
+      ).then(response => {
+       
         this.props.dispatch({
             type: IS_LOGGED,
             payload: response.data
         });
-
+        console.log('bio u login: ')
         if(this.props.isLogged){
-          
-          this.props.dispatch({
+          // loads state for cart merge
+         this.props.dispatch({
             type: GET_LOCAL_CART_PRODUCTS,
             payload: loadLocalStorage()
             
           });
+
+          this.props.getCartProducts();
 
           localStorage.setItem('x_py35', this.state.authData.password);
           if(parseInt(localStorage.getItem('count')) > 0){
@@ -181,54 +187,21 @@ class SignUpForm extends React.Component{
             type: SHOW_MODAL,
             payload: true
           });
-          
+
+         eraseLocalStorageProductKeys();
+         console.log('bio u login: ')
+        
+
         }else{
          window.location.replace(localStorage.getItem('lastUrl'))
         }
-         /* axios.post('http://127.0.0.1:8080/post/cart/local', this.props.localCartProducts, {withCredentials:true})
-    .then(response => response.data)
-    .then()
-    .catch(function (error) {
-      console.log(error);
-    });*/
         }
         else{
           this.setState({allowCheckIsLogged: true});
         }
         
     });
-    
-    
-    /*fetch('http://127.0.0.1:8080/login', {
-        credentials: 'include',
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(this.state.authData)
-        
-    }).then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-      this.props.dispatch({
-        type: IS_LOGGED,
-        payload: data
-    });
-    this.setState({allowCheckIsLogged: true});
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });*/
-        /*.then(response => {//do work});/*.then(axios.get('http://127.0.0.1:8080/login',{ withCredentials: true},
-    this.props.isLogged
-      
-    ).then(function(response){
-      console.log(response);
-    }));*/
 
-       
-    
-        
-    
-        console.log("all ok");
         
     }
     
@@ -295,6 +268,13 @@ class SignUpForm extends React.Component{
     }
 }
 
+function mapDispatchToProps(dispatch) {
+  return{
+    dispatch,
+     ...bindActionCreators({ getCartProducts }, dispatch)
+}
+}
+
 
 const mapStateToProps = state => ({
     isLogged: state.posts.isLogged,
@@ -309,4 +289,4 @@ const mapStateToProps = state => ({
 
     });
 
-export default connect(mapStateToProps)(SignUpForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
