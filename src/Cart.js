@@ -79,8 +79,8 @@ class Cart extends React.Component {
 
         if(this.props.isLogged){
         
-         this.props.getCartProducts();
-         axios.get('/getcart', {withCredentials:true})
+         //this.props.getCartProducts();
+        /* axios.get('/getcart', {withCredentials:true})
          .then(response => response.data)
          .then(data => {
           for(let i = 0; i < data.length; i++){
@@ -93,8 +93,11 @@ class Cart extends React.Component {
           payload: loadLocalStorage()
          })
       }
-         )
-         
+         )*/
+         this.props.dispatch({
+          type: GET_CART_PRODUCTS,
+          payload: loadLocalStorage()
+         })
          this.priceTotal();
          this.updateCountNumber();
           //this.props.getCartQty();

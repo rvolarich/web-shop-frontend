@@ -110,32 +110,74 @@ class SignUpForm extends React.Component{
 
     mergeCart = () => {
       
-      axios.post('/post/cart/local', 
-      this.props.localCartProducts, {withCredentials:true})
-      .then(() => {
-        axios.get('/getcart', {withCredentials:true})
-        .then(response => response.data)
-        .then(data => {
-          for(let i = 0; i < data.length; i++){
-            localStorage.setItem(data[i].productId, JSON.stringify(data[i]));
-            localStorage.setItem(Date.now(), data[i].productId);
-            for(let k = 0; k < 100; k++){}
-        }
-         /* this.props.dispatch({
-          type: GET_CART_PRODUCTS,
-          payload: loadLocalStorage()
-         })*/
-      }
-         )
-    })
+    /*  this.props.dispatch({
+        type: GET_LOCAL_CART_PRODUCTS,
+        payload: loadLocalStorage()
+      })
+      let objectsToErase = [];
+      let cartProducts = [...this.props.cartProducts]
+
+            for(let i = 0; i < cartProducts.length; i++){
+              localStorage.setItem(Date.now(), cartProducts[i].productId)
+              for(let i = 0; i < 10000000; i++){}
+              for(let k = 0; k < this.props.localCartProducts.length; k++){
+                if(cartProducts[i].productId === this.props.localCartProducts[k].productId){
+                  cartProducts[i].productQuantity += this.props.localCartProducts[k].productQuantity;
+                  localStorage.setItem(cartProducts[i].productId, JSON.stringify(cartProducts[i]))
+                  objectsToErase.push(cartProducts[i].productId)
+                  //console.log('objects to erase u posLog: ' + objectsToErase)
+                }
+                  
+                }
+                
+            }
+            
+            let dataReduced = [];
+            
+            
+            for(let i = 0; i < cartProducts.length; i++){
+              for(let k = 0; k < objectsToErase.length; k++){
+                if(cartProducts[i].productId === objectsToErase[k]){
+                  cartProducts.splice(i, 1)
+                 
+                }
+              }
+            }
+
+            for(let i = 0; i < this.props.localCartProducts.length; i++){
+              for(let k = 0; k < objectsToErase.length; k++){
+                if(this.props.localCartProducts[i].productId === objectsToErase[k]){
+                  this.props.localCartProducts.splice(i, 1)
+                  
+                }
+              }
+            }
+
+            if(cartProducts.length !== null){
+            for(let i = 0; i < cartProducts.length; i++){
+              dataReduced.push(cartProducts[i])
+            }
+          }
+
+          if(this.props.localCartProducts.length !== null){
+            for(let i = 0; i < this.props.localCartProducts.length; i++){
+              dataReduced.push(this.props.localCartProducts[i])
+            }
+          }
+            
+          if(dataReduced.length !== null){
+            for(let i = 0; i < dataReduced.length; i++){
+              localStorage.setItem(dataReduced[i].productId, JSON.stringify(dataReduced[i]))
+              localStorage.setItem(Date.now(), dataReduced[i].productId)
+              for(let i = 0; i < 10000000; i++){}
+            }
+          }*/
       
-      
-    
-        
         setTimeout(() => {this.setState({allowCheckIsLogged: true});}, 30) 
         this.closeModal();
       }
    
+
       deleteLocalStorageProductKeys = () => {
         let index = 0;
         let lskFiltered = [];
@@ -160,7 +202,11 @@ class SignUpForm extends React.Component{
     postLogData = () => {
       
       this.setState({allowCheckIsLogged: false});
-       
+      this.props.dispatch({
+        type: GET_LOCAL_CART_PRODUCTS,
+        payload: loadLocalStorage()
+        
+      });
       axios.post('/login', 
       this.state.authData, { withCredentials: true }
 
@@ -172,29 +218,96 @@ class SignUpForm extends React.Component{
         });
         console.log('bio u login: ')
         if(this.props.isLogged){
-          // loads state for cart merge
-         this.props.dispatch({
-            type: GET_LOCAL_CART_PRODUCTS,
-            payload: loadLocalStorage()
-            
-          });
+          
+          axios.get('/getcart', { withCredentials:true })
+          .then(response => response.data)
+          .then(data => {
+           
+           this.props.dispatch({
+             type: GET_CART_PRODUCTS,
+             payload: data
+           })
+           
+            let objectsToErase = [];
+            for(let i = 0; i < data.length; i++){
+              console.log('data u login: ' + data[i].productId)
+              localStorage.setItem(Date.now(), data[i].productId)
 
-          this.props.getCartProducts();
+              for(let i = 0; i < 10000000; i++){}
+              for(let k = 0; k < this.props.localCartProducts.length; k++){
+                if(data[i].productId === this.props.localCartProducts[k].productId){
+                  data[i].productQuantity += this.props.localCartProducts[k].productQuantity;
+                  localStorage.setItem(data[i].productId, JSON.stringify(data[i]))
+                  objectsToErase.push(data[i].productId)
+                  console.log('objects to erase u posLog: ' + objectsToErase)
+                }
+                  //localStorage.setItem(this.props.localCartProducts[k].productId, JSON.stringify(this.props.localCartProducts[k]))
+                }
+                
+            }
+            
+            let dataReduced = [];
+            
+            
+            for(let i = 0; i < data.length; i++){
+              for(let k = 0; k < objectsToErase.length; k++){
+                if(data[i].productId === objectsToErase[k]){
+                  data.splice(i, 1)
+                 
+                }
+              }
+            }
+
+            for(let i = 0; i < this.props.localCartProducts.length; i++){
+              for(let k = 0; k < objectsToErase.length; k++){
+                if(this.props.localCartProducts[i].productId === objectsToErase[k]){
+                  this.props.localCartProducts.splice(i, 1)
+                  
+                }
+              }
+            }
+
+            if(data.length !== null){
+            for(let i = 0; i < data.length; i++){
+              dataReduced.push(data[i])
+            }
+          }
+
+          if(this.props.localCartProducts.length !== null){
+            for(let i = 0; i < this.props.localCartProducts.length; i++){
+              dataReduced.push(this.props.localCartProducts[i])
+            }
+          }
+            
+          if(dataReduced.length !== null){
+            for(let i = 0; i < dataReduced.length; i++){
+              localStorage.setItem(dataReduced[i].productId, JSON.stringify(dataReduced[i]))
+              localStorage.setItem(Date.now(), dataReduced[i].productId)
+              for(let i = 0; i < 10000000; i++){}
+            }
+          }
+            
+
+            if(parseInt(localStorage.getItem('count')) > 0){
+              this.props.dispatch({
+                type: SHOW_MODAL,
+                payload: true
+              });
+    
+             //eraseLocalStorageProductKeys();
+             console.log('bio u login: ')
+            
+    
+            }else{
+             window.location.replace(localStorage.getItem('lastUrl'))
+            }
+          })
+         
+
+         
 
           localStorage.setItem('x_py35', this.state.authData.password);
-          if(parseInt(localStorage.getItem('count')) > 0){
-          this.props.dispatch({
-            type: SHOW_MODAL,
-            payload: true
-          });
-
-         eraseLocalStorageProductKeys();
-         console.log('bio u login: ')
-        
-
-        }else{
-         window.location.replace(localStorage.getItem('lastUrl'))
-        }
+          
         }
         else{
           this.setState({allowCheckIsLogged: true});

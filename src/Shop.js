@@ -39,7 +39,7 @@ setTimeout(() => {
   
   if(this.props.isLogged){
     
-         axios.get('/getcart', {withCredentials:true})
+         /*axios.get('/getcart', {withCredentials:true})
          .then(response => response.data)
          .then(data => {
           for(let i = 0; i < data.length; i++){
@@ -53,16 +53,16 @@ setTimeout(() => {
          });
          this.updateCountNumber();
       }
-         )
+         )*/
 
-         }else{
+         }
           this.props.dispatch({
             type: GET_CART_PRODUCTS,
             payload: loadLocalStorage()
             });
   
           this.updateCountNumber();
-        }
+        
         }, 30); 
    
     
