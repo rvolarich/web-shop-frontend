@@ -61,7 +61,7 @@ class Inventory extends React.Component{
         this.props.fetchPosts();
         //console.log("been in inventory");
 
-        localStorage.setItem('lastUrl', `${URLL}/inv`);
+       
     }
     closeModal = () => {
         this.props.dispatch({

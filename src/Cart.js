@@ -41,7 +41,7 @@ class Cart extends React.Component {
               nameName:'',
               email:''
             },
-
+            renderState: false,
             isCartEmpty:false
             //cartProds:[]
         }
@@ -50,7 +50,7 @@ class Cart extends React.Component {
         this.updateCountNumber = this.updateCountNumber.bind(this)
         this.addTotal = this.addTotal.bind(this)
         this.confirmOrder = this.confirmOrder.bind(this)
-        this.confirmOrderGuest = this.confirmOrderGuest.bind(this)
+       
        // this.loadLocalStorage = this.loadLocalStorage.bind(this)
         this.addTodo = this.addTodo.bind(this)
         this.priceTotal = this.priceTotal.bind(this)
@@ -66,7 +66,9 @@ class Cart extends React.Component {
 
     componentDidMount(){
       
-     
+      setTimeout(function() { //Start the timer
+        this.setState({renderState: true}) //After 1 second, set render to true
+    }.bind(this), 1000)
       
       if(this.props.cartProducts.length <= 0){
         setTimeout(() => {this.setState({...this.state, isCartEmpty: true})}, 100)
@@ -388,7 +390,7 @@ addTotal = (total, shipping) => {
     }
 
 
-    confirmOrderGuest = (data) => {
+    /*confirmOrderGuest = (data) => {
   console.log('bio u confirmOrderGuest, data:' + JSON.stringify(data))
   setTimeout(() => {let objectArray = [];
     this.props.cartProducts.map((product) => {
@@ -414,92 +416,24 @@ addTotal = (total, shipping) => {
        
     }, 50) 
 
-    /*setTimeout(() => {
-      
-      window.location.replace(`${URLL}/confirm`) 
-      
-    }, 50) */
-  }
+  }*/
 
 
 
 
 confirmOrder = () => {
   
-    if(!this.props.isLogged){
-      this.props.dispatch({
-        type: GET_CART_PRODUCTS,
-        payload: loadLocalStorage()
-      });
-
+   if(!this.props.isLogged){
       this.props.dispatch({
         type: SHOW_MODAL,
         payload: true
       })
-      
-    }
-   else{
-    setTimeout(() => {let objectArray = [];
-      this.props.cartProducts.map((product) => {
-          
-        objectArray.push(product)
-          
-      })
-  
-      objectArray.push(this.state.userData)
-      console.log('array length' + objectArray.length)
-  
-  
-        axios.post('/confirmorder', objectArray,
-        { withCredentials: true })
-      .then(response => response.data)
-      .catch(function (error) {
-          console.log(error);
-        });}, 50)
-    
-        
-      
-      
-      setTimeout(() => {
-        
-        window.location.replace(`${URLL}/confirm`)  
-      }, 50) 
+    }else{
+      window.location.replace(`${URLL}/confirm`)
     }
     }
 
-    
-
- /*postCart = () => dispatch => {
-    console.log("sent cart");
-    axios.post('http://localhost:8080/postcartall', this.props.products)
-    .then(response => response.data)
-    .then(countQty => dispatch({
-      type: UPDATE_CART,
-      payload: countQty
-    })) 
-    .catch(function (error) {
-      console.log(error);
-    });
-    
-    
-}*/
-
-/*postCart = () => {
-  console.log("sent cart");
-  axios.post('http://localhost:8080/postcartall', this.props.products)
-  .then(function (response) {
-    
-    })
-  .catch(function (error) {
-    console.log(error);
-  });
-  this.props.getCartQty();
-  this.props.dispatch({
-    type: GET_CART_QTY,
-    payload: this.props.count
-  });
-}*/
-    
+     
     render(){
     
       
@@ -510,9 +444,9 @@ confirmOrder = () => {
 
     <div style={{margin:'auto', width:'67%', minHeight:'410px'}}>
 
-      <ModalConfirmCart confOrder={(data) => this.confirmOrderGuest(data)} />
+      <ModalConfirmCart  />
         
-       {this.state.isCartEmpty && localStorage.getItem('count') === '0' ? 
+       {this.state.isCartEmpty || localStorage.getItem('count') === '0' ? 
        
        <div style={{margin:'auto', paddingTop:'110px', textAlign:'center'}}>
          

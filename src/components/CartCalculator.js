@@ -15,7 +15,7 @@ class CartCalculator extends React.Component{
     }
 
     render(){
-        const { cTotal, shipping, totalAmount, confirmOrder, prodStock } = this.props;
+        const { cTotal, shipping, totalAmount, confirmOrderKey, prodStock } = this.props;
         
         return(
   <div>
@@ -43,10 +43,11 @@ class CartCalculator extends React.Component{
      <div>
               
               {allowConfirm === false ? <Button   variant="outline-info" 
-              onClick={() => this.props.confirmOrderKey()}
+              onClick={() => confirmOrderKey()}
               style={{marginTop:'10px', marginBottom:'20px', width:'100%',
-               paddingTop:'15px', paddingBottom:'15px'}}>Confirm order</Button> : <Link to={"/confirm"}> <Button variant="outline-info" onClick={() => {confirmOrder()}}
-              style={{marginTop:'10px', marginBottom:'20px'}} disabled>Confirm order</Button></Link>}
+               paddingTop:'15px', paddingBottom:'15px'}}>Confirm order</Button> :  <Button variant="outline-info"
+               onClick={() => confirmOrderKey()}
+              style={{marginTop:'10px', marginBottom:'20px'}} disabled>Confirm order</Button>}
      </div>
      
      </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal, Row, Form} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SHOW_MODAL } from '../actions/types';
+import { SHOW_MODAL , SET_NAMENAME, SET_EMAIL, URLL } from '../actions/types';
 
 class ModalConfirmCart extends React.Component{
 
@@ -30,10 +30,18 @@ validateEmail(email) {
 
 handleChangeName(event){
     this.setState({userData:{...this.state.userData , nameName : event.target.value }})
+    this.props.dispatch({
+      type: SET_NAMENAME,
+      payload: event.target.value
+    });
   }
 
   handleChangeEmail(event){
     this.setState({userData:{...this.state.userData , email : event.target.value }})
+    this.props.dispatch({
+      type: SET_EMAIL,
+      payload: event.target.value
+    });
   }
 
     closeModal = () => {
@@ -49,27 +57,30 @@ handleChangeName(event){
       verifyData = () => {
         
         
-        if(!this.validateEmail(this.state.userData.email)){
+        if(!this.validateEmail(this.props.email)){
           this.setState({allowEmailFormat: false})
 
-          if(this.state.userData.nameName !== ''){
+          if(this.props.nameName !== ''){
             this.setState({allowName: true})
           }
           
       }
 
-      if(this.state.userData.nameName === ''){
+      if(this.props.nameName === ''){
         this.setState({allowName:false})
-        if(this.validateEmail(this.state.userData.email)){
+        if(this.validateEmail(this.props.email)){
           this.setState({allowEmailFormat: true})
         }
         }
 
-        if(this.validateEmail(this.state.userData.email) && this.state.userData.nameName !== ''){
+        if(this.validateEmail(this.props.email) && this.props.nameName !== ''){
         
-            this.props.confOrder(this.state.userData)
+            
+            localStorage.setItem('confName', this.props.nameName)
+            localStorage.setItem('confEmail', this.props.email)
             this.setState({allowEmailFormat: true, allowName: true})
             this.closeModal()
+            window.location.replace(`${URLL}/confirm`)
         }
     }
 
@@ -136,7 +147,9 @@ function mapDispatchToProps(dispatch) {
   }
   
   const mapStateToProps = state => ({
-      showModal: state.posts.showModal
+      showModal: state.posts.showModal,
+      nameName: state.posts.nameName,
+      email: state.posts.email
       });
   
   export default connect (mapStateToProps, mapDispatchToProps)(ModalConfirmCart);

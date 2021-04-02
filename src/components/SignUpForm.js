@@ -78,7 +78,7 @@ class SignUpForm extends React.Component{
     localStorage.setItem('count', this.props.count);
      }, 100);
       
-     localStorage.setItem('lastUrl', `${URLL}/login`);
+     
     
     }
 
@@ -110,71 +110,12 @@ class SignUpForm extends React.Component{
 
     mergeCart = () => {
       
-    /*  this.props.dispatch({
-        type: GET_LOCAL_CART_PRODUCTS,
-        payload: loadLocalStorage()
-      })
-      let objectsToErase = [];
-      let cartProducts = [...this.props.cartProducts]
-
-            for(let i = 0; i < cartProducts.length; i++){
-              localStorage.setItem(Date.now(), cartProducts[i].productId)
-              for(let i = 0; i < 10000000; i++){}
-              for(let k = 0; k < this.props.localCartProducts.length; k++){
-                if(cartProducts[i].productId === this.props.localCartProducts[k].productId){
-                  cartProducts[i].productQuantity += this.props.localCartProducts[k].productQuantity;
-                  localStorage.setItem(cartProducts[i].productId, JSON.stringify(cartProducts[i]))
-                  objectsToErase.push(cartProducts[i].productId)
-                  //console.log('objects to erase u posLog: ' + objectsToErase)
-                }
-                  
-                }
-                
-            }
-            
-            let dataReduced = [];
-            
-            
-            for(let i = 0; i < cartProducts.length; i++){
-              for(let k = 0; k < objectsToErase.length; k++){
-                if(cartProducts[i].productId === objectsToErase[k]){
-                  cartProducts.splice(i, 1)
-                 
-                }
-              }
-            }
-
-            for(let i = 0; i < this.props.localCartProducts.length; i++){
-              for(let k = 0; k < objectsToErase.length; k++){
-                if(this.props.localCartProducts[i].productId === objectsToErase[k]){
-                  this.props.localCartProducts.splice(i, 1)
-                  
-                }
-              }
-            }
-
-            if(cartProducts.length !== null){
-            for(let i = 0; i < cartProducts.length; i++){
-              dataReduced.push(cartProducts[i])
-            }
-          }
-
-          if(this.props.localCartProducts.length !== null){
-            for(let i = 0; i < this.props.localCartProducts.length; i++){
-              dataReduced.push(this.props.localCartProducts[i])
-            }
-          }
-            
-          if(dataReduced.length !== null){
-            for(let i = 0; i < dataReduced.length; i++){
-              localStorage.setItem(dataReduced[i].productId, JSON.stringify(dataReduced[i]))
-              localStorage.setItem(Date.now(), dataReduced[i].productId)
-              for(let i = 0; i < 10000000; i++){}
-            }
-          }*/
+          let data = [];
+          data = loadLocalStorage();
+          axios.post('/postcartall', data, { withCredentials: true })
+          window.location.replace(localStorage.getItem('lastUrl'))
       
-        setTimeout(() => {this.setState({allowCheckIsLogged: true});}, 30) 
-        this.closeModal();
+          this.closeModal();
       }
    
 
