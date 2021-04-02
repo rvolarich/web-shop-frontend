@@ -27,7 +27,7 @@ componentDidMount(){
       
       if(this.props.isLogged){
         
-             axios.get('/getcart', {withCredentials:true})
+           /*  axios.get('/getcart', {withCredentials:true})
              .then(response => response.data)
              .then(data => {
               for(let i = 0; i < data.length; i++){
@@ -35,21 +35,28 @@ componentDidMount(){
                 localStorage.setItem(Date.now(), data[i].productId);
                 for(let k = 0; k < 100; k++){}
             }
-              this.props.dispatch({
+              
+          }
+             )*/
+
+            /* this.props.dispatch({
               type: GET_CART_PRODUCTS,
               payload: loadLocalStorage()
              });
-             this.updateCountNumber();
-          }
-             )
+             this.updateCountNumber();*/
+
+            /* axios.get('/get/user', { withCredentials:true})
+          .then(response => {
+            this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
+            })*/
     
              }else{
-              this.props.dispatch({
+            /*  this.props.dispatch({
                 type: GET_CART_PRODUCTS,
                 payload: loadLocalStorage()
                 });
       
-              this.updateCountNumber();
+              this.updateCountNumber();*/
             }
             }, 30); 
 }

@@ -78,10 +78,11 @@ render(){
     <Provider store={store}>
    
   <BrowserRouter>
+  <SetLoggedIn />
 <div style={{margin:'auto', width:'100%', height:'150px', backgroundColor:'#447297'}}>
     <h1 style={{color:'white', paddingLeft:'17%', paddingTop:'42px'}}>OneStop-ShipShop</h1>
     </div>
-<SetLoggedIn />
+
 <Navig />
   
       <Route path="/" component={Home} exact />

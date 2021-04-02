@@ -55,13 +55,18 @@ setTimeout(() => {
       }
          )*/
 
+        /* axios.get('/get/user', { withCredentials:true})
+          .then(response => {
+            this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
+        })*/
+
          }
-          this.props.dispatch({
+         /* this.props.dispatch({
             type: GET_CART_PRODUCTS,
             payload: loadLocalStorage()
             });
   
-          this.updateCountNumber();
+          this.updateCountNumber();*/
         
         }, 30); 
    

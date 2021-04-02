@@ -78,7 +78,7 @@ class SignUpForm extends React.Component{
     localStorage.setItem('count', this.props.count);
      }, 100);
       
-     
+     localStorage.setItem('lastUrl', `${URLL}/login`);
     
     }
 
@@ -230,7 +230,7 @@ class SignUpForm extends React.Component{
            
             let objectsToErase = [];
             for(let i = 0; i < data.length; i++){
-              console.log('data u login: ' + data[i].productId)
+             // console.log('data u login: ' + data[i].productId)
               localStorage.setItem(Date.now(), data[i].productId)
 
               for(let i = 0; i < 10000000; i++){}
@@ -239,7 +239,7 @@ class SignUpForm extends React.Component{
                   data[i].productQuantity += this.props.localCartProducts[k].productQuantity;
                   localStorage.setItem(data[i].productId, JSON.stringify(data[i]))
                   objectsToErase.push(data[i].productId)
-                  console.log('objects to erase u posLog: ' + objectsToErase)
+                //  console.log('objects to erase u posLog: ' + objectsToErase)
                 }
                   //localStorage.setItem(this.props.localCartProducts[k].productId, JSON.stringify(this.props.localCartProducts[k]))
                 }
@@ -295,7 +295,7 @@ class SignUpForm extends React.Component{
               });
     
              //eraseLocalStorageProductKeys();
-             console.log('bio u login: ')
+            // console.log('bio u login: ')
             
     
             }else{

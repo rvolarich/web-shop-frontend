@@ -44,14 +44,22 @@ class Inventory extends React.Component{
 
     componentDidMount(){
 
-      setTimeout(() => {if(this.props.sessionExpired){
+      setTimeout(() => {
+        if(this.props.sessionExpired){
 
         window.location.replace(`${URLL}/sessionexp`)
+      }else{
+       /* this.props.dispatch({
+          type: GET_CART_PRODUCTS,
+          payload: loadLocalStorage()
+          });*/
+
+        //this.updateCountNumber();
       }
     }, 30)
 
         this.props.fetchPosts();
-        console.log("been in inventory");
+        //console.log("been in inventory");
 
         localStorage.setItem('lastUrl', `${URLL}/inv`);
     }

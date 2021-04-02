@@ -78,8 +78,8 @@ class Cart extends React.Component {
       }else{
 
         if(this.props.isLogged){
-        
-         //this.props.getCartProducts();
+        //this.props.fetchPosts();
+         this.props.getCartProducts();
         /* axios.get('/getcart', {withCredentials:true})
          .then(response => response.data)
          .then(data => {
@@ -99,11 +99,8 @@ class Cart extends React.Component {
           payload: loadLocalStorage()
          })
          this.priceTotal();
-         this.updateCountNumber();
-          //this.props.getCartQty();
-          this.props.fetchPosts();
+         //this.updateCountNumber();
           
-     
           axios.get('/get/user', { withCredentials:true})
           .then(response => {
             this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
@@ -115,7 +112,7 @@ class Cart extends React.Component {
           });
         
           this.priceTotal();
-          this.updateCountNumber();
+         // this.updateCountNumber();
           
     } 
       }
@@ -319,7 +316,7 @@ deleteCartItemById(id) {
          if(cartProds.length <= 1){
          
           this.setState({isCartEmpty: true})
-          setTimeout(() => {console.log('isCartEmpty: ' + this.state.isCartEmpty)}, 20) 
+          setTimeout(() => {console.log('isCartEmpty: ' + this.state.isCartEmpty)}, 50) 
         }
         
        
