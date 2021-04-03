@@ -19,64 +19,65 @@ class Confirm extends React.Component{
     }
 
     this.loadArray = this.loadArray.bind(this)
+    this.sendArray = this.sendArray.bind(this)
   }
 
 componentDidMount(){
 
- 
+ setTimeout(() => {
+  //console.log('isLogged u Confirm: ' + this.props.isLogged)
+  if(this.props.isLogged){
+    console.log('userData logged in: ')
+  this.props.deleteCart();
 
-  this.props.dispatch({
-    type: GET_CART_PRODUCTS,
-    payload: loadLocalStorage()
-  })
+axios.get('/get/user', { withCredentials:true})
+.then(response => response.data)
+.then(data => {
 
-  setTimeout(() => {
-    
-    if(this.props.isLogged){
+  let userData = {
+    nameName: data.nameName,
+    email: data.username
+    }
 
-      this.props.deleteCart();
+    console.log('userData logged in: ' + JSON.stringify(userData))
+//this.setState({userData:{...this.state.userData, email: data.username, nameName: data.nameName}})
 
-    axios.get('/get/user', { withCredentials:true})
-  .then(response => response.data)
-  .then(data => {
-    
-    this.setState({userData:{...this.state.userData, email: data.username, nameName: data.nameName}})
-    
-    let objectArray = [];
-    objectArray = this.loadArray();
-    objectArray.push(this.state.userData)
+let objectArray = [];
+objectArray = loadLocalStorage();
+objectArray.push(userData)
 
-    axios.post('/confirmorder', objectArray,
-    { withCredentials: true })
+setTimeout(() => {axios.post('/confirmorder', objectArray,
+{ withCredentials: true })}, 200)
 
 
 })}
 
 else{
-  
-  let userData = {
-    nameName: localStorage.getItem('confName'),
-    email: localStorage.getItem('confEmail')
-  }
 
-  console.log(JSON.stringify(userData))
-  let objectArray = [];
-  objectArray = this.loadArray();
-  objectArray.push(userData)
-
-  axios.post('/confirmorder', objectArray,
-    { withCredentials: true })
-
+let userData = {
+nameName: localStorage.getItem('confName'),
+email: localStorage.getItem('confEmail')
 }
+console.log('userData NOT logged in: ' + JSON.stringify(userData))
 
-this.props.dispatch({
+let objectArray = [];
+objectArray = loadLocalStorage();
+objectArray.push(userData)
+
+setTimeout(() => {axios.post('/confirmorder', objectArray,
+{ withCredentials: true })}, 200)
+}  
+ }, 50) 
+   
+  
+
+setTimeout(() => {this.props.dispatch({
   type: UPDATE_COUNT,
   payload: 0
-})
+  })
+}, 200) 
 
-}, 50)
-
-setTimeout(() => {eraseLocalStorageProductKeys();}, 500) 
+setTimeout(() => {eraseLocalStorageProductKeys();}, 1000) 
        
 }
 
@@ -86,6 +87,13 @@ loadArray = () => {
     objectArray.push(item)
   })
   return objectArray;
+}
+
+sendArray = (data) => {
+  
+    axios.post('/confirmorder', data,
+    { withCredentials: true })
+    
 }
 
 

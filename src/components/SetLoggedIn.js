@@ -13,6 +13,7 @@ class SetLoggedIn extends React.Component{
 
     componentDidMount(){
      
+      console.log('bio u setloooooooooooooooogggggggggggeeeeeeeedddddd in')
       setTimeout(() => {
         this.props.dispatch({
           type: GET_CART_PRODUCTS,

@@ -41,7 +41,7 @@ class Cart extends React.Component {
               nameName:'',
               email:''
             },
-            renderState: false,
+            
             isCartEmpty:false
             //cartProds:[]
         }
@@ -66,13 +66,8 @@ class Cart extends React.Component {
 
     componentDidMount(){
       
-      setTimeout(function() { //Start the timer
-        this.setState({renderState: true}) //After 1 second, set render to true
-    }.bind(this), 1000)
       
-      if(this.props.cartProducts.length <= 0){
-        setTimeout(() => {this.setState({...this.state, isCartEmpty: true})}, 100)
-    }
+     
       setTimeout(() => {
         if(this.props.sessionExpired){
     
@@ -80,44 +75,26 @@ class Cart extends React.Component {
       }else{
 
         if(this.props.isLogged){
-        //this.props.fetchPosts();
-         this.props.getCartProducts();
-        /* axios.get('/getcart', {withCredentials:true})
-         .then(response => response.data)
-         .then(data => {
-          for(let i = 0; i < data.length; i++){
-            localStorage.setItem(data[i].productId, JSON.stringify(data[i]));
-            localStorage.setItem(Date.now(), data[i].productId);
-            for(let k = 0; k < 100; k++){}
-        }
-          this.props.dispatch({
-          type: GET_CART_PRODUCTS,
-          payload: loadLocalStorage()
-         })
-      }
-         )*/
-         this.props.dispatch({
-          type: GET_CART_PRODUCTS,
-          payload: loadLocalStorage()
-         })
-         this.priceTotal();
-         //this.updateCountNumber();
-          
-          axios.get('/get/user', { withCredentials:true})
+       
+         
+       
+         axios.get('/get/user', { withCredentials:true})
           .then(response => {
             this.setState({userData:{...this.state.userData, email: response.data.username, nameName: this.props.username}})
         })
-    }else{
+    }
           this.props.dispatch({
             type: GET_CART_PRODUCTS,
             payload: loadLocalStorage()
           });
         
           this.priceTotal();
-         // this.updateCountNumber();
-          
+
+          if(this.props.cartProducts.length <= 0){
+            setTimeout(() => {this.setState({...this.state, isCartEmpty: true})}, 30)
+        }
     } 
-      }
+      
     }, 30)
 
      
@@ -438,6 +415,7 @@ confirmOrder = () => {
     
       
     const { cartProducts, total, cTotal, shipping, isLogged} = this.props;
+  
      
   return (
 
@@ -446,7 +424,7 @@ confirmOrder = () => {
 
       <ModalConfirmCart  />
         
-       {this.state.isCartEmpty || localStorage.getItem('count') === '0' ? 
+       {this.state.isCartEmpty ? 
        
        <div style={{margin:'auto', paddingTop:'110px', textAlign:'center'}}>
          

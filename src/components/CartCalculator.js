@@ -1,5 +1,7 @@
 import React from 'react';
 import 'react-table-6/react-table.css';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import ContinueShopping from './ContinueShopping';
 import { Link } from 'react-router-dom';
@@ -27,11 +29,11 @@ class CartCalculator extends React.Component{
         
      <hr />
       
-    <h6 style={{paddingLeft:'15px', color:'gray'}}>Cart total:<span style={{float:'right', paddingRight:'15px', color:'gray'}}> {cTotal}</span></h6>
+    <h6 style={{paddingLeft:'15px', color:'gray'}}>Cart total:<span style={{float:'right', paddingRight:'15px', color:'gray'}}> {cTotal.toFixed(2)}</span></h6>
     
     <hr />
      
-       <h5 style={{paddingLeft:'15px', color:'gray'}}>Shipping:<span style={{float:'right', paddingRight:'15px', color:'gray'}}> {shipping}</span></h5>
+       <h6 style={{paddingLeft:'15px', color:'gray'}}>Shipping:<span style={{float:'right', paddingRight:'15px', color:'gray'}}> {shipping.toFixed(2)}</span></h6>
      
      
        <hr />
@@ -56,7 +58,18 @@ class CartCalculator extends React.Component{
     }
 }
 
-export default CartCalculator;
+function mapDispatchToProps(dispatch) {
+  return{
+    dispatch,
+     ...bindActionCreators({}, dispatch)
+}
+}
+
+const mapStateToProps = state => ({
+    isLogged: state.posts.isLogged
+    });
+
+export default connect (mapStateToProps, mapDispatchToProps)(CartCalculator);
 
 export function allowConfirmButton(toggle){
   if(toggle === 1){

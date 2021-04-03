@@ -309,7 +309,8 @@ class SignUpForm extends React.Component{
             style={{marginTop:'5px', marginBottom:'15px'}}>Login</Button>
 
             <div >
-              Don't have an account? <Link to="/register" onClick={this.handleClick} style={{marginLeft:'-16px'}}>Sign up!</Link>
+              Don't have an account? <Link to="/register" onClick={this.handleClick} 
+              style={{marginLeft:'5px', textDecoration:'underline'}}>Sign up!</Link>
             </div>
             <div style={{marginTop:'8px'}}>
             {allowCheckIsLogged ? isLogged ? window.location.replace(localStorage.getItem('lastUrl')) : 

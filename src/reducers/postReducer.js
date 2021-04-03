@@ -18,7 +18,7 @@ const initialState = {
     cartQtyState: [],
     updateCart: {},
     cTotal: 0,
-    shipping: 52.24,
+    shipping: 125.00,
     isLogged: false,
     adminLogged: false,
     showModal: false,

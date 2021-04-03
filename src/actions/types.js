@@ -22,4 +22,4 @@ export const INVENTORY_STATUS = 'INVENTORY_STATUS';
 export const SET_EMAIL = 'SET_EMAIL';
 export const SET_NAMENAME = 'SET_NAMENAME';
 export const DELETE_CART_PRODUCT = 'DELETE_CART_PRODUCT';
-export const URLL = 'http://localhost:3000';
+export const URLL = 'http://www.volare-automation.com:8080';
