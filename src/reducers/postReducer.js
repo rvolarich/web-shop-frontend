@@ -4,7 +4,8 @@ import { GET_DATA, POST_DATA, INCREMENT, GET_CART_QTY,
     DELETE_CART_ITEM, 
     UPDATE_CART_TOTAL, IS_LOGGED, SET_CART_PRODUCT_QUANTITY_LOCAL, KEY_SEQUENCE, 
     GET_LOCAL_CART_PRODUCTS, SHOW_MODAL, PRODUCT_DATA, ALLOW_ADD_PRODUCT,
-    INVENTORY_STATUS, SET_EMAIL, DELETE_CART_PRODUCT, SET_NAMENAME}  from '../actions/types';
+    INVENTORY_STATUS, SET_EMAIL, DELETE_CART_PRODUCT, SET_NAMENAME, DELETE_PRODUCT,
+    SET_PRODUCT_PRICE, SET_PRODUCT_QUANTITY}  from '../actions/types';
 import update from 'immutability-helper';
 import { actions } from 'react-table';
 
@@ -129,11 +130,53 @@ export default function(state = initialState, action){
                 })
              }
 
+             case SET_PRODUCT_QUANTITY:
+            
+            // console.log('been in seeeeeeet: ' + action.payload);
+               
+             return {
+             ...state,
+             products: state.products.map((item, index) => {
+
+                
+                    return {
+                        ...item,
+                        productQuantity: parseInt(action.payload[index].value)
+                         }
+                })
+             }
+
+             case SET_PRODUCT_PRICE:
+            
+            // console.log('been in seeeeeeet: ' + action.payload);
+               
+             return {
+             ...state,
+             products: state.products.map((item, index) => {
+
+                
+                    return {
+                        ...item,
+                        productPrice: parseFloat(action.payload[index]).toFixed(2)
+                         }
+                })
+             }
+
             case DELETE_CART_PRODUCT:
                 
                 return{
                     ...state,
                     cartProducts: state.cartProducts.filter(function(product){
+                        return product.productId !== action.payload
+                    })
+                    
+                }
+
+                case DELETE_PRODUCT:
+                
+                return{
+                    ...state,
+                    products: state.products.filter(function(product){
                         return product.productId !== action.payload
                     })
                     

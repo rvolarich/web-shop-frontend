@@ -22,7 +22,7 @@ class ModalInventory extends React.Component{
     }
 
     redirect = () => {
-        localStorage.setItem('lastUrl', `${URLL}/inv`)
+        //localStorage.setItem('lastUrl', `${URLL}/inv`)
     }
 
     closeModal = () => {

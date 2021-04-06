@@ -2,7 +2,8 @@ import React from 'react';
 import { Button, Container, Modal, Table, Form, Col} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SHOW_MODAL, INVENTORY_STATUS, URLL } from '../actions/types';
+import { SHOW_MODAL, INVENTORY_STATUS, URLL, GET_DATA, DELETE_PRODUCT, SET_PRODUCT_QUANTITY, 
+        SET_PRODUCT_PRICE } from '../actions/types';
 import { fetchPosts } from '../actions/postActions';
 import InventoryItem from './InvertoryItem';
 import DragAndDrop from './DragAndDrop';
@@ -25,12 +26,18 @@ class Inventory extends React.Component{
                 productQuantity:'',
                 productImage:''
               },
+              productPriceQty:{
+                productId: 0,
+                productPriceString: '',
+                productQuantity: ''
+            },
               productId: 0,
               allowAddButton:false
             
         }
         this.closeModal = this.closeModal.bind(this)
         this.showModal = this.showModal.bind(this)
+        this.updateData = this.updateData.bind(this)
         
         //this.allowAddButtonKey = this.allowAddButtonKey.bind(this)
         //this.handleDrop = this.handleDrop.bind(this)
@@ -58,10 +65,23 @@ class Inventory extends React.Component{
       }
     }, 30)
 
-        this.props.fetchPosts();
+        //this.props.fetchPosts();
         //console.log("been in inventory");
 
-       
+        
+          axios.get('/products', {withCredentials:true})
+          .then(response => response.data)
+          .then(data => {
+            this.props.dispatch({
+            type: GET_DATA,
+            payload: data
+          })
+        
+          setTimeout(() => {console.log('values: ' + document.getElementsByName("pprice")[0].value)}, 100) 
+        
+        });
+
+        //setTimeout(() => {console.log('values: ' + document.getElementsByName("pprice")[0].value)}, 0) 
     }
     closeModal = () => {
         this.props.dispatch({
@@ -80,6 +100,73 @@ class Inventory extends React.Component{
           payload: true
         });
         
+      }
+
+      updateData = () => {
+
+        let priceArrayString = [];
+        let priceArrayFloat = [];
+        let priceArrayFloat2 = [];
+        let qtyArray = [];
+        //let qtyPrice = [];
+
+        priceArrayString = document.getElementsByName("pprice")
+
+        for(let i = 0; i < priceArrayString.length; i++){
+          priceArrayFloat[i] = parseFloat(priceArrayString[i].value).toFixed(2)
+        }
+
+        /*for(let i = 0; i < priceArrayString.length; i++){
+          priceArrayFloat2[i] = parseFloat(priceArrayFloat[i])
+        }*/
+
+        let a = priceArrayFloat2[0] + priceArrayFloat2[1];
+        console.log('price summed: ' + a)
+        qtyArray = document.getElementsByName("pqty")
+
+        /*for(let k = 0; k < priceArray.length; k++){
+          console.log('price array: ' + priceArray[k].value)
+          }*/
+
+          
+       // qtyPrice = [priceArray, qtyArray]
+
+       this.props.dispatch({
+         type: SET_PRODUCT_PRICE,
+         payload: priceArrayFloat
+       })
+
+      this.props.dispatch({
+        type: SET_PRODUCT_QUANTITY,
+        payload: qtyArray
+      })
+        
+
+       // axios.post('/products/update/all', priceArray, { withCredentials:true })
+
+        //read two dimensional array
+        /*for(let i = 0; i < qtyPrice.length; i++){
+          for(let k = 0; k < priceArray.length; k++){
+          console.log('price array: ' + qtyPrice[i][k].value)
+          }
+        }*/
+        
+        /*this.setState({productPriceQty:{...this.state.productPriceQty, 
+          productId: this.props.product.productId}});
+          setTimeout(() => {axios.post('/products/update', this.state.productPriceQty,
+          {withCredentials:true})
+          .then(response => {
+          console.log('update response' + JSON.stringify(response.data));
+          this.props.dispatch({
+          type: INVENTORY_STATUS,
+          payload: response.data
+          })
+          }).then(() => {
+          window.location.reload();
+          })
+          .catch(function(err){
+          console.log(err);
+          })}, 20)*/
       }
 
       allowAddButtonKey = () => {
@@ -103,6 +190,10 @@ class Inventory extends React.Component{
 
       handleDelete = () => {
         
+        this.props.dispatch({
+          type: DELETE_PRODUCT,
+          payload: this.state.productId
+        })
         axios({
           method: 'delete',
           url: '/products/del',
@@ -122,7 +213,7 @@ class Inventory extends React.Component{
             type: SHOW_MODAL,
             payload: false
           });
-          window.location.reload();
+         // window.location.reload();
         }).catch(err => {
           console.log(err);
         });
@@ -182,7 +273,10 @@ class Inventory extends React.Component{
             payload: response.data
           })
         }).then(() => {
+          console.log('insert return: ' + this.props.inventoryStatus)
+          if(this.props.inventoryStatus === 'Product added successfully!'){
           window.location.reload();
+        }
         })
         .catch(function(err){
           console.log(err);
@@ -205,12 +299,15 @@ class Inventory extends React.Component{
                 
                 {
                     products.map((product, index) => 
-                    <InventoryItem product={product} key={index} getKey={(id) => this.showModal(id)}/>
+                    <InventoryItem product={product} keyId={index} key={index} getKey={(id) => this.showModal(id)} 
+                    updateProductData={this.updateData}/>
 
                     
                     
                     )
                 }
+
+                <Button style={{float:'right', marginRight:'40px', marginTop:'20px'}} onClick={this.updateData}>Update all</Button>
               
 <Col style={{marginTop: '10px'}} xs={6}>
   <div style={{width:'80%', height:'30px', color:'green'}}> 
@@ -251,7 +348,7 @@ class Inventory extends React.Component{
 <FileList allowButtAdd={() => this.allowAddButtonKey()}/>
 
 {this.state.allowAddButton ? <Button onClick={this.handleInsert.bind(this)} style={{marginBottom:'70px'}}>Add product</Button> :
-<Button style={{marginBottom:'70px'}} onClick={this.handleInsert.bind(this)} disabled >Add product</Button>}
+<Button style={{marginBottom:'70px'}}  disabled >Add product</Button>}
 
 </Col>
 

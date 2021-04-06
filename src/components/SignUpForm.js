@@ -178,6 +178,9 @@ class SignUpForm extends React.Component{
               for(let k = 0; k < this.props.localCartProducts.length; k++){
                 if(data[i].productId === this.props.localCartProducts[k].productId){
                   data[i].productQuantity += this.props.localCartProducts[k].productQuantity;
+                  if(data[i].productStock - data[i].productQuantity < 0){
+                    data[i].productQuantity = data[i].productStock;
+                  }
                   localStorage.setItem(data[i].productId, JSON.stringify(data[i]))
                   objectsToErase.push(data[i].productId)
                 //  console.log('objects to erase u posLog: ' + objectsToErase)

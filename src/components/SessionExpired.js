@@ -1,12 +1,15 @@
 import { Button } from 'react-bootstrap';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { eraseLocalStorageProductKeys } from '../Cart';
 
 
 class SessionExpired extends React.Component{
 
 
-
+componentDidMount(){
+    eraseLocalStorageProductKeys();
+}
     
 
 render(){

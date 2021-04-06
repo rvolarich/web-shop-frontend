@@ -16,18 +16,19 @@ class InventoryItem extends React.Component{
         this.state = {
           productPriceQty:{
             productId: 0,
-            productPriceString: '',
+            productPriceString: 0,
             productQuantity: ''
         }
         }
         this.closeModal = this.closeModal.bind(this)
+        this.handleUpdate = this.handleUpdate.bind(this)
         //this.showModal = this.showModal.bind(this)
     }
 
     componentDidMount(){
-    
+     
       this.setState({productPriceQty:{...this.state.productPriceQty, 
-        productPriceString: this.props.product.productPrice, 
+        productPriceString: parseFloat(this.props.product.productPrice).toFixed(2), 
         productQuantity: this.props.product.productQuantity}});
       
       }
@@ -59,6 +60,35 @@ validateStock(s) {
   
 
     handleUpdate(){
+
+      console.log('index:' + this.props.key)
+      let priceNum = document.getElementsByName("pprice")[this.props.keyId].value;
+      let priceDec = parseFloat(priceNum).toFixed(2)
+
+      //console.log(document.getElementsByName("pprice")[this.props.product.productId - 1].value)
+
+      this.setState({productPriceQty:{...this.state.productPriceQty, 
+                     productId: this.props.product.productId, productPriceString: priceDec}});
+        setTimeout(() => {axios.post('/products/update', this.state.productPriceQty,
+        {withCredentials:true})
+        .then(response => {
+          console.log('update response' + JSON.stringify(response.data));
+          this.props.dispatch({
+            type: INVENTORY_STATUS,
+            payload: response.data
+          })
+        }).then(() => {
+          //window.location.reload();
+        })
+        .catch(function(err){
+          console.log(err);
+        })}, 20)
+      
+
+      
+    }
+
+  /*  handleUpdate(){
       
       this.setState({productPriceQty:{...this.state.productPriceQty, 
                      productId: this.props.product.productId}});
@@ -79,7 +109,7 @@ validateStock(s) {
       
 
       
-    }
+    }*/
 
     /*handleDelete(){
       this.props.dispatch({
@@ -115,17 +145,17 @@ validateStock(s) {
                 <Table responsive="lg" bordered hover style={{marginBottom: '0px'}}>
   
   <tbody >
-    <tr>
-      <td style={{width: '70px'}}>{product.productId}</td>
+    <tr >
+      <td style={{width: '70px'}}>{this.props.keyId + 1}.</td>
       <td style={{width: '280px'}}>{product.productName}</td>
       <td style={{width: '280px'}}>{product.productDescription}</td>
-      <td style={{width: '120px'}}><Form><Form.Control onChange={this.handlePrice.bind(this)}
-          value={this.state.productPriceQty.productPriceString}/></Form></td>
-      <td style={{width: '100px'}}><Form><Form.Control onChange={this.handleStock.bind(this)} 
+      <td style={{width: '120px'}}><Form><Form.Control name="pprice" onChange={this.handlePrice.bind(this)}
+          value={this.state.productPriceQty.productPriceString}  /></Form></td>
+      <td style={{width: '100px'}}><Form ><Form.Control name="pqty" onChange={this.handleStock.bind(this)} 
           value={this.state.productPriceQty.productQuantity}/></Form></td>
       <td>
-        <Button style={{marginLeft: '20px', marginRight: '20px'}} 
-                onClick={this.handleUpdate.bind(this)}>Update</Button>
+        <Button variant="outline-info" style={{marginLeft: '20px', marginRight: '20px'}} 
+                onClick={this.handleUpdate}>Update</Button>
         
         <Button variant="outline-danger" 
         onClick={() => this.props.getKey(this.props.product.productId)}>Delete</Button>
