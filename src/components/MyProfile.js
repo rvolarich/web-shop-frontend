@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Button, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -46,48 +47,56 @@ class MyProfile extends React.Component{
     }
 
     componentDidMount(){
-
-      setTimeout(() => {if(this.props.sessionExpired){
-
-         window.location.replace(`${URLL}/sessionexp`)
-      }
-    }, 500)
-
-    this.props.getCartQty();
-
-      this.setState({retypePass: localStorage.getItem('x_py35'), userData:{...this.state.userData, 
-        password: localStorage.getItem('x_py35')}})
-      console.log("password: " + this.state.userData.password);
-      axios.get('/get/user', { withCredentials:true})
-      .then(response => {
-        console.log('user: ' + JSON.stringify(response.data))
-        
-        if(response.data.surname !== null){
-          this.setState({userData: {...this.state.userData, surname:response.data.surname}})
+      setTimeout(() => {
+        if(!this.props.isLogged){
+          ReactDOM.render(<div style={{margin:'auto', textAlign:'center', marginTop:'150px'}}>
+            <h3>You are not authorized <br />to access this page!</h3></div>, document.getElementById("root"));
+        }else{
+  
+        setTimeout(() => {if(this.props.sessionExpired){
+  
+           window.location.replace(`${URLL}/sessionexp`)
+        }
+      }, 500)
+  
+      this.props.getCartQty();
+  
+        this.setState({retypePass: localStorage.getItem('x_py35'), userData:{...this.state.userData, 
+          password: localStorage.getItem('x_py35')}})
+        console.log("password: " + this.state.userData.password);
+        axios.get('/get/user', { withCredentials:true})
+        .then(response => {
+          console.log('user: ' + JSON.stringify(response.data))
+          
+          if(response.data.surname !== null){
+            this.setState({userData: {...this.state.userData, surname:response.data.surname}})
+            }
+          
+          if(response.data.address !== null){
+            this.setState({userData: {...this.state.userData, address:response.data.address}})
           }
+  
+          if(response.data.zip !== null){
+            this.setState({userData: {...this.state.userData, zip:response.data.zip}})
+          }
+  
+          if(response.data.city !== null){
+            this.setState({userData: {...this.state.userData, city:response.data.city}})
+          }
+  
+          if(response.data.country !== null){
+            this.setState({userData: {...this.state.userData, country:response.data.country}})
+          }
+          
+          
+            this.setState({userData: {...this.state.userData, nameName:response.data.nameName,
+            username:response.data.username}})
+          
+        })
         
-        if(response.data.address !== null){
-          this.setState({userData: {...this.state.userData, address:response.data.address}})
-        }
-
-        if(response.data.zip !== null){
-          this.setState({userData: {...this.state.userData, zip:response.data.zip}})
-        }
-
-        if(response.data.city !== null){
-          this.setState({userData: {...this.state.userData, city:response.data.city}})
-        }
-
-        if(response.data.country !== null){
-          this.setState({userData: {...this.state.userData, country:response.data.country}})
-        }
-        
-        
-          this.setState({userData: {...this.state.userData, nameName:response.data.nameName,
-          username:response.data.username}})
-        
-      })
-      localStorage.setItem('lastUrl', 'http://127.0.0.1:3000/profile');
+      }
+      }, 500)
+      
       }
       
       validatePassword(str)
@@ -219,7 +228,7 @@ class MyProfile extends React.Component{
         console.log("registration verified!")
         this.setState({...this.state, allowEmailFormat: true, 
           allowPassMatch: true, allowName: true})
-          setTimeout(() => {window.location.reload();}, 1000)
+          
       }
       
     }
@@ -359,7 +368,8 @@ function mapDispatchToProps(dispatch) {
   
   const mapStateToProps = state => ({
       showModal: state.posts.showModal,
-      sessionExpired: state.posts.sessionExpired
+      sessionExpired: state.posts.sessionExpired,
+      isLogged: state.posts.isLogged
       });
   
   export default connect (mapStateToProps, mapDispatchToProps)(MyProfile);

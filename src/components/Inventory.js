@@ -11,6 +11,7 @@ import FileList from './FileList';
 import axios from 'axios';
 import ModalElement from './ModalElement';
 import { data } from 'jquery';
+import ReactDOM from 'react-dom';
 
 
 class Inventory extends React.Component{
@@ -51,38 +52,41 @@ class Inventory extends React.Component{
 
     componentDidMount(){
 
-      setTimeout(() => {
-        if(this.props.sessionExpired){
-
-        window.location.replace(`${URLL}/sessionexp`)
-      }else{
-       /* this.props.dispatch({
-          type: GET_CART_PRODUCTS,
-          payload: loadLocalStorage()
-          });*/
-
-        //this.updateCountNumber();
-      }
-    }, 30)
-
-        //this.props.fetchPosts();
-        //console.log("been in inventory");
-
+      setTimeout(() => { 
+        if(!this.props.adminLogged){
+          ReactDOM.render(<div style={{margin:'auto', textAlign:'center', marginTop:'150px'}}>
+            <h3>You are not authorized <br />to access this page!</h3></div>, document.getElementById("root"));
+        }else{
         
-          axios.get('/products', {withCredentials:true})
-          .then(response => response.data)
-          .then(data => {
-            this.props.dispatch({
-            type: GET_DATA,
-            payload: data
-          })
         
-          setTimeout(() => {console.log('values: ' + document.getElementsByName("pprice")[0].value)}, 100) 
-        
-        });
-
-        //setTimeout(() => {console.log('values: ' + document.getElementsByName("pprice")[0].value)}, 0) 
+          
+                  if(this.props.sessionExpired){
+  
+                       window.location.replace(`${URLL}/sessionexp`)
+              }
+     
+  
+          //this.props.fetchPosts();
+          //console.log("been in inventory");
+  
+          
+            axios.get('/products', {withCredentials:true})
+            .then(response => response.data)
+            .then(data => {
+              this.props.dispatch({
+              type: GET_DATA,
+              payload: data
+            })
+          
+             
+          
+          });
+        }
+      }, 500);
+     
+       
     }
+
     closeModal = () => {
         this.props.dispatch({
           type: SHOW_MODAL,
@@ -104,69 +108,7 @@ class Inventory extends React.Component{
 
       updateData = () => {
 
-        let priceArrayString = [];
-        let priceArrayFloat = [];
-        let priceArrayFloat2 = [];
-        let qtyArray = [];
-        //let qtyPrice = [];
-
-        priceArrayString = document.getElementsByName("pprice")
-
-        for(let i = 0; i < priceArrayString.length; i++){
-          priceArrayFloat[i] = parseFloat(priceArrayString[i].value).toFixed(2)
-        }
-
-        /*for(let i = 0; i < priceArrayString.length; i++){
-          priceArrayFloat2[i] = parseFloat(priceArrayFloat[i])
-        }*/
-
-        let a = priceArrayFloat2[0] + priceArrayFloat2[1];
-        console.log('price summed: ' + a)
-        qtyArray = document.getElementsByName("pqty")
-
-        /*for(let k = 0; k < priceArray.length; k++){
-          console.log('price array: ' + priceArray[k].value)
-          }*/
-
-          
-       // qtyPrice = [priceArray, qtyArray]
-
-       this.props.dispatch({
-         type: SET_PRODUCT_PRICE,
-         payload: priceArrayFloat
-       })
-
-      this.props.dispatch({
-        type: SET_PRODUCT_QUANTITY,
-        payload: qtyArray
-      })
         
-
-       // axios.post('/products/update/all', priceArray, { withCredentials:true })
-
-        //read two dimensional array
-        /*for(let i = 0; i < qtyPrice.length; i++){
-          for(let k = 0; k < priceArray.length; k++){
-          console.log('price array: ' + qtyPrice[i][k].value)
-          }
-        }*/
-        
-        /*this.setState({productPriceQty:{...this.state.productPriceQty, 
-          productId: this.props.product.productId}});
-          setTimeout(() => {axios.post('/products/update', this.state.productPriceQty,
-          {withCredentials:true})
-          .then(response => {
-          console.log('update response' + JSON.stringify(response.data));
-          this.props.dispatch({
-          type: INVENTORY_STATUS,
-          payload: response.data
-          })
-          }).then(() => {
-          window.location.reload();
-          })
-          .catch(function(err){
-          console.log(err);
-          })}, 20)*/
       }
 
       allowAddButtonKey = () => {
@@ -307,7 +249,7 @@ class Inventory extends React.Component{
                     )
                 }
 
-                <Button style={{float:'right', marginRight:'40px', marginTop:'20px'}} onClick={this.updateData}>Update all</Button>
+                
               
 <Col style={{marginTop: '10px'}} xs={6}>
   <div style={{width:'80%', height:'30px', color:'green'}}> 
@@ -347,9 +289,13 @@ class Inventory extends React.Component{
 </Form>
 <FileList allowButtAdd={() => this.allowAddButtonKey()}/>
 
-{this.state.allowAddButton ? <Button onClick={this.handleInsert.bind(this)} style={{marginBottom:'70px'}}>Add product</Button> :
-<Button style={{marginBottom:'70px'}}  disabled >Add product</Button>}
+{this.state.allowAddButton ? <Button onClick={this.handleInsert.bind(this)} style={{marginBottom:'10px'}}>Add product</Button> :
+<Button style={{marginBottom:'10px'}}  disabled >Add product</Button>}
 
+<div style={{width:'80%', height:'30px', color:'green', marginBottom:'30px'}}> 
+          {this.props.inventoryStatus.charAt(0) === 'E' ? <p><span style={{color:'red'}}>{this.props.inventoryStatus}</span></p>
+          : <p><span style={{color:'green'}}>{this.props.inventoryStatus}</span></p>}
+   </div>
 </Col>
 
 </div>
@@ -370,7 +316,8 @@ function mapDispatchToProps(dispatch) {
       showModal: state.posts.showModal,
       allowAddProduct: state.posts.allowAddProduct,
       inventoryStatus: state.posts.inventoryStatus,
-      sessionExpired: state.posts.sessionExpired
+      sessionExpired: state.posts.sessionExpired,
+      adminLogged: state.posts.adminLogged
       });
   
   export default connect (mapStateToProps, mapDispatchToProps)(Inventory);
