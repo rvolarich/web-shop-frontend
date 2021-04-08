@@ -154,7 +154,7 @@ class ShopItem extends React.Component{
           </Col>
           <Col  xs={3}>
             <div style={{marginTop:'30px', marginLeft: '60px'}}>
-              <h5>Price: {parseFloat(product.productPrice).toFixed(2)}, EUR</h5>
+              <h5>Price: EUR {parseFloat(product.productPrice).toFixed(2)} </h5>
             </div>
             <br />
            

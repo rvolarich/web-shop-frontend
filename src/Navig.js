@@ -36,10 +36,16 @@ class Navig extends React.Component{
      <Link to={"/shop"} className="nav-link">Shop</Link>
       <Link className="nav-link" {... this.props.isLogged && this.props.adminLogged ? {to: '/inv'} : {to: '/log'} } >Inventory</Link>
   <Link to={"/cart"} className="nav-link">Cart <span style={{color: 'green'}}>{count === 0 ? null : count}</span></Link>
-      
-      {isLogged ? <Link to={"/logout"} className="nav-link">Logout</Link> : <Link to={"/login"} className="nav-link">Login</Link>}
+  </Nav>
+      <Nav  style={{marginRight:'300px'}}>
       {isLogged ? <Link to={"/profile"} className="nav-link">My Profile</Link> : null}
+      
+      
+      {isLogged ? <Link to={"/logout"} className="nav-link">Logout</Link> : 
+                  <Link to={"/login"} className="nav-link" >Login</Link>}
+
       {isLogged ? <div style={{marginLeft: '11px', marginTop: '8px', color: 'gray'}}>Welcome, {username}</div> : null}
+                  
     </Nav>
     </Navbar>
 

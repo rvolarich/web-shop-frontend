@@ -34,7 +34,8 @@ class RegisterForm extends React.Component{
            allowCheckUserExists : false,
            allowRegisterButton: false,
            allowPassMatch: true,
-           allowEmailFormat: true
+           allowEmailFormat: true,
+           regInfo: ''
     
         };
         this.handleChangeName = this.handleChangeName.bind(this)
@@ -122,7 +123,8 @@ allowRegisterButtonKey(){
         
         else if(this.validateEmail(this.state.authData.username) && this.state.authData.password === this.state.retypePass){
             console.log("registration verified!")
-            this.setState({...this.state, allowEmailFormat: true, allowPassMatch: true})
+            this.setState({...this.state, allowEmailFormat: true, allowPassMatch: true, 
+            regInfo:'Registering you! Please wait a moment...'})
             
             axios.post('/reg', 
         this.state.authData).then(function (response){
@@ -237,7 +239,7 @@ allowRegisterButtonKey(){
             </Row>
             {allowCheckUserExists ? userExists ? window.location.replace(`${URLL}/reginfo`) : 
             <div style={{color: 'red', height:'20px', marginBottom:'30px', marginLeft:'-16px'}}>Username not available!</div> :
-            <div style={{color: 'red', height:'20px', marginBottom:'30px'}}></div>}
+            <div style={{color: 'gray', height:'20px', marginBottom:'30px', marginLeft:'-16px'}}>{this.state.regInfo}</div>}
             
             
             </Col>

@@ -18,12 +18,28 @@ class Shop extends React.Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      showContainer:false
+    }
    this.updateCountNumber = this.updateCountNumber.bind(this)
 }
 
 componentDidMount(){
 
-  this.props.fetchPosts();
+  //this.props.fetchPosts();
+  
+    axios.get('/products', {withCredentials:true})
+    .then(response => response.data)
+    .then(data => {
+        this.props.dispatch({
+        type: GET_DATA,
+        payload: data
+    });
+
+    setTimeout(() => {
+      this.setState({showContainer:true})
+    }, 30)
+  })
    
   setTimeout(() => {
     
@@ -101,7 +117,7 @@ updateCountNumber = () => {
     
     
     <div style={{margin:'auto', width:'67%', minHeight:'410px'}}>
-       
+      {this.state.showContainer ? <div>
        {
 products.map((product, index) =>
     <ShopItem product={product} key={index} />
@@ -109,7 +125,7 @@ products.map((product, index) =>
     )
     
     }
-   
+   </div> : <div style={{color:'gray', marginTop:'20px', textAlign:'center'}}>loading shop...</div>}
               
 </div>
        

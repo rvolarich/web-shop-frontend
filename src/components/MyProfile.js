@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Button, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SHOW_MODAL, URLL } from '../actions/types';
+import { SHOW_MODAL, URLL, IS_LOGGED } from '../actions/types';
 import { Form, Row, Col, Container } from 'react-bootstrap';
 import CountrySelect from 'react-bootstrap-country-select';
 import 'bootstrap/dist/css/bootstrap.css'; // or include from a CDN
@@ -35,7 +35,8 @@ class MyProfile extends React.Component{
                 allowName: true,
                 allowSubmit: true,
                 updateStatus: '',
-                allowModalUser: false
+                allowModalUser: false,
+                showContainer: false
                 
         }
         this.closeModal = this.closeModal.bind(this)
@@ -47,19 +48,34 @@ class MyProfile extends React.Component{
     }
 
     componentDidMount(){
-      setTimeout(() => {
-        if(!this.props.isLogged){
-          ReactDOM.render(<div style={{margin:'auto', textAlign:'center', marginTop:'150px'}}>
-            <h3>You are not authorized <br />to access this page!</h3></div>, document.getElementById("root"));
-        }else{
+      
+        
   
         setTimeout(() => {if(this.props.sessionExpired){
   
            window.location.replace(`${URLL}/sessionexp`)
         }
       }, 500)
+
+      axios.get(`/logged_in?sessionExpired=${this.props.sessionExpired}`, 
+        { withCredentials: true })
+        .then(response => {
+          console.log("logged_in = " + response.data) 
+          this.props.dispatch({
+            type: IS_LOGGED,
+            payload: response.data
+        });
+        
+        setTimeout(() => {
+          this.setState({showContainer:true})
+        }, 100)
+      
+      })
+        .catch(error => {
+          console.log("check login error", error);
+        });
   
-      this.props.getCartQty();
+      //this.props.getCartQty();
   
         this.setState({retypePass: localStorage.getItem('x_py35'), userData:{...this.state.userData, 
           password: localStorage.getItem('x_py35')}})
@@ -94,8 +110,8 @@ class MyProfile extends React.Component{
           
         })
         
-      }
-      }, 500)
+      
+     
       
       }
       
@@ -234,7 +250,12 @@ class MyProfile extends React.Component{
     }
     render(){
         return(
-            <Container>
+
+          
+          <Container>
+              {this.state.showContainer ? this.props.isLogged ?
+                
+                <div>
                 
                 <Col xs={8}>
             <Form style={{marginTop: '20px'}}>
@@ -353,8 +374,9 @@ class MyProfile extends React.Component{
 
 <ModalElement handleDelUser={this.confirmDelete}
 input='profile' modalTitle='My Profile' modalLine1='Delete the account?' modalLine2='' />
-
-</Container>
+</div> :  <div style={{minHeight:'410px', margin:'auto', marginTop:'150px'}}>
+  <h3>You are not authorized<br />to access this page!</h3></div> : <div style={{minHeight:'410px'}}></div>}
+  </Container>
         )
     }
 }

@@ -101,7 +101,8 @@ sendArray = (data) => {
         return(
             <div style={{margin:'auto', minHeight:'410px', paddingTop:'110px', textAlign:'center'}}>
          
-         <h3>Congratulations on your purchase!</h3> 
+         <h3>Congratulations on your purchase!</h3> <br />
+         <p>An email has been sent to <span style={{color:'green'}}>{localStorage.getItem('confEmail')}</span> with your order information! </p>
                 
            <ContinueShopping />
            </div>

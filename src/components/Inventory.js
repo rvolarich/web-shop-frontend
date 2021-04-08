@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Container, Modal, Table, Form, Col} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { SHOW_MODAL, INVENTORY_STATUS, URLL, GET_DATA, DELETE_PRODUCT, SET_PRODUCT_QUANTITY, 
+import { SHOW_MODAL, INVENTORY_STATUS, URLL, GET_DATA, DELETE_PRODUCT, IS_LOGGED, 
         SET_PRODUCT_PRICE } from '../actions/types';
 import { fetchPosts } from '../actions/postActions';
 import InventoryItem from './InvertoryItem';
@@ -33,7 +33,8 @@ class Inventory extends React.Component{
                 productQuantity: ''
             },
               productId: 0,
-              allowAddButton:false
+              allowAddButton:false,
+              showContainer:false
             
         }
         this.closeModal = this.closeModal.bind(this)
@@ -52,18 +53,31 @@ class Inventory extends React.Component{
 
     componentDidMount(){
 
-      setTimeout(() => { 
-        if(!this.props.adminLogged){
-          ReactDOM.render(<div style={{margin:'auto', textAlign:'center', marginTop:'150px'}}>
-            <h3>You are not authorized <br />to access this page!</h3></div>, document.getElementById("root"));
-        }else{
+      
+       
         
-        
-          
-                  if(this.props.sessionExpired){
+        setTimeout(() => {if(this.props.sessionExpired){
   
-                       window.location.replace(`${URLL}/sessionexp`)
-              }
+          window.location.replace(`${URLL}/sessionexp`)
+        }}, 500)
+          
+            axios.get(`/logged_in?sessionExpired=${this.props.sessionExpired}`, 
+            { withCredentials: true })
+            .then(response => {
+              console.log("logged_in = " + response.data) 
+              this.props.dispatch({
+                type: IS_LOGGED,
+                payload: response.data
+            });
+            
+            setTimeout(() => {
+              this.setState({showContainer:true})
+            }, 100)
+
+            })
+            .catch(error => {
+              console.log("check login error", error);
+            });    
      
   
           //this.props.fetchPosts();
@@ -81,8 +95,8 @@ class Inventory extends React.Component{
              
           
           });
-        }
-      }, 500);
+        
+     
      
        
     }
@@ -228,9 +242,9 @@ class Inventory extends React.Component{
 
         const { products, showModal } = this.props;
         return(
-            
+           
           <div style={{margin:'auto', width:'67%'}}>
-
+            {this.state.showContainer ? this.props.adminLogged ? <div>
             <div style={{paddingLeft:'2%', marginTop:'30px', marginBottom:'20px'}}>
             <h4>Inventory</h4>
             </div>
@@ -297,7 +311,8 @@ class Inventory extends React.Component{
           : <p><span style={{color:'green'}}>{this.props.inventoryStatus}</span></p>}
    </div>
 </Col>
-
+</div> : <div style={{minHeight:'410px', margin:'auto', marginTop:'150px'}}>
+  <h3>You are not authorized<br />to access this page!</h3></div> : <div style={{minHeight:'410px'}}></div>}
 </div>
         )
     }

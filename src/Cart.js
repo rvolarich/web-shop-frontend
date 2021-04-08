@@ -42,7 +42,8 @@ class Cart extends React.Component {
               email:''
             },
             
-            isCartEmpty:false
+            isCartEmpty:false,
+            showContainer:false
             //cartProds:[]
         }
         this.deleteCart = this.deleteCart.bind(this)
@@ -91,13 +92,13 @@ class Cart extends React.Component {
           this.priceTotal();
 
           if(this.props.cartProducts.length <= 0){
-            setTimeout(() => {this.setState({...this.state, isCartEmpty: true})}, 30)
+            setTimeout(() => {this.setState({...this.state, isCartEmpty: true})}, 50)
         }
     } 
       
     }, 30)
 
-     
+     setTimeout(() => {this.setState({showContainer:true})}, 100)
       localStorage.setItem('lastUrl', `${URLL}/cart`);
   }
 
@@ -424,7 +425,7 @@ confirmOrder = () => {
 
       <ModalConfirmCart  />
         
-       {this.state.isCartEmpty ? 
+       {this.state.showContainer ? this.state.isCartEmpty ?
        
        <div style={{margin:'auto', paddingTop:'110px', textAlign:'center'}}>
          
@@ -478,7 +479,7 @@ confirmOrder = () => {
 
      </Row>
     
-     </div>}
+     </div> : <div></div>}
         
               </div> 
         
