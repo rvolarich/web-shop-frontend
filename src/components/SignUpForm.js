@@ -315,6 +315,10 @@ class SignUpForm extends React.Component{
               Don't have an account? <Link to="/register" onClick={this.handleClick} 
               style={{marginLeft:'5px', textDecoration:'underline'}}>Sign up!</Link>
             </div>
+            
+            <div style={{marginTop:'10px'}}><Link to="/pass" onClick={this.handleClick} 
+              style={{textDecoration:'underline'}}>Forgot your password?</Link></div>
+            
             <div style={{marginTop:'8px'}}>
             {allowCheckIsLogged ? isLogged ? window.location.replace(localStorage.getItem('lastUrl')) : 
             <div style={{color: 'red'}}>{loginStatus}</div> : null}

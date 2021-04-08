@@ -29,6 +29,8 @@ import RegisterInfo from './components/RegisterInfo';
 import Footer from './components/Footer';
 import ModalInventory from './components/ModalInventory';
 import Home from './components/Home';
+import ChangePassword from './components/ChangePassword';
+import NewPassword from './components/NewPassword';
 
 
 
@@ -101,6 +103,8 @@ render(){
       <Route path="/sessionexp" component={SessionExpired} />
       <Route path="/reginfo" component={RegisterInfo} />
       <Route path="/log" component={ModalInventory} />
+      <Route path="/pass" component={ChangePassword} />
+      <Route path="/passhgjgJHGhk76JhjgjhewerRTEiopopijLJKoiiuuitwJH6738" component={NewPassword} />
       
      
     
