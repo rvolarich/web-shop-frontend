@@ -202,11 +202,11 @@ class Cart extends React.Component {
     if(this.props.isLogged){
     this.props.postCart(this.props.cartProducts);
     
-  }else{
+  }
     for(let i = 0; i < this.props.cartProducts.length; i++){
       localStorage.setItem(this.props.cartProducts[i].productId, JSON.stringify(this.props.cartProducts[i]));
       }
-    }}, 500) 
+    }, 500) 
   
   //allowCountUpdate = true;
   

@@ -124,7 +124,7 @@ allowRegisterButtonKey(){
         else if(this.validateEmail(this.state.authData.username) && this.state.authData.password === this.state.retypePass){
             console.log("registration verified!")
             this.setState({...this.state, allowEmailFormat: true, allowPassMatch: true, 
-            regInfo:'Registering you! Please wait a moment...'})
+            regInfo:'Registering you! Please wait a moment...', allowCheckUserExists: false})
             
             axios.post('/reg', 
         this.state.authData).then(function (response){

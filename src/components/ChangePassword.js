@@ -34,7 +34,7 @@ class ChangePassword extends React.Component{
                 this.setState({allowEmailFormat: false})
             }
             else{
-                this.setState({status: 'Sending email address! Please wait a moment...'});
+                this.setState({status: 'Sending email address! This may take some time...'});
                 let userData = {
                     username: this.state.username
                 }

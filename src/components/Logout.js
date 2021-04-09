@@ -26,6 +26,7 @@ class Logout extends React.Component{
 
     handleClick = () => {
         localStorage.removeItem('x_py35');
+        localStorage.removeItem('email');
         eraseLocalStorageProductKeys();
         fetch('/logout', {
             credentials: 'include',

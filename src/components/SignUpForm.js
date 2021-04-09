@@ -112,10 +112,15 @@ class SignUpForm extends React.Component{
       
           let data = [];
           data = loadLocalStorage();
-          axios.post('/postcartall', data, { withCredentials: true })
-          window.location.replace(localStorage.getItem('lastUrl'))
-      
           this.closeModal();
+          axios.post('/postcartall', data, { withCredentials: true })
+          .then(() => {
+            window.location.replace(localStorage.getItem('lastUrl'))
+          })
+      
+         
+           
+           
       }
    
 
@@ -230,7 +235,7 @@ class SignUpForm extends React.Component{
               for(let i = 0; i < 10000000; i++){}
             }
           }
-            
+            localStorage.setItem('email', response.data.username)
 
             if(parseInt(localStorage.getItem('count')) > 0){
               this.props.dispatch({
@@ -313,11 +318,11 @@ class SignUpForm extends React.Component{
 
             <div >
               Don't have an account? <Link to="/register" onClick={this.handleClick} 
-              style={{marginLeft:'5px', textDecoration:'underline'}}>Sign up!</Link>
+              style={{marginLeft:'5px'}}>Sign up!</Link>
             </div>
             
             <div style={{marginTop:'10px'}}><Link to="/pass" onClick={this.handleClick} 
-              style={{textDecoration:'underline'}}>Forgot your password?</Link></div>
+              >Forgot password?</Link></div>
             
             <div style={{marginTop:'8px'}}>
             {allowCheckIsLogged ? isLogged ? window.location.replace(localStorage.getItem('lastUrl')) : 

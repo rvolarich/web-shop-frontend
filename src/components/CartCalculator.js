@@ -45,10 +45,10 @@ class CartCalculator extends React.Component{
      <div>
               
               {allowConfirm === false ? <Button   variant="outline-info" 
-              onClick={() => confirmOrderKey()}
+              onClick={() => this.props.confirmOrderKey()}
               style={{marginTop:'10px', marginBottom:'20px', width:'100%',
                paddingTop:'15px', paddingBottom:'15px'}}>Confirm order</Button> :  <Button variant="outline-info"
-               onClick={() => confirmOrderKey()}
+               onClick={() => this.props.confirmOrderKey()}
               style={{marginTop:'10px', marginBottom:'20px'}} disabled>Confirm order</Button>}
      </div>
      

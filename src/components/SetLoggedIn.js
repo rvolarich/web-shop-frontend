@@ -23,7 +23,7 @@ class SetLoggedIn extends React.Component{
       }, 30)
       
 
-        axios.get(`/logged_in?sessionExpired=${this.props.sessionExpired}`, 
+        axios.get('/logged_in', 
         { withCredentials: true })
         .then(response => {
           console.log("logged_in = " + response.data) 

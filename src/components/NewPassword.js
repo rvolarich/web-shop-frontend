@@ -32,13 +32,12 @@ class NewPassword extends React.Component{
             const token = query.get('token')
             
             let urlString = window.location;
-            let url = urlString.toString().slice(21, 74);
+            
+            let url = urlString.toString().slice(37, 90);
             
             this.setState({username:token, stateUrl:url})
-
-            console.log('trimmed url: ' + url);
-            console.log('URL: ' + window.location);
-            console.log('username: ' + token);
+            localStorage.setItem('lastUrl', `${URLL}/shop`);
+            
         }
 
         handleChangePass(event){

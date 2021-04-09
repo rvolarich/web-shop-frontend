@@ -179,7 +179,7 @@ class MyProfile extends React.Component{
     }
 
     confirmDelete = () => {
-      
+      localStorage.removeItem('email');
       axios.get('/user/del',
       {withCredentials:true})
       .then(response => {

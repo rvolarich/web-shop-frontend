@@ -79,8 +79,8 @@ handleChangeName(event){
             localStorage.setItem('confName', this.props.nameName)
             localStorage.setItem('confEmail', this.props.email)
             this.setState({allowEmailFormat: true, allowName: true})
-            this.closeModal()
-            window.location.replace(`${URLL}/confirm`)
+            setTimeout(() => {this.closeModal()
+              window.location.replace(`${URLL}/confirm`)}, 100) 
         }
     }
 

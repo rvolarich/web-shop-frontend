@@ -12,10 +12,7 @@ class Confirm extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      userData: {
-        nameName:'',
-        email: ''
-      }
+      stateEmail:''
     }
 
     this.loadArray = this.loadArray.bind(this)
@@ -24,62 +21,67 @@ class Confirm extends React.Component{
 
 componentDidMount(){
 
- setTimeout(() => {
-  //console.log('isLogged u Confirm: ' + this.props.isLogged)
-  if(this.props.isLogged){
-    console.log('userData logged in: ')
-  this.props.deleteCart();
+ 
+  axios.get('/logged_in', 
+        { withCredentials: true })
+        .then(response => response.data)
+        .then(data => {
+          
+         
+          if(data.logged){
+            //console.log('bio u logged_innnnnnnnnnnnn') 
+            this.props.deleteCart();
 
-axios.get('/get/user', { withCredentials:true})
-.then(response => response.data)
-.then(data => {
+            axios.get('/get/user', { withCredentials:true})
+            .then(response => response.data)
+            .then(data => {
+            
+              
+              let userDataLocal = {
+                nameName: data.nameName,
+                email: data.username
+                }
+            
+            
+            let objectArray = [];
+            objectArray = loadLocalStorage();
+            objectArray.push(userDataLocal)
+            
+            setTimeout(() => {axios.post('/confirmorder', objectArray,
+            { withCredentials: true })}, 200)
+            
+            
+            })
+          }else{
 
-  let userData = {
-    nameName: data.nameName,
-    email: data.username
-    }
-
-    console.log('userData logged in: ' + JSON.stringify(userData))
-//this.setState({userData:{...this.state.userData, email: data.username, nameName: data.nameName}})
-
-let objectArray = [];
-objectArray = loadLocalStorage();
-objectArray.push(userData)
-
-setTimeout(() => {axios.post('/confirmorder', objectArray,
-{ withCredentials: true })}, 200)
-
-
-})}
-
-else{
-
-let userData = {
-nameName: localStorage.getItem('confName'),
-email: localStorage.getItem('confEmail')
-}
-console.log('userData NOT logged in: ' + JSON.stringify(userData))
-
-let objectArray = [];
-objectArray = loadLocalStorage();
-objectArray.push(userData)
-
-setTimeout(() => {axios.post('/confirmorder', objectArray,
-{ withCredentials: true })}, 200)
-}  
- }, 50) 
-   
+            let userData = {
+            nameName: localStorage.getItem('confName'),
+            email: localStorage.getItem('confEmail')
+            }
+            //console.log('bio u NOT logged innnnnnnnnnnnnn: ' + JSON.stringify(userData))
+            
+            let objectArray = [];
+            objectArray = loadLocalStorage();
+            objectArray.push(userData)
+            
+            setTimeout(() => {axios.post('/confirmorder', objectArray,
+            { withCredentials: true })}, 200)
+            }  
+        })
+        .catch(error => {
+          console.log("check login error", error);
+        });
   
 
-setTimeout(() => {this.props.dispatch({
-  type: UPDATE_COUNT,
-  payload: 0
-  })
-}, 200) 
+        setTimeout(() => {this.props.dispatch({
+          type: UPDATE_COUNT,
+          payload: 0
+          })
+        }, 200) 
 
-setTimeout(() => {eraseLocalStorageProductKeys();}, 1000) 
-       
-}
+        setTimeout(() => {eraseLocalStorageProductKeys();}, 1000) 
+              
+        }
 
 loadArray = () => {
   let objectArray = [];
@@ -102,8 +104,10 @@ sendArray = (data) => {
             <div style={{margin:'auto', minHeight:'410px', paddingTop:'110px', textAlign:'center'}}>
          
          <h3>Congratulations on your purchase!</h3> <br />
+         {this.props.isLogged ? 
+         <p>An email has been sent to <span style={{color:'green'}}>{localStorage.getItem('email')}</span> with your order information! </p> :
          <p>An email has been sent to <span style={{color:'green'}}>{localStorage.getItem('confEmail')}</span> with your order information! </p>
-                
+        }      
            <ContinueShopping />
            </div>
         );

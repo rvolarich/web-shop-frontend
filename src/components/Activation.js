@@ -33,7 +33,7 @@ render(){
         
         <div style={{margin:'auto', width:'67%', textAlign:'center', minHeight:'410px'}}> 
         {this.state.showContainer ? !this.state.tokenExpired ?
-        <div><h4 style={{paddingTop:'50px', paddingBottom:'50px'}}>Activation link has expired!</h4></div> :
+        <div><h4 style={{paddingTop:'90px', paddingBottom:'50px'}}>Activation link has expired!</h4></div> :
         <div>
         <h4 style={{paddingTop:'50px', paddingBottom:'50px'}}>You have successfully activated your account!</h4>
 
